@@ -17,10 +17,12 @@ public:
     void gen(int row, int col);
 
     bool move(Direction d);
+    bool move_pos(Pos p);
 
     Pos get_null_pos() const { return null_pos; }
 
-    const Matrix& inner_matrix() const;
+    int pos_value(Pos p) const;
+    Pos value_pos(int value) const;
 
     void print() const;
     bool isDone() const;
@@ -30,9 +32,9 @@ private:
     void swap_null(Pos p);
 private:
     Matrix m;
+    //方向通过value 追踪pos位置
+    std::vector<Pos> value_index;
     Pos null_pos;
-public:
-    static constexpr int null_pos_val = 0;
 };
 
 #endif // BOARD_H

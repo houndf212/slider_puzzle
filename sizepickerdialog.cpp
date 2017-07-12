@@ -4,7 +4,7 @@ SizePickerDialog::SizePickerDialog(QWidget *parent)
     :QDialog(parent)
 {
     createUI();
-    setMinimumWidth(300);
+    setMinimumWidth(100);
 }
 
 QSize SizePickerDialog::getSize() const

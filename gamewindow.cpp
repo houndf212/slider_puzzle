@@ -18,7 +18,6 @@ GameWindow::GameWindow()
     QVBoxLayout* layout = new QVBoxLayout;
     layout->addWidget(m_btn);
     layout->addWidget(m_view);
-    layout->setSizeConstraint(QLayout::SetFixedSize);
 
     setLayout(layout);
 
@@ -32,7 +31,9 @@ void GameWindow::onReset()
     d.exec();
     QSize s = d.getSize();
     m_board->reset(s.height(), s.width());
-    m_view->setFixedSize(s*100);
+//    m_view->resize(s*100);
+    m_view->setMinimumSize(s*100);
+//    resize(sizeHint());
 }
 
 void GameWindow::keyPressEvent(QKeyEvent *event)

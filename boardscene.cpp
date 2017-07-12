@@ -20,7 +20,7 @@ bool BoardScene::move(Board::Direction d)
     if (!m_board.move(d))
         return false;
 
-    int val = m_board.inner_matrix().get(np);
+    int val = m_board.pos_value(np);
     move_number(val, np);
     return true;
 }
@@ -29,7 +29,17 @@ void BoardScene::onNumberClicked()
 {
     NumberItem *item = dynamic_cast<NumberItem *>(sender());
     Q_ASSERT(item!=nullptr);
-    qDebug() << item->getValue();
+
+    int val = item->getValue();
+    Pos p = m_board.value_pos(val); ;
+
+    Q_ASSERT(item->getCurrentPos().equal(p));
+    Q_ASSERT(m_board.pos_value(p) == val);
+
+    Pos np = m_board.get_null_pos();
+    if (m_board.move_pos(p)) {
+        move_number(val, np);
+    }
 }
 
 void BoardScene::gen_board(int row, int col)
@@ -58,7 +68,7 @@ void BoardScene::gen_graphics(int row, int col)
             NumberItem* item = new NumberItem;
             connect(item, &NumberItem::clicked, this, &BoardScene::onNumberClicked);
             m_scene->addItem(item);
-            int val = m_board.inner_matrix().get(p);
+            int val = m_board.pos_value(p);
             m_itemMap.insert(std::make_pair(val, item));
             item->setRect(0, 0, SCALE, SCALE);
             item->setValue(val);
@@ -74,5 +84,6 @@ void BoardScene::move_number(int val, Pos p)
     Iter it = m_itemMap.find(val);
     Q_ASSERT(it != m_itemMap.cend());
     NumberItem *item = it->second;
+    item->setCurrentPos(p);
     item->animate_move(QPointF(p.col()*SCALE, p.row()*SCALE), 300);
 }

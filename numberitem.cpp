@@ -27,7 +27,7 @@ void NumberItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
 {
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen(Qt::blue);
-    painter->setBrush(QBrush(Qt::green));
+    painter->setBrush(QBrush(Qt::gray));
     painter->drawRect(rect());
     painter->drawText(rect(), Qt::AlignCenter, QString::number(m_value));
 }
