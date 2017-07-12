@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     boardscene.cpp \
     boardgen.cpp \
     gamewindow.cpp \
-    sizepickerdialog.cpp
+    sizepickerdialog.cpp \
+    pathfiner.cpp
 
 HEADERS  += \
     board.h \
@@ -43,4 +44,5 @@ HEADERS  += \
     boardscene.h \
     boardgen.h \
     gamewindow.h \
-    sizepickerdialog.h
+    sizepickerdialog.h \
+    pathfiner.h
