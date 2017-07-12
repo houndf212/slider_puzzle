@@ -1,0 +1,96 @@
+#include "board.h"
+
+Board::Board()
+    :m(3, 3)
+{
+    gen(3, 3);
+}
+
+void Board::gen(int row, int col)
+{
+    m.resize(row, col);
+    init_matrix();
+}
+
+bool Board::move(Board::Direction d)
+{
+    switch (d) {
+    case Down:
+        return move(-1, 0);
+        break;
+    case Up:
+        return move(1, 0);
+        break;
+    case Right:
+        return move(0, -1);
+        break;
+    case Left:
+        return move(0, 1);
+        break;
+    default:
+        assert(false);
+        break;
+    }
+}
+
+const Matrix &Board::inner_matrix() const
+{
+    return m;
+}
+
+void Board::print() const
+{
+    return m.print();
+}
+
+bool Board::isDone() const
+{
+    int n=1;
+    for (int row=0; row<m.row_size(); ++row) {
+        for (int col=0; col<m.col_size(); ++col) {
+            int val = m.get(Pos(row, col));
+            if (val!=0 && val!=n)
+                return false;
+        }
+    }
+    return true;
+}
+
+void Board::init_matrix()
+{
+    int n = 1;
+    int row = m.row_size();
+    int col = m.col_size();
+    for (int r=0; r<row; ++r) {
+        for (int c=0; c<col; ++c) {
+            m.set(Pos(r, c), n++);
+        }
+    }
+
+    null_pos.row() = row - 1;
+    null_pos.col() = col - 1;
+
+    m.set(null_pos, null_pos_val);
+}
+
+bool Board::move(int dr, int dc)
+{
+    Pos p = null_pos;
+    p.row() += dr;
+    p.col() += dc;
+
+    if (!m.isInMatrix(p))
+        return false;
+
+    swap_null(p);
+    return true;
+}
+
+void Board::swap_null(Pos p)
+{
+    int v = m.get(p);
+    m.set(null_pos, v);
+    m.set(p, null_pos_val);
+    null_pos = p;
+    print();
+}
