@@ -45,4 +45,5 @@ HEADERS  += \
     boardgen.h \
     gamewindow.h \
     sizepickerdialog.h \
-    pathfiner.h
+    pathfiner.h \
+    graph.h
