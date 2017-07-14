@@ -16,7 +16,6 @@ struct PosHash
 
 class MatrixGraph : public Graph<Pos, int, PosHash>
 {
-    // Graph interface
 public:
     MatrixGraph(int row = 10, int col = 10);
     void resize(int row, int col);
@@ -24,6 +23,7 @@ public:
     void setHas(Pos p);
     void setNot(Pos p);
     void print() const;
+    // Graph interface
 protected:
     virtual VertexList vertexes() const override;
     virtual VertexList neighbors(vertex_t v1) const override;
