@@ -1,6 +1,5 @@
 #ifndef POS_H
 #define POS_H
-#include <QPoint>
 
 class Pos
 {
@@ -18,5 +17,11 @@ private:
     int m_row;
     int m_col;
 };
+
+inline bool operator==(const Pos &p1, const Pos &p2)
+{
+    return p1.equal(p2);
+}
+
 
 #endif // POS_H

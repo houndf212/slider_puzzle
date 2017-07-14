@@ -26,6 +26,8 @@ public:
         m[p.row()][p.col()] = val;
     }
 
+    void fill_all(int val);
+
     void print() const;
 
     bool isInMatrix(Pos p) const;

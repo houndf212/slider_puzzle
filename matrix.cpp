@@ -16,6 +16,12 @@ void Matrix::resize(int row, int col)
     n_col = col;
 }
 
+void Matrix::fill_all(int val)
+{
+    for (auto& v : m)
+        std::fill(begin(v), end(v), val);
+}
+
 void Matrix::print() const
 {
     // use qvector

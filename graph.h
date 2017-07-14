@@ -6,12 +6,14 @@
 #include <unordered_set>
 #include <unordered_map>
 
-template<class vertex_t, class distance_t, class VertexHash = std::hash<vertex_t>>
+template<class T, class D, class VertexHash = std::hash<T>>
 class Graph
 {
 public:
+    typedef T vertex_t;
+    typedef D distance_t;
     typedef std::vector<vertex_t> VertexList;
-    typedef std::unordered_set<vertex_t> VertexSet;
+    typedef std::unordered_set<vertex_t, VertexHash> VertexSet;
     typedef std::unordered_map<vertex_t, distance_t, VertexHash> DistanceMap;
     typedef std::unordered_map<vertex_t, vertex_t, VertexHash> VertexMap;
 public:

@@ -33,7 +33,7 @@ SOURCES += main.cpp\
     boardgen.cpp \
     gamewindow.cpp \
     sizepickerdialog.cpp \
-    pathfiner.cpp
+    matrixgraph.cpp
 
 HEADERS  += \
     board.h \
@@ -45,9 +45,9 @@ HEADERS  += \
     boardgen.h \
     gamewindow.h \
     sizepickerdialog.h \
-    pathfiner.h \
     graph.h \
-    edgegraph.h
+    edgegraph.h \
+    matrixgraph.h
 
 DISTFILES += \
     test.txt
