@@ -46,4 +46,8 @@ HEADERS  += \
     gamewindow.h \
     sizepickerdialog.h \
     pathfiner.h \
-    graph.h
+    graph.h \
+    edgegraph.h
+
+DISTFILES += \
+    test.txt
