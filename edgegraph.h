@@ -47,9 +47,7 @@ protected:
     using typename Graph<vertex_t, distance_t>::VertexList;
     VertexList vertexes() const override
     {
-        std::vector<vertex_t> ret;
-        std::copy(begin(m_vertexes), end(m_vertexes), std::back_inserter(ret));
-        return ret;
+        return {begin(m_vertexes), end(m_vertexes)};
     }
     VertexList neighbors(vertex_t v) const override
     {

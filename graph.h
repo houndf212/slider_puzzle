@@ -11,6 +11,7 @@ class Graph
 {
 public:
     typedef std::vector<vertex_t> VertexList;
+    typedef std::unordered_set<vertex_t> VertexSet;
     typedef std::unordered_map<vertex_t, distance_t, VertexHash> DistanceMap;
     typedef std::unordered_map<vertex_t, vertex_t, VertexHash> VertexMap;
 public:
@@ -26,7 +27,8 @@ public:
         // Find the smallest distance in the already in closed list and push it in -> previous
         DistanceMap distances;
         VertexMap previous;
-        VertexList nodes; // Open list
+        VertexList open_list; // Open list
+        VertexSet close_list;
 
         auto comparator = [&distances] (vertex_t left, vertex_t right) {
             return distances[left] > distances[right]; };
@@ -43,21 +45,22 @@ public:
                 distances[vertex] = std::numeric_limits<distance_t>::max();
             }
 
-            nodes.push_back(vertex);
-            push_heap(begin(nodes), end(nodes), comparator);
+            open_list.push_back(vertex);
+            push_heap(begin(open_list), end(open_list), comparator);
         }
 
-        while (!nodes.empty())
+        while (!open_list.empty())
         {
-            pop_heap(begin(nodes), end(nodes), comparator);
-            vertex_t smallest = nodes.back();
-            nodes.pop_back();
+            pop_heap(begin(open_list), end(open_list), comparator);
+            vertex_t smallest = open_list.back();
+            open_list.pop_back();
+            close_list.insert(smallest);
 
             bool isHeapModify = false;
             VertexList all_neighbor = this->neighbors(smallest);
             for (vertex_t neighbor : all_neighbor)
             {
-                if (std::find(begin(nodes), end(nodes), neighbor) == end(nodes))
+                if (close_list.find(neighbor)!=end(close_list))
                     continue;
 
                 distance_t start_dis = distances[smallest];
@@ -71,9 +74,8 @@ public:
                 }
             }
             if (isHeapModify)
-                make_heap(begin(nodes), end(nodes), comparator);
+                make_heap(begin(open_list), end(open_list), comparator);
         }
-
         return std::make_pair(distances, previous);
     }
 
@@ -83,7 +85,8 @@ public:
         // Find the smallest distance in the already in closed list and push it in -> previous
         DistanceMap distances;
         VertexMap previous;
-        VertexList nodes; // Open list
+        VertexList open_list; // Open list
+        VertexSet close_list;
         VertexList path;
 
         auto comparator = [&distances] (vertex_t left, vertex_t right) {
@@ -101,15 +104,16 @@ public:
                 distances[vertex] = std::numeric_limits<distance_t>::max();
             }
 
-            nodes.push_back(vertex);
-            push_heap(begin(nodes), end(nodes), comparator);
+            open_list.push_back(vertex);
+            push_heap(begin(open_list), end(open_list), comparator);
         }
 
-        while (!nodes.empty())
+        while (!open_list.empty())
         {
-            pop_heap(begin(nodes), end(nodes), comparator);
-            vertex_t smallest = nodes.back();
-            nodes.pop_back();
+            pop_heap(begin(open_list), end(open_list), comparator);
+            vertex_t smallest = open_list.back();
+            open_list.pop_back();
+            close_list.insert(smallest);
 
             if (smallest == finish)
             {
@@ -126,7 +130,7 @@ public:
             VertexList all_neighbor = this->neighbors(smallest);
             for (vertex_t neighbor : all_neighbor)
             {
-                if (std::find(begin(nodes), end(nodes), neighbor) == end(nodes))
+                if (close_list.find(neighbor)!=end(close_list))
                     continue;
 
                 distance_t start_dis = distances[smallest];
@@ -140,7 +144,7 @@ public:
                 }
             }
             if (isHeapModify)
-                make_heap(begin(nodes), end(nodes), comparator);
+                make_heap(begin(open_list), end(open_list), comparator);
         }
 
         return std::make_pair(path, distances[finish]);
