@@ -6,6 +6,7 @@ class Board
 {
 public:
     enum Direction {
+        NotValid,
         Up,
         Down,
         Left,
@@ -19,6 +20,10 @@ public:
     bool move(Direction d);
     bool move_pos(Pos p);
 
+    Direction move_null(Direction d);
+    Direction test_move_pos(Pos p) const;
+
+
     Pos get_null_pos() const { return null_pos; }
 
     int pos_value(Pos p) const;
@@ -26,6 +31,8 @@ public:
 
     void print() const;
     bool isDone() const;
+
+    bool isInBoard(Pos p) const { return m.isInMatrix(p); }
 private:
     void init_matrix();
     bool move(int dr, int dc);

@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     boardgen.cpp \
     gamewindow.cpp \
     sizepickerdialog.cpp \
-    matrixgraph.cpp
+    matrixgraph.cpp \
+    boardrotator.cpp
 
 HEADERS  += \
     board.h \
@@ -47,7 +48,8 @@ HEADERS  += \
     sizepickerdialog.h \
     graph.h \
     edgegraph.h \
-    matrixgraph.h
+    matrixgraph.h \
+    boardrotator.h
 
 DISTFILES += \
     test.txt

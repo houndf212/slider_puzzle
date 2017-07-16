@@ -51,6 +51,53 @@ bool Board::move_pos(Pos p)
     return false;
 }
 
+Board::Direction Board::move_null(Board::Direction d)
+{
+    assert(d!=NotValid);
+    switch (d) {
+    case Up:
+        move(Down);
+        return Down;
+        break;
+    case Down:
+        move(Up);
+        return Up;
+        break;
+    case Left:
+        move(Right);
+        return Right;
+        break;
+    case Right:
+        move(Left);
+        return Left;
+        break;
+    default:
+        break;
+    }
+    assert(false);
+    return NotValid;
+}
+
+Board::Direction Board::test_move_pos(Pos p) const
+{
+    assert(m.isInMatrix(p));
+    int drow = p.row() - null_pos.row();
+    int dcol = p.col() - null_pos.col();
+    if (drow == 0) {
+        if (dcol == 1)
+            return Left;
+        else if (dcol == -1)
+            return Right;
+    }
+    else if (dcol == 0) {
+        if (drow == 1)
+            return Up;
+        else if (drow == -1)
+            return Down;
+    }
+    return NotValid;
+}
+
 int Board::pos_value(Pos p) const
 {
     return m.get(p);

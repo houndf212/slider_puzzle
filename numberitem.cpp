@@ -1,5 +1,6 @@
 #include "numberitem.h"
 #include <QPainter>
+#include <QGraphicsSceneWheelEvent>
 
 NumberItem::NumberItem(QGraphicsItem *parent)
     :QGraphicsRectItem(parent),
@@ -35,6 +36,14 @@ void NumberItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
 void NumberItem::mousePressEvent(QGraphicsSceneMouseEvent *)
 {
     Q_EMIT clicked();
+}
+
+void NumberItem::wheelEvent(QGraphicsSceneWheelEvent *event)
+{
+    if (event->delta() < 0)
+        Q_EMIT wheel(BoardRotator::ClockWise);
+    else
+        Q_EMIT wheel(BoardRotator::AntiClock);
 }
 
 void NumberItem::init_animation()
