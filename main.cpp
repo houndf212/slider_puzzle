@@ -78,8 +78,8 @@ void testMatrixGraph()
 
 int main(int argc, char *argv[])
 {
-    testMatrixGraph();
-    return 0;
+//    testMatrixGraph();
+//    return 0;
     QApplication a(argc, argv);
 
     GameWindow w;

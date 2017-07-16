@@ -35,6 +35,7 @@ private:
     //方向通过value 追踪pos位置
     std::vector<Pos> value_index;
     Pos null_pos;
+    static constexpr int null_value = 0;
 };
 
 #endif // BOARD_H

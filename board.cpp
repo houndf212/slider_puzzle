@@ -73,8 +73,10 @@ bool Board::isDone() const
     for (int row=0; row<m.row_size(); ++row) {
         for (int col=0; col<m.col_size(); ++col) {
             int val = m.get(Pos(row, col));
-            if (val!=n++)
+            // null must at n=row*col also the end
+            if (val!=n++ && val!=null_value) {
                 return false;
+            }
         }
     }
     return true;
@@ -96,6 +98,7 @@ void Board::init_matrix()
 
     null_pos.row() = row - 1;
     null_pos.col() = col - 1;
+    m.set(null_pos, null_value);
 }
 
 bool Board::move(int dr, int dc)
