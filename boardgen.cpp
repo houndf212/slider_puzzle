@@ -1,4 +1,4 @@
-#include "boardgen.h"
+﻿#include "boardgen.h"
 #include <random>
 #include <chrono>
 
@@ -15,16 +15,16 @@ void BoardGen::gen(Board *board)
         int d = dist(rng);
         switch (d) {
         case 1:
-            board->move(Board::Up);
+            board->move(Board::Null_Up);
             break;
         case 2:
-            board->move(Board::Down);
+            board->move(Board::Null_Down);
             break;
         case 3:
-            board->move(Board::Left);
+            board->move(Board::Null_Left);
             break;
         case 4:
-            board->move(Board::Right);
+            board->move(Board::Null_Right);
             break;
         default:
             assert(false);

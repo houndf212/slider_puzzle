@@ -1,4 +1,4 @@
-#include <QApplication>
+﻿#include <QApplication>
 #include <QtCore>
 #include "board.h"
 #include "boardgen.h"
@@ -90,16 +90,16 @@ void testBoard()
         cin>>c;
         switch (c) {
         case 'w':
-            m.move(Board::Up);
+            m.move(Board::Null_Down);
             break;
         case 's':
-            m.move(Board::Down);
+            m.move(Board::Null_Up);
             break;
         case 'a':
-            m.move(Board::Left);
+            m.move(Board::Null_Right);
             break;
         case 'd':
-            m.move(Board::Right);
+            m.move(Board::Null_Left);
             break;
 
         case 'r':{

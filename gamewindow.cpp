@@ -1,4 +1,4 @@
-#include "gamewindow.h"
+﻿#include "gamewindow.h"
 #include "sizepickerdialog.h"
 
 GameWindow::GameWindow()
@@ -40,16 +40,16 @@ void GameWindow::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Up:
-        m_board->move(Board::Up);
+        m_board->move(Board::Null_Down);
         break;
     case Qt::Key_Down:
-        m_board->move(Board::Down);
+        m_board->move(Board::Null_Up);
         break;
     case Qt::Key_Left:
-        m_board->move(Board::Left);
+        m_board->move(Board::Null_Right);
         break;
     case Qt::Key_Right:
-        m_board->move(Board::Right);
+        m_board->move(Board::Null_Left);
         break;
     default:
         break;
