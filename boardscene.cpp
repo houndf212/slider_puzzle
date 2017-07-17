@@ -1,4 +1,4 @@
-#include "boardscene.h"
+﻿#include "boardscene.h"
 #include "boardgen.h"
 
 BoardScene::BoardScene(QObject *parent)
@@ -36,10 +36,9 @@ void BoardScene::onNumberClicked()
     Q_ASSERT(item->getCurrentPos().equal(p));
     Q_ASSERT(m_board.pos_value(p) == val);
 
-    Pos np = m_board.get_null_pos();
-
     Board::Direction d = m_board.test_null_move_to(p);
     if (d!=Board::NotValid) {
+        Pos np = m_board.get_null_pos();
         bool b = m_board.null_move(d);
         assert(b!=false);
         move_number(val, np);
@@ -75,8 +74,7 @@ void BoardScene::gen_graphics(int row, int col)
 {
     m_scene->setSceneRect(0, 0, SCALE*col, SCALE*row);
     //first clear
-    QList<QGraphicsItem *> items = m_scene->items();
-    for (QGraphicsItem *it : items) {
+    for (QGraphicsItem *it : m_scene->items()) {
         delete it;
     }
     //clear hash

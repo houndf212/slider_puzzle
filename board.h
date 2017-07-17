@@ -18,7 +18,6 @@ public:
         Null_Right = Left,
     };
 public:
-    Board();
     void gen(int row, int col);
 
     bool null_move(Direction d);
@@ -47,5 +46,7 @@ private:
     Pos null_pos;
     static constexpr int null_value = 0;
 };
+
+typedef std::vector<Board::Direction> MoveList;
 
 #endif // BOARD_H

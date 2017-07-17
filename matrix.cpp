@@ -1,12 +1,7 @@
-#include "matrix.h"
+﻿#include "matrix.h"
 using std::vector;
 
 #include <QtCore>
-
-Matrix::Matrix(int row, int col)
-{
-    resize(row, col);
-}
 
 void Matrix::resize(int row, int col)
 {

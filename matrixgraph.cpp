@@ -1,13 +1,7 @@
-#include "matrixgraph.h"
+﻿#include "matrixgraph.h"
 
 static constexpr int k_has = 1;
 static constexpr int k_not = 0;
-
-MatrixGraph::MatrixGraph(int row, int col)
-    :m(row, col)
-{
-    m.fill_all(k_has);
-}
 
 void MatrixGraph::resize(int row, int col)
 {

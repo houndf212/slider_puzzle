@@ -1,4 +1,4 @@
-#ifndef MATRIX_H
+﻿#ifndef MATRIX_H
 #define MATRIX_H
 #include <vector>
 #include <assert.h>
@@ -7,8 +7,6 @@
 class Matrix
 {
 public:
-    Matrix(int row, int col);
-
     void resize(int row, int col);
 
     int row_size() const { return n_row; }

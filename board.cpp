@@ -1,13 +1,6 @@
 ﻿#include "board.h"
 #include <QtCore>
 
-Board::Board()
-    :matrix(3, 3)
-    ,origin_matrix(3, 3)
-{
-    gen(3, 3);
-}
-
 void Board::gen(int row, int col)
 {
     matrix.resize(row, col);

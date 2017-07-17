@@ -1,4 +1,4 @@
-#ifndef POS_H
+﻿#ifndef POS_H
 #define POS_H
 
 class Pos
@@ -11,7 +11,7 @@ public:
     int& col() { return m_col; }
     bool equal(const Pos& p) const
     {
-        return m_row == p.row() && m_col == p.col();
+        return row() == p.row() && col() == p.col();
     }
 private:
     int m_row;

@@ -1,4 +1,4 @@
-#ifndef MATRIXGRAPH_H
+﻿#ifndef MATRIXGRAPH_H
 #define MATRIXGRAPH_H
 #include "graph.h"
 #include "pos.h"
@@ -17,7 +17,6 @@ struct PosHash
 class MatrixGraph : public Graph<Pos, int, PosHash>
 {
 public:
-    MatrixGraph(int row = 10, int col = 10);
     void resize(int row, int col);
     void clear();
     void setHas(Pos p);

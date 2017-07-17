@@ -1,9 +1,6 @@
-#ifndef BOARDROTATOR_H
+﻿#ifndef BOARDROTATOR_H
 #define BOARDROTATOR_H
 #include "board.h"
-#include <vector>
-
-typedef std::vector<Board::Direction> MoveList;
 
 class BoardRotator
 {
