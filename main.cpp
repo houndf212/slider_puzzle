@@ -62,6 +62,7 @@ QDebug operator<<(QDebug d, const Pos &p)
     return d;
 }
 
+#include "boardrotator.h"
 void testMatrixGraph()
 {
     MatrixGraph g;
@@ -76,10 +77,65 @@ void testMatrixGraph()
     qDebug() << "dist: " << p.second;
 }
 
+void testBoard()
+{
+    Board m;
+    m.gen(5, 5);
+    BoardGen::gen(&m);
+    bool b = true;
+    while (b) {
+        m.print();
+        qDebug() << "input: ";
+        char c;
+        cin>>c;
+        switch (c) {
+        case 'w':
+            m.move(Board::Up);
+            break;
+        case 's':
+            m.move(Board::Down);
+            break;
+        case 'a':
+            m.move(Board::Left);
+            break;
+        case 'd':
+            m.move(Board::Right);
+            break;
+
+        case 'r':{
+            int row;
+            cin >> row;
+            int col;
+            cin >> col;
+            Pos p(row, col);
+            auto mlist = BoardRotator::rotate(m, p, BoardRotator::ClockWise);
+            for (auto d : mlist)
+                m.move(d);
+        }
+            break;
+
+        case 'R':{
+            int row;
+            cin >> row;
+            int col;
+            cin >> col;
+            Pos p(row, col);
+            auto mlist = BoardRotator::rotate(m, p, BoardRotator::AntiClock);
+            for (auto d : mlist)
+                m.move(d);
+        }
+            break;
+        default:
+            b = false;
+            break;
+        }
+    }
+}
+
 int main(int argc, char *argv[])
 {
-//    testMatrixGraph();
-//    return 0;
+    testBoard();
+    return 0;
     QApplication a(argc, argv);
 
     GameWindow w;
