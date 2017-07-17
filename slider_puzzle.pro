@@ -10,6 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = slider_puzzle
 TEMPLATE = app
+CONFIG += console
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -35,7 +36,11 @@ SOURCES += main.cpp\
     sizepickerdialog.cpp \
     matrixgraph.cpp \
     boardrotator.cpp \
-    numbermover.cpp
+    numbermover.cpp \
+    test_console_board.cpp \
+    test_matrixgraph.cpp \
+    test_edgegraph.cpp \
+    test_numbermover.cpp
 
 HEADERS  += \
     board.h \

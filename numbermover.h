@@ -6,11 +6,16 @@
 class NumberMover
 {
 public:
-    MoveList find_null_move_list(int val, const Board &b, const BoolMatrix &fixedMatrix);
+    NumberMover(const Board &b, const BoolMatrix &fixed);
+    std::pair<PosList, bool> get_move_line(int val) const;
+    std::pair<PosList, bool> get_null_move_path(Pos to, Pos fixedPos) const;
+    std::pair<MoveList, bool> get_all_null_move_path(int val) const;
 private:
-    int value;
-    Board board;
-    BoolMatrix fixedMatrix;
+    const Board &board;
+    const BoolMatrix &fixed_matrix;
+private:
+    static std::pair<PosList, bool>
+    find_value_move_line(Pos start, Pos finish, const BoolMatrix &fixed_matrix);
 };
 
 #endif // NUMBERMOVER_H

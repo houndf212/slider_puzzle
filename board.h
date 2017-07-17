@@ -29,6 +29,8 @@ public:
     int pos_value(Pos p) const;
     Pos value_pos(int value) const;
 
+    Pos origin_pos(int val) const;
+
     void print() const;
     bool isDone() const;
 
