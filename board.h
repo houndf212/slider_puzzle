@@ -5,24 +5,25 @@
 class Board
 {
 public:
-    enum Direction {
+    enum Direction
+    {
         NotValid,
         Up,
         Down,
         Left,
         Right,
+        Null_Up = Down,
+        Null_Down = Up,
+        Null_Left = Right,
+        Null_Right = Left,
     };
-
 public:
     Board();
     void gen(int row, int col);
 
     bool move(Direction d);
-    bool move_pos(Pos p);
 
-    Direction move_null(Direction d);
     Direction test_move_pos(Pos p) const;
-
 
     Pos get_null_pos() const { return null_pos; }
 
@@ -32,13 +33,15 @@ public:
     void print() const;
     bool isDone() const;
 
-    bool isInBoard(Pos p) const { return m.isInMatrix(p); }
+    bool isInBoard(Pos p) const { return matrix.isInMatrix(p); }
 private:
     void init_matrix();
-    bool move(int dr, int dc);
+    bool inner_null_move(int dr, int dc);
     void swap_null(Pos p);
 private:
-    Matrix m;
+    Matrix matrix;
+    //完成时的矩阵
+    Matrix origin_matrix;
     //方向通过value 追踪pos位置
     std::vector<Pos> value_index;
     Pos null_pos;

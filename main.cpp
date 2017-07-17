@@ -134,8 +134,8 @@ void testBoard()
 
 int main(int argc, char *argv[])
 {
-    testBoard();
-    return 0;
+//    testBoard();
+//    return 0;
     QApplication a(argc, argv);
 
     GameWindow w;

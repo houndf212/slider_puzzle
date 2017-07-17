@@ -34,5 +34,22 @@ void Matrix::print() const
 
 bool Matrix::isInMatrix(Pos p) const
 {
-    return 0<=p.row() && p.row()<n_row && 0<=p.col() && p.col()<n_col;
+    return 0<=p.row() && p.row()<row_size() && 0<=p.col() && p.col()<col_size();
+}
+
+bool Matrix::equal(const Matrix &m) const
+{
+    if (row_size() != m.row_size() ||
+            col_size() != m.col_size())
+        return false;
+
+    for (int row=0; row<row_size(); ++row) {
+        for (int col=0; col<col_size(); ++col) {
+            Pos p(row, col);
+            if (get(p)!=m.get(p)) {
+                return false;
+            }
+        }
+    }
+    return true;
 }

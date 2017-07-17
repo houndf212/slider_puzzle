@@ -37,7 +37,11 @@ void BoardScene::onNumberClicked()
     Q_ASSERT(m_board.pos_value(p) == val);
 
     Pos np = m_board.get_null_pos();
-    if (m_board.move_pos(p)) {
+
+    Board::Direction d = m_board.test_move_pos(p);
+    if (d!=Board::NotValid) {
+        bool b = m_board.move(d);
+        assert(b!=false);
         move_number(val, np);
     }
 }

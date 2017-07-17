@@ -31,6 +31,8 @@ public:
     void print() const;
 
     bool isInMatrix(Pos p) const;
+
+    bool equal(const Matrix& m) const;
 private:
     std::vector<std::vector<int>> m;
     int n_row;

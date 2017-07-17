@@ -2,14 +2,15 @@
 #include <QtCore>
 
 Board::Board()
-    :m(3, 3)
+    :matrix(3, 3)
+    ,origin_matrix(3, 3)
 {
     gen(3, 3);
 }
 
 void Board::gen(int row, int col)
 {
-    m.resize(row, col);
+    matrix.resize(row, col);
     value_index.resize(row*col+1);
     init_matrix();
 }
@@ -17,17 +18,17 @@ void Board::gen(int row, int col)
 bool Board::move(Board::Direction d)
 {
     switch (d) {
-    case Down:
-        return move(-1, 0);
+    case Null_Up:
+        return inner_null_move(-1, 0);
         break;
-    case Up:
-        return move(1, 0);
+    case Null_Down:
+        return inner_null_move(1, 0);
         break;
-    case Right:
-        return move(0, -1);
+    case Null_Left:
+        return inner_null_move(0, -1);
         break;
-    case Left:
-        return move(0, 1);
+    case Null_Right:
+        return inner_null_move(0, 1);
         break;
     default:
         assert(false);
@@ -37,70 +38,29 @@ bool Board::move(Board::Direction d)
     return false;
 }
 
-bool Board::move_pos(Pos p)
-{
-    assert(m.isInMatrix(p));
-    int drow = p.row() - null_pos.row();
-    int dcol = p.col() - null_pos.col();
-
-    if ((drow == 0 && (dcol == 1 || dcol == -1)) ||
-            (dcol == 0 && (drow == 1 || drow == -1))) {
-            move(drow, dcol);
-            return true;
-    }
-    return false;
-}
-
-Board::Direction Board::move_null(Board::Direction d)
-{
-    assert(d!=NotValid);
-    switch (d) {
-    case Up:
-        move(Down);
-        return Down;
-        break;
-    case Down:
-        move(Up);
-        return Up;
-        break;
-    case Left:
-        move(Right);
-        return Right;
-        break;
-    case Right:
-        move(Left);
-        return Left;
-        break;
-    default:
-        break;
-    }
-    assert(false);
-    return NotValid;
-}
-
 Board::Direction Board::test_move_pos(Pos p) const
 {
-    assert(m.isInMatrix(p));
+    assert(matrix.isInMatrix(p));
     int drow = p.row() - null_pos.row();
     int dcol = p.col() - null_pos.col();
     if (drow == 0) {
         if (dcol == 1)
-            return Left;
+            return Null_Right;
         else if (dcol == -1)
-            return Right;
+            return Null_Left;
     }
     else if (dcol == 0) {
         if (drow == 1)
-            return Up;
+            return Null_Down;
         else if (drow == -1)
-            return Down;
+            return Null_Up;
     }
     return NotValid;
 }
 
 int Board::pos_value(Pos p) const
 {
-    return m.get(p);
+    return matrix.get(p);
 }
 
 Pos Board::value_pos(int value) const
@@ -111,50 +71,52 @@ Pos Board::value_pos(int value) const
 
 void Board::print() const
 {
-    return m.print();
+    return matrix.print();
 }
 
 bool Board::isDone() const
 {
-    int n=1;
-    for (int row=0; row<m.row_size(); ++row) {
-        for (int col=0; col<m.col_size(); ++col) {
-            int val = m.get(Pos(row, col));
-            // null must at n=row*col also the end
-            if (val!=n++ && val!=null_value) {
-                return false;
-            }
-        }
-    }
-    return true;
+//    int n=1;
+//    for (int row=0; row<matrix.row_size(); ++row) {
+//        for (int col=0; col<matrix.col_size(); ++col) {
+//            int val = matrix.get(Pos(row, col));
+//            // null must at n=row*col also the end
+//            if (val!=n++ && val!=null_value) {
+//                return false;
+//            }
+//        }
+//    }
+//    return true;
+    return matrix.equal(origin_matrix);
 }
 
 void Board::init_matrix()
 {
     int n = 1;
-    int row = m.row_size();
-    int col = m.col_size();
-    for (int r=0; r<row; ++r) {
-        for (int c=0; c<col; ++c) {
+    for (int r=0; r<matrix.row_size(); ++r) {
+        for (int c=0; c<matrix.col_size(); ++c) {
             Pos p(r, c);
-            m.set(p, n);
+            matrix.set(p, n);
             value_index[n] = p;
             ++n;
         }
     }
 
-    null_pos.row() = row - 1;
-    null_pos.col() = col - 1;
-    m.set(null_pos, null_value);
+    null_pos.row() = matrix.row_size() - 1;
+    null_pos.col() = matrix.col_size() - 1;
+    matrix.set(null_pos, null_value);
+    origin_matrix = matrix;
 }
 
-bool Board::move(int dr, int dc)
+bool Board::inner_null_move(int dr, int dc)
 {
+    assert(dr==0 || dc==0);
+    assert(dr==1 || dr==-1 || dc==1 || dc==-1);
     Pos p = null_pos;
     p.row() += dr;
     p.col() += dc;
 
-    if (!m.isInMatrix(p))
+    if (!matrix.isInMatrix(p))
         return false;
 
     swap_null(p);
@@ -163,11 +125,11 @@ bool Board::move(int dr, int dc)
 
 void Board::swap_null(Pos p)
 {
-    int v = m.get(p);
-    int nll = m.get(null_pos);
-    m.set(null_pos, v);
+    int v = matrix.get(p);
+    int nll = matrix.get(null_pos);
+    matrix.set(null_pos, v);
     value_index[v] = null_pos;
-    m.set(p, nll);
+    matrix.set(p, nll);
     value_index[nll] = p;
     null_pos = p;
     qDebug() << isDone();
