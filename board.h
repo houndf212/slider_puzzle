@@ -1,4 +1,4 @@
-#ifndef BOARD_H
+﻿#ifndef BOARD_H
 #define BOARD_H
 #include "matrix.h"
 
@@ -21,9 +21,9 @@ public:
     Board();
     void gen(int row, int col);
 
-    bool move(Direction d);
+    bool null_move(Direction d);
 
-    Direction test_move_pos(Pos p) const;
+    Direction test_null_move_to(Pos p) const;
 
     Pos get_null_pos() const { return null_pos; }
 

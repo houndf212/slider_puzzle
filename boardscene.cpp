@@ -17,7 +17,7 @@ void BoardScene::reset(int row, int col)
 bool BoardScene::move(Board::Direction d)
 {
     Pos np = m_board.get_null_pos();
-    if (!m_board.move(d))
+    if (!m_board.null_move(d))
         return false;
 
     int val = m_board.pos_value(np);
@@ -38,9 +38,9 @@ void BoardScene::onNumberClicked()
 
     Pos np = m_board.get_null_pos();
 
-    Board::Direction d = m_board.test_move_pos(p);
+    Board::Direction d = m_board.test_null_move_to(p);
     if (d!=Board::NotValid) {
-        bool b = m_board.move(d);
+        bool b = m_board.null_move(d);
         assert(b!=false);
         move_number(val, np);
     }
@@ -61,7 +61,7 @@ void BoardScene::onNumberWheel(BoardRotator::ClockDirection clock)
     auto mlist = BoardRotator::rotate(m_board, p, clock);
     m_board.print();
     for (auto d : mlist)
-        m_board.move(d);
+        m_board.null_move(d);
     m_board.print();
 }
 

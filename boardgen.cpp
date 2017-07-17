@@ -15,16 +15,16 @@ void BoardGen::gen(Board *board)
         int d = dist(rng);
         switch (d) {
         case 1:
-            board->move(Board::Null_Up);
+            board->null_move(Board::Null_Up);
             break;
         case 2:
-            board->move(Board::Null_Down);
+            board->null_move(Board::Null_Down);
             break;
         case 3:
-            board->move(Board::Null_Left);
+            board->null_move(Board::Null_Left);
             break;
         case 4:
-            board->move(Board::Null_Right);
+            board->null_move(Board::Null_Right);
             break;
         default:
             assert(false);

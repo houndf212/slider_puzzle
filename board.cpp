@@ -1,4 +1,4 @@
-#include "board.h"
+﻿#include "board.h"
 #include <QtCore>
 
 Board::Board()
@@ -15,7 +15,7 @@ void Board::gen(int row, int col)
     init_matrix();
 }
 
-bool Board::move(Board::Direction d)
+bool Board::null_move(Board::Direction d)
 {
     switch (d) {
     case Null_Up:
@@ -38,7 +38,7 @@ bool Board::move(Board::Direction d)
     return false;
 }
 
-Board::Direction Board::test_move_pos(Pos p) const
+Board::Direction Board::test_null_move_to(Pos p) const
 {
     assert(matrix.isInMatrix(p));
     int drow = p.row() - null_pos.row();

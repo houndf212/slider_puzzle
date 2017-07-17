@@ -90,16 +90,16 @@ void testBoard()
         cin>>c;
         switch (c) {
         case 'w':
-            m.move(Board::Null_Down);
+            m.null_move(Board::Null_Down);
             break;
         case 's':
-            m.move(Board::Null_Up);
+            m.null_move(Board::Null_Up);
             break;
         case 'a':
-            m.move(Board::Null_Right);
+            m.null_move(Board::Null_Right);
             break;
         case 'd':
-            m.move(Board::Null_Left);
+            m.null_move(Board::Null_Left);
             break;
 
         case 'r':{
@@ -110,7 +110,7 @@ void testBoard()
             Pos p(row, col);
             auto mlist = BoardRotator::rotate(m, p, BoardRotator::ClockWise);
             for (auto d : mlist)
-                m.move(d);
+                m.null_move(d);
         }
             break;
 
@@ -122,7 +122,7 @@ void testBoard()
             Pos p(row, col);
             auto mlist = BoardRotator::rotate(m, p, BoardRotator::AntiClock);
             for (auto d : mlist)
-                m.move(d);
+                m.null_move(d);
         }
             break;
         default:
