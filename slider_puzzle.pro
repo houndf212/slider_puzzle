@@ -53,7 +53,8 @@ HEADERS  += \
     boardrotator.h \
     pch.h \
     numbermover.h \
-    resizable_matrix.h
+    resizable_matrix.h \
+    boolmatrix.h
 
 DISTFILES += \
     test.txt

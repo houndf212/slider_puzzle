@@ -2,7 +2,7 @@
 #define MATRIXGRAPH_H
 #include "graph.h"
 #include "pos.h"
-#include "matrix.h"
+#include "boolmatrix.h"
 
 struct PosHash
 {
@@ -17,18 +17,14 @@ struct PosHash
 class MatrixGraph : public Graph<Pos, int, PosHash>
 {
 public:
-    void resize(int row, int col);
-    void clear();
-    void setHas(Pos p);
-    void setNot(Pos p);
-    void print() const;
+    MatrixGraph(const BoolMatrix &m) : matrix(m) {}
     // Graph interface
 protected:
     virtual VertexList vertexes() const override;
     virtual VertexList neighbors(vertex_t v1) const override;
     virtual distance_t distance(vertex_t v1, vertex_t v2) const override;
 private:
-    BoolMatrix m;
+    const BoolMatrix &matrix;
 };
 
 #endif // MATRIXGRAPH_H
