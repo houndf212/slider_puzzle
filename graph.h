@@ -14,15 +14,15 @@ public:
     typedef T vertex_t;
     typedef D distance_t;
     static constexpr distance_t max_distant = std::numeric_limits<distance_t>::max();
-    typedef std::vector<vertex_t> VertexList;
+    typedef std::vector<vertex_t> VertexVector;
     typedef std::unordered_set<vertex_t, VertexHash> VertexSet;
     typedef std::unordered_map<vertex_t, distance_t, VertexHash> DistanceMap;
     typedef std::unordered_map<vertex_t, vertex_t, VertexHash> VertexMap;
 public:
     virtual ~Graph() = default;
 protected:
-    virtual VertexList vertexes() const = 0;
-    virtual VertexList neighbors(vertex_t v1) const = 0;
+    virtual VertexVector vertexes() const = 0;
+    virtual VertexVector neighbors(vertex_t v1) const = 0;
     virtual distance_t distance(vertex_t v1, vertex_t v2) const = 0;
 public:
     std::pair<DistanceMap, VertexMap>
@@ -31,13 +31,13 @@ public:
         // Find the smallest distance in the already in closed list and push it in -> previous
         DistanceMap distances;
         VertexMap previous;
-        VertexList open_list; // Open list
+        VertexVector open_list; // Open list
         VertexSet close_list;
 
         auto comparator = [&distances] (vertex_t left, vertex_t right) {
             return distances[left] > distances[right]; };
 
-        VertexList verts = this->vertexes();
+        VertexVector verts = this->vertexes();
         assert(std::find(begin(verts), end(verts), start)!=end(verts));
 
         for (vertex_t vertex : verts)
@@ -63,7 +63,7 @@ public:
             close_list.insert(smallest);
 
             bool isHeapModify = false;
-            VertexList all_neighbor = this->neighbors(smallest);
+            VertexVector all_neighbor = this->neighbors(smallest);
             for (vertex_t neighbor : all_neighbor)
             {
                 if (close_list.find(neighbor)!=end(close_list))
@@ -85,20 +85,20 @@ public:
         return std::make_pair(distances, previous);
     }
 
-    std::pair<VertexList, distance_t>
+    std::pair<VertexVector, distance_t>
     dijkstra_shortest_path(vertex_t start, vertex_t finish)
     {
         // Find the smallest distance in the already in closed list and push it in -> previous
         DistanceMap distances;
         VertexMap previous;
-        VertexList open_list; // Open list
+        VertexVector open_list; // Open list
         VertexSet close_list;
-        VertexList path;
+        VertexVector path;
 
         auto comparator = [&distances] (vertex_t left, vertex_t right) {
             return distances[left] > distances[right]; };
 
-        VertexList verts = this->vertexes();
+        VertexVector verts = this->vertexes();
         assert(std::find(begin(verts), end(verts), start)!=end(verts));
         assert(std::find(begin(verts), end(verts), finish)!=end(verts));
 
@@ -136,7 +136,7 @@ public:
             }
 
             bool isHeapModify = false;
-            VertexList all_neighbor = this->neighbors(smallest);
+            VertexVector all_neighbor = this->neighbors(smallest);
             for (vertex_t neighbor : all_neighbor)
             {
                 if (close_list.find(neighbor)!=end(close_list))
@@ -159,9 +159,9 @@ public:
         return std::make_pair(path, distances[finish]);
     }
 
-    static VertexList find_path(vertex_t finish, const VertexMap &previous)
+    static VertexVector find_path(vertex_t finish, const VertexMap &previous)
     {
-        VertexList path;
+        VertexVector path;
         vertex_t smallest = finish;
         auto it = previous.find(smallest);
         auto cend = previous.end();

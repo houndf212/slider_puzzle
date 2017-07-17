@@ -6,9 +6,11 @@ void run_test()
 {
     extern void test_consoleboard();
     extern void test_numbermover();
+    extern void test_linemover();
 //    test_consoleboard();
 
-    test_numbermover();
+//    test_numbermover();
+    test_linemover();
 }
 
 int main(int argc, char *argv[])

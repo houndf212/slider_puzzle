@@ -1,8 +1,8 @@
 ﻿#include "matrixgraph.h"
 
-MatrixGraph::VertexList MatrixGraph::vertexes() const
+MatrixGraph::VertexVector MatrixGraph::vertexes() const
 {
-    VertexList vec;
+    VertexVector vec;
     for (int row = 0; row<matrix.row_size(); ++row) {
         for (int col=0; col<matrix.col_size(); ++col) {
             Pos p(row, col);
@@ -14,9 +14,9 @@ MatrixGraph::VertexList MatrixGraph::vertexes() const
     return vec;
 }
 
-MatrixGraph::VertexList MatrixGraph::neighbors(Graph::vertex_t v1) const
+MatrixGraph::VertexVector MatrixGraph::neighbors(Graph::vertex_t v1) const
 {
-    VertexList vec;
+    VertexVector vec;
     auto func = [&] (Pos p) {
         if (matrix.isInMatrix(p) && matrix.has(p))
             vec.push_back(p);

@@ -20,8 +20,8 @@ public:
     MatrixGraph(const BoolMatrix &m) : matrix(m) {}
     // Graph interface
 protected:
-    virtual VertexList vertexes() const override;
-    virtual VertexList neighbors(vertex_t v1) const override;
+    virtual VertexVector vertexes() const override;
+    virtual VertexVector neighbors(vertex_t v1) const override;
     virtual distance_t distance(vertex_t v1, vertex_t v2) const override;
 private:
     const BoolMatrix &matrix;

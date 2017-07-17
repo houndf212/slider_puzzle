@@ -69,6 +69,14 @@ Pos Board::origin_pos(int val) const
     return Pos(v/matrix.col_size(), v % matrix.col_size());
 }
 
+int Board::origin_value(Pos p) const
+{
+    assert(isInBoard(p));
+    assert(p.row()-1 != matrix.row_size());
+    assert(p.col()-1 != matrix.col_size());
+    return p.row()*matrix.col_size() + p.col() + 1;
+}
+
 void Board::print() const
 {
     return matrix.print();

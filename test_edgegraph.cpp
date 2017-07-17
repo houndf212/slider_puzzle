@@ -43,6 +43,6 @@ void testEdgeGraphFile()
 //    auto mp = g.dijkstra_shortest_path_all(9808);
 
     auto p = g.dijkstra_shortest_path(0, 8);
-    qDebug() << QVector<vertex_t>::fromStdVector(p.first);
+//    qDebug() << QVector<vertex_t>::fromStdVector(p.first);
     qDebug() << "dist: " << p.second;
 }

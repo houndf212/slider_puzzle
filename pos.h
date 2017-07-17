@@ -1,7 +1,9 @@
 ﻿#ifndef POS_H
 #define POS_H
+#include <list>
 #include <vector>
 #include <queue>
+#include <deque>
 
 class Pos
 {
@@ -31,7 +33,7 @@ inline QDebug operator<<(QDebug d, const Pos &p)
     return d;
 }
 
-typedef std::vector<Pos> PosList;
-typedef std::queue<Pos> PosQueue;
+typedef std::vector<Pos> PosVector;
+typedef std::list<Pos> PosList;
 
 #endif // POS_H

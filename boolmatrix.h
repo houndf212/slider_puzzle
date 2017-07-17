@@ -13,6 +13,7 @@ public:
     // alias api
     void set_all_unfixed() { fill_all(K_Unfixed); }
     void set_fixed(Pos p) { set(p, K_Fixed); }
+    void set_unfixed(Pos p) { set(p, K_Unfixed); }
     bool fixed(Pos p) const { return get(p) == K_Fixed; }
 private:
     static constexpr bool k_Has = true;

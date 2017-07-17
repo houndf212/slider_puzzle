@@ -44,12 +44,12 @@ public:
     // Graph interface
 protected:
     // keyword typename is need!
-    using typename Graph<vertex_t, distance_t>::VertexList;
-    VertexList vertexes() const override
+    using typename Graph<vertex_t, distance_t>::VertexVector;
+    VertexVector vertexes() const override
     {
         return {begin(m_vertexes), end(m_vertexes)};
     }
-    VertexList neighbors(vertex_t v) const override
+    VertexVector neighbors(vertex_t v) const override
     {
         assert(is_vertex_in_graph(v));
 

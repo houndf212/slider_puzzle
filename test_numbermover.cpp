@@ -32,14 +32,9 @@ void test_numbermover()
             int value;
             cin >> value;
 
-            auto path = NumberMover::find_moves(value, board, fixed);
+            auto path = NumberMover::find_value_moves(value, &board, fixed);
             if (path.second == true) {
                 qDebug() << QVector<Board::Direction>::fromStdVector(path.first);
-                for (auto d : path.first) {
-                    bool b = board.null_move(d);
-                    assert(b==true);
-                    board.print();
-                }
             }
             else {
                 qDebug() << "cannot reach!";

@@ -57,11 +57,11 @@ void BoardScene::onNumberWheel(BoardRotator::ClockDirection clock)
     Q_ASSERT(item->getCurrentPos().equal(p));
     Q_ASSERT(m_board.pos_value(p) == val);
 
-    auto mlist = BoardRotator::rotate(m_board, p, clock);
-    m_board.print();
-    for (auto d : mlist)
-        m_board.null_move(d);
-    m_board.print();
+//    auto mlist = BoardRotator::rotate(m_board, p, clock);
+//    m_board.print();
+//    for (auto d : mlist)
+//        m_board.null_move(d);
+//    m_board.print();
 }
 
 void BoardScene::gen_board(int row, int col)

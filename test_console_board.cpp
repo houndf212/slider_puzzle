@@ -35,9 +35,7 @@ void test_consoleboard()
             int col;
             cin >> col;
             Pos p(row, col);
-            auto mlist = BoardRotator::rotate(m, p, BoardRotator::ClockWise);
-            for (auto d : mlist)
-                m.null_move(d);
+            auto mlist = BoardRotator::rotate(&m, p, BoardRotator::ClockWise);
         }
             break;
 
@@ -47,9 +45,7 @@ void test_consoleboard()
             int col;
             cin >> col;
             Pos p(row, col);
-            auto mlist = BoardRotator::rotate(m, p, BoardRotator::AntiClock);
-            for (auto d : mlist)
-                m.null_move(d);
+            auto mlist = BoardRotator::rotate(&m, p, BoardRotator::AntiClock);
         }
             break;
         default:

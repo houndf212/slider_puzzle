@@ -30,6 +30,7 @@ public:
     Pos value_pos(int value) const;
 
     Pos origin_pos(int val) const;
+    int origin_value(Pos p) const;
 
     void print() const;
     bool isDone() const;
@@ -49,7 +50,7 @@ private:
     static constexpr int null_value = 0;
 };
 
-typedef std::vector<Board::Direction> MoveList;
+typedef std::vector<Board::Direction> MoveVector;
 QDebug operator <<(QDebug debug, Board::Direction d);
 
 #endif // BOARD_H

@@ -15,6 +15,6 @@ void test_matrixgraph()
     MatrixGraph g(m);
 
     auto p = g.dijkstra_shortest_path({0, 0}, {0, 2});
-    qDebug() << QVector<Pos>::fromStdVector(p.first);
+//    qDebug() << QVector<Pos>::fromStdVector(p.first);
     qDebug() << "dist: " << p.second;
 }
