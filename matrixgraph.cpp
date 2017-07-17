@@ -1,7 +1,7 @@
 ﻿#include "matrixgraph.h"
 
-static constexpr int k_has = 1;
-static constexpr int k_not = 0;
+static constexpr bool k_has = true;
+static constexpr bool k_not = false;
 
 void MatrixGraph::resize(int row, int col)
 {
@@ -34,7 +34,10 @@ MatrixGraph::VertexList MatrixGraph::vertexes() const
     VertexList vec;
     for (int row = 0; row<m.row_size(); ++row) {
         for (int col=0; col<m.col_size(); ++col) {
-            vec.push_back(Pos(row, col));
+            Pos p(row, col);
+            if (m.get(p) == k_has) {
+                vec.push_back(p);
+            }
         }
     }
     return vec;

@@ -125,5 +125,5 @@ void Board::swap_null(Pos p)
     matrix.set(p, nll);
     value_index[nll] = p;
     null_pos = p;
-    qDebug() << isDone();
+//    qDebug() << isDone();
 }

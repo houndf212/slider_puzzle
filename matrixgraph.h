@@ -28,7 +28,7 @@ protected:
     virtual VertexList neighbors(vertex_t v1) const override;
     virtual distance_t distance(vertex_t v1, vertex_t v2) const override;
 private:
-    Matrix m;
+    BoolMatrix m;
 };
 
 #endif // MATRIXGRAPH_H

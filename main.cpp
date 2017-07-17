@@ -66,10 +66,12 @@ QDebug operator<<(QDebug d, const Pos &p)
 void testMatrixGraph()
 {
     MatrixGraph g;
+    g.resize(10, 10);
     g.setNot({0, 1});
     g.setNot({1, 1});
     g.setNot({1, 2});
     g.setNot({2, 1});
+    g.setNot({3, 1});
     g.print();
 
     auto p = g.dijkstra_shortest_path({0, 0}, {0, 2});
@@ -136,6 +138,7 @@ int main(int argc, char *argv[])
 {
 //    testBoard();
 //    return 0;
+    testMatrixGraph();
     QApplication a(argc, argv);
 
     GameWindow w;

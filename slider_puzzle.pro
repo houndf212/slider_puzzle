@@ -25,7 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 PRECOMPILED_HEADER = pch.h
 
 SOURCES += main.cpp\
-    matrix.cpp \
     board.cpp \
     pos.cpp \
     numberitem.cpp \
@@ -53,7 +52,8 @@ HEADERS  += \
     matrixgraph.h \
     boardrotator.h \
     pch.h \
-    numbermover.h
+    numbermover.h \
+    resizable_matrix.h
 
 DISTFILES += \
     test.txt

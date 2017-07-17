@@ -1,13 +1,15 @@
 ﻿#ifndef NUMBERMOVER_H
 #define NUMBERMOVER_H
 #include "board.h"
+#include "matrixgraph.h"
 
 class NumberMover
 {
 public:
-    NumberMover(const Board& b);
-    MoveList find_move_list(int val, Pos p);
+    MoveList find_null_move_list(int val, const Board &b);
+    static MatrixGraph get_the_graph(Pos to, int row, int col);
 private:
+    int value;
     Board board;
 };
 
