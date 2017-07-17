@@ -50,5 +50,6 @@ private:
 };
 
 typedef std::vector<Board::Direction> MoveList;
+QDebug operator <<(QDebug debug, Board::Direction d);
 
 #endif // BOARD_H

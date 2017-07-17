@@ -15,25 +15,63 @@ void test_numbermover()
     BoolMatrix fixed;
     fixed.resize(5, 5);
     fixed.set_all_unfixed();
-    fixed.set_fixed({0, 2});
-    fixed.set_fixed({1, 2});
-    fixed.set_fixed({2, 2});
-    fixed.set_fixed({2, 1});
-    fixed.set_fixed({2, 0});
+//    fixed.set_fixed({0, 2});
+//    fixed.set_fixed({1, 2});
+//    fixed.set_fixed({2, 2});
+//    fixed.set_fixed({2, 1});
+//    fixed.set_fixed({2, 0});
 
     while (true) {
         board.print();
-        qDebug() << "input value:";
-        int value;
-        cin >> value;
-        NumberMover mover(board, fixed);
-        auto path = mover.get_move_line(value);
-        if (path.second == true) {
-            qDebug() << QVector<Pos>::fromStdVector(path.first);
+        qDebug() << "input command:";
+        char c;
+        cin >> c;
+        switch (c) {
+        case 'm':
+        {
+            int value;
+            cin >> value;
+
+            auto path = NumberMover::find_moves(value, board, fixed);
+            if (path.second == true) {
+                qDebug() << QVector<Board::Direction>::fromStdVector(path.first);
+                for (auto d : path.first) {
+                    bool b = board.null_move(d);
+                    assert(b==true);
+                    board.print();
+                }
+            }
+            else {
+                qDebug() << "cannot reach!";
+            }
         }
-        else {
-            qDebug() << "cannot reach!";
+            break;
+        case 'f':
+        {
+            int row, col;
+            cin >> row >> col;
+            Pos p(row, col);
+            fixed.set_fixed(p);
+            fixed.print();
         }
+            break;
+
+        case 'w':
+            board.null_move(Board::Null_Down);
+            break;
+        case 's':
+            board.null_move(Board::Null_Up);
+            break;
+        case 'a':
+            board.null_move(Board::Null_Right);
+            break;
+        case 'd':
+            board.null_move(Board::Null_Left);
+            break;
+        default:
+            break;
+        }
+
     }
 
 }
