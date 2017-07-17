@@ -65,10 +65,6 @@ Pos Board::value_pos(int value) const
 Pos Board::origin_pos(int val) const
 {
     assert(0<val && val < matrix.row_size()*matrix.col_size());
-
-    if (val == null_value)
-        return Pos(matrix.row_size(), matrix.col_size());
-
     int v = val - 1;
     return Pos(v/matrix.col_size(), v % matrix.col_size());
 }
