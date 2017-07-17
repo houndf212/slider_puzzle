@@ -1,10 +1,11 @@
-#ifndef GRAPH_H
+﻿#ifndef GRAPH_H
 #define GRAPH_H
 #include <limits>
 #include <algorithm>
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
+#include <assert.h>
 
 template<class T, class D, class VertexHash = std::hash<T>>
 class Graph
@@ -12,6 +13,7 @@ class Graph
 public:
     typedef T vertex_t;
     typedef D distance_t;
+    static constexpr distance_t max_distant = std::numeric_limits<distance_t>::max();
     typedef std::vector<vertex_t> VertexList;
     typedef std::unordered_set<vertex_t, VertexHash> VertexSet;
     typedef std::unordered_map<vertex_t, distance_t, VertexHash> DistanceMap;
@@ -36,6 +38,8 @@ public:
             return distances[left] > distances[right]; };
 
         VertexList verts = this->vertexes();
+        assert(std::find(begin(verts), end(verts), start)!=end(verts));
+
         for (vertex_t vertex : verts)
         {
             if (vertex == start)
@@ -95,6 +99,9 @@ public:
             return distances[left] > distances[right]; };
 
         VertexList verts = this->vertexes();
+        assert(std::find(begin(verts), end(verts), start)!=end(verts));
+        assert(std::find(begin(verts), end(verts), finish)!=end(verts));
+
         for (vertex_t vertex : verts)
         {
             if (vertex == start)
