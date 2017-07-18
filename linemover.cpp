@@ -2,6 +2,11 @@
 #include "numbermover.h"
 #include "boardrotator.h"
 
+static bool check_number(Pos p, const Board &board)
+{
+    return board.origin_value(p) == board.pos_value(p);
+}
+
 MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_matrix)
 {
     assert(line.size() >= 2);
@@ -22,8 +27,9 @@ MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_ma
         assert(ret.second == true);
         movelist_append(&mlist, ret.first);
         fixed_matrix->set_fixed(p);
-        board->print();
-        fixed_matrix->print();
+        assert(check_number(p, *board));
+//        board->print();
+//        fixed_matrix->print();
     }
 
     int last_value = board->origin_value(last);
@@ -32,22 +38,27 @@ MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_ma
     // 如果 刚好就在last位置上
     if(current_last == last) {
         fixed_matrix->set_fixed(last);
+        assert(check_number(last, *board));
         return mlist;
     }
     /* 1 0
      * ? 2
      * ? ？
     */
-    // 如果刚好 last_value 在 last 下面
-    Board::Direction test_d = board->test_null_move_to(current_last);
-    if (test_d != Board::NotValid) {
-        bool b = board->null_move(test_d);
-        assert(b==true);
-        mlist.push_back(test_d);
-        fixed_matrix->set_fixed(last);
-        return mlist;
+    // 如果 0 在last "并且" 刚好 last_value 在 last "下"面
+    // 备注： 这只是下面的一种特殊情况, 这里快速处理
+    if (board->get_null_pos() == last) {
+        Board::Direction test_d = board->test_null_move_to(current_last);
+        if (test_d != Board::NotValid) {
+            bool b = board->null_move(test_d);
+            assert(b==true);
+            mlist.push_back(test_d);
+            fixed_matrix->set_fixed(last);
+            assert(check_number(last, *board));
+            return mlist;
+        }
     }
-
+    //非特殊情况
     Pos p_null;
     Pos p_last;
 
@@ -123,6 +134,7 @@ MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_ma
     */
 
     fixed_matrix->set_fixed(last);
+    assert(check_number(last, *board));
     return mlist;
 }
 
