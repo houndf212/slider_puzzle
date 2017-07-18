@@ -64,17 +64,13 @@ Pos Board::value_pos(int value) const
 
 Pos Board::origin_pos(int val) const
 {
-    assert(0<val && val < matrix.row_size()*matrix.col_size());
-    int v = val - 1;
-    return Pos(v/matrix.col_size(), v % matrix.col_size());
+    assert(0<=val && val<int(origin_value_index.size()));
+    return origin_value_index[val];
 }
 
 int Board::origin_value(Pos p) const
 {
-    assert(isInBoard(p));
-    assert(p.row()-1 != matrix.row_size());
-    assert(p.col()-1 != matrix.col_size());
-    return p.row()*matrix.col_size() + p.col() + 1;
+    return origin_matrix.get(p);
 }
 
 void Board::print() const
@@ -114,6 +110,7 @@ void Board::init_matrix()
     null_pos.col() = matrix.col_size() - 1;
     matrix.set(null_pos, null_value);
     origin_matrix = matrix;
+    origin_value_index = value_index;
 }
 
 bool Board::inner_null_move(int dr, int dc)

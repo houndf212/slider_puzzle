@@ -36,6 +36,8 @@ public:
     bool isDone() const;
 
     bool isInBoard(Pos p) const { return matrix.isInMatrix(p); }
+    int row_size() const { return matrix.row_size(); }
+    int col_size() const { return matrix.col_size(); }
 private:
     void init_matrix();
     bool inner_null_move(int dr, int dc);
@@ -46,6 +48,8 @@ private:
     Matrix origin_matrix;
     //方向通过value 追踪pos位置
     std::vector<Pos> value_index;
+    //完成时应该的位置
+    std::vector<Pos> origin_value_index;
     Pos null_pos;
     static constexpr int null_value = 0;
 };
