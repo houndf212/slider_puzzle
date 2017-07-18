@@ -18,7 +18,7 @@ public:
     const Board &inner_board() const { return m_board; }
 private:
     Q_SLOT void onNumberClicked();
-    Q_SLOT void onNumberWheel(BoardRotator::ClockDirection clock);
+//    Q_SLOT void onNumberWheel(BoardRotator::ClockDirection clock);
 private:
     void gen_board(int row, int col);
     void gen_graphics(int row, int col);

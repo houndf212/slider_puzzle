@@ -45,24 +45,24 @@ void BoardScene::onNumberClicked()
     }
 }
 
-void BoardScene::onNumberWheel(BoardRotator::ClockDirection clock)
-{
-    NumberItem *item = dynamic_cast<NumberItem *>(sender());
-    Q_ASSERT(item!=nullptr);
-    qDebug() << clock;
+//void BoardScene::onNumberWheel(BoardRotator::ClockDirection clock)
+//{
+//    NumberItem *item = dynamic_cast<NumberItem *>(sender());
+//    Q_ASSERT(item!=nullptr);
+//    qDebug() << clock;
 
-    int val = item->getValue();
-    Pos p = m_board.value_pos(val);
+//    int val = item->getValue();
+//    Pos p = m_board.value_pos(val);
 
-    Q_ASSERT(item->getCurrentPos() == p);
-    Q_ASSERT(m_board.pos_value(p) == val);
+//    Q_ASSERT(item->getCurrentPos() == p);
+//    Q_ASSERT(m_board.pos_value(p) == val);
 
-//    auto mlist = BoardRotator::rotate(m_board, p, clock);
-//    m_board.print();
-//    for (auto d : mlist)
-//        m_board.null_move(d);
-//    m_board.print();
-}
+////    auto mlist = BoardRotator::rotate(m_board, p, clock);
+////    m_board.print();
+////    for (auto d : mlist)
+////        m_board.null_move(d);
+////    m_board.print();
+//}
 
 void BoardScene::gen_board(int row, int col)
 {
@@ -88,7 +88,7 @@ void BoardScene::gen_graphics(int row, int col)
 
             NumberItem* item = new NumberItem;
             connect(item, &NumberItem::clicked, this, &BoardScene::onNumberClicked);
-            connect(item, &NumberItem::wheel, this, &BoardScene::onNumberWheel);
+//            connect(item, &NumberItem::wheel, this, &BoardScene::onNumberWheel);
             m_scene->addItem(item);
             int val = m_board.pos_value(p);
             m_itemMap.insert(std::make_pair(val, item));

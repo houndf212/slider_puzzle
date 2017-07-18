@@ -38,13 +38,13 @@ void NumberItem::mousePressEvent(QGraphicsSceneMouseEvent *)
     Q_EMIT clicked();
 }
 
-void NumberItem::wheelEvent(QGraphicsSceneWheelEvent *event)
-{
-    if (event->delta() < 0)
-        Q_EMIT wheel(BoardRotator::ClockWise);
-    else
-        Q_EMIT wheel(BoardRotator::AntiClock);
-}
+//void NumberItem::wheelEvent(QGraphicsSceneWheelEvent *event)
+//{
+//    if (event->delta() < 0)
+//        Q_EMIT wheel(BoardRotator::ClockWise);
+//    else
+//        Q_EMIT wheel(BoardRotator::AntiClock);
+//}
 
 void NumberItem::init_animation()
 {
