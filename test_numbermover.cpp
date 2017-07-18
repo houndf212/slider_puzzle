@@ -34,7 +34,7 @@ void test_numbermover()
 
             auto path = NumberMover::find_value_moves(value, &board, fixed);
             if (path.second == true) {
-                qDebug() << QVector<Board::Direction>::fromStdVector(path.first);
+                qDebug() << QList<Board::Direction>::fromStdList(path.first);
             }
             else {
                 qDebug() << "cannot reach!";

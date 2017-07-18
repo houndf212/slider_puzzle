@@ -20,7 +20,7 @@ public:
  *
  *
 */
-    static MoveVector rotate(Board *board, Pos p1, ClockDirection clock);
+    static MoveList rotate(Board *board, Pos p1, ClockDirection clock);
 };
 
 #endif // BOARDROTATOR_H

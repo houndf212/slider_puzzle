@@ -6,7 +6,7 @@
 class LineMover
 {
 public:
-    static MoveVector finish_line(PosList line, Board *board, BoolMatrix *fixed_matrix);
+    static MoveList finish_line(PosList line, Board *board, BoolMatrix *fixed_matrix);
 private:
     static bool is_line(const PosList &line)
     {

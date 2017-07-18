@@ -50,7 +50,7 @@ private:
     static constexpr int null_value = 0;
 };
 
-typedef std::vector<Board::Direction> MoveVector;
+typedef std::list<Board::Direction> MoveList;
 QDebug operator <<(QDebug debug, Board::Direction d);
 
 #endif // BOARD_H

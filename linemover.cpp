@@ -1,8 +1,8 @@
-#include "linemover.h"
+﻿#include "linemover.h"
 #include "numbermover.h"
 #include "boardrotator.h"
 
-MoveVector LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_matrix)
+MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_matrix)
 {
     assert(line.size() >= 2);
     assert(is_line(line));
@@ -13,7 +13,7 @@ MoveVector LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_
     Pos last = line.back();
     line.pop_back();
 
-    MoveVector mlist;
+    MoveList mlist;
     while (!line.empty()) {
         Pos p = line.front();
         line.pop_front();

@@ -1,11 +1,11 @@
-#include "boardrotator.h"
+﻿#include "boardrotator.h"
 
 
 //  1 2
 //  3 4
-MoveVector BoardRotator::rotate(Board *board, Pos p1, BoardRotator::ClockDirection clock)
+MoveList BoardRotator::rotate(Board *board, Pos p1, BoardRotator::ClockDirection clock)
 {
-    MoveVector mlist;
+    MoveList mlist;
     assert(board->isInBoard(p1));
 
     Pos p2(p1.row(), p1.col()+1);

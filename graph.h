@@ -3,6 +3,7 @@
 #include <limits>
 #include <algorithm>
 #include <vector>
+#include <list>
 #include <unordered_set>
 #include <unordered_map>
 #include <assert.h>
@@ -15,6 +16,7 @@ public:
     typedef D distance_t;
     static constexpr distance_t max_distant = std::numeric_limits<distance_t>::max();
     typedef std::vector<vertex_t> VertexVector;
+    typedef std::list<vertex_t> VertexList;
     typedef std::unordered_set<vertex_t, VertexHash> VertexSet;
     typedef std::unordered_map<vertex_t, distance_t, VertexHash> DistanceMap;
     typedef std::unordered_map<vertex_t, vertex_t, VertexHash> VertexMap;
@@ -85,7 +87,7 @@ public:
         return std::make_pair(distances, previous);
     }
 
-    std::pair<VertexVector, distance_t>
+    std::pair<VertexList, distance_t>
     dijkstra_shortest_path(vertex_t start, vertex_t finish)
     {
         // Find the smallest distance in the already in closed list and push it in -> previous
@@ -93,7 +95,7 @@ public:
         VertexMap previous;
         VertexVector open_list; // Open list
         VertexSet close_list;
-        VertexVector path;
+        VertexList path;
 
         auto comparator = [&distances] (vertex_t left, vertex_t right) {
             return distances[left] > distances[right]; };
@@ -159,9 +161,9 @@ public:
         return std::make_pair(path, distances[finish]);
     }
 
-    static VertexVector find_path(vertex_t finish, const VertexMap &previous)
+    static VertexList find_path(vertex_t finish, const VertexMap &previous)
     {
-        VertexVector path;
+        VertexList path;
         vertex_t smallest = finish;
         auto it = previous.find(smallest);
         auto cend = previous.end();
@@ -171,7 +173,7 @@ public:
             smallest = it->second;
             it = previous.find(smallest);
         }
-        std::reverse(begin(path), end(path));
+        path.reverse();
         return path;
     }
 };
