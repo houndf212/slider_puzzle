@@ -78,7 +78,7 @@ void GameWindow::enterAutoSolve()
     m_view->setEnabled(false);
 
     m_movelist = PuzzleMover::solve(m_board->inner_board());
-    m_timer->start(1*1000);
+    m_timer->start(1*300);
 }
 
 void GameWindow::leaveAutoSolve()
