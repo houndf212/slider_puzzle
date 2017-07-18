@@ -20,10 +20,12 @@ GameWindow::GameWindow()
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &GameWindow::onTimeout);
 
+    QHBoxLayout* btnLayout = new QHBoxLayout;
+    btnLayout->addWidget(m_btn_reset);
+    btnLayout->addWidget(m_btn_auto_solve);
     QVBoxLayout* layout = new QVBoxLayout;
-    layout->addWidget(m_btn_reset);
+    layout->addLayout(btnLayout);
     layout->addWidget(m_view);
-    layout->addWidget(m_btn_auto_solve);
 
     setLayout(layout);
 
