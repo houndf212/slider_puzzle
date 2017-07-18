@@ -6,6 +6,7 @@ void test_puzzlemover()
     Board board;
     board.gen(10, 10);
     BoardGen::gen(&board);
-
-    PuzzleMover::solve(board);
+    board.print();
+    auto ml = PuzzleMover::solve(board);
+    qDebug() <<"move steps: " <<ml.size();
 }

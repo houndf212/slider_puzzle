@@ -2,6 +2,9 @@
 #include <random>
 #include <chrono>
 
+
+// TODO  怎么实现一个合理的算法产生一个随机的
+// 随机产生一个 排列 只有一半的几率能解 ，那怎么修改不能解的情况， 需要考虑查下资料完成这个功能
 void BoardGen::gen(Board *board)
 {
     using namespace std;
@@ -10,7 +13,8 @@ void BoardGen::gen(Board *board)
     std::uniform_int_distribution<int> dist(1, 4);
     std::default_random_engine rng;
     rng.seed(seed);
-    int n = rng() % 1000;
+    int size = board->row_size()*board->col_size();
+    int n = std::max( int(rng() % size*10), size*5);
     while(n-->0) {
         int d = dist(rng);
         switch (d) {
