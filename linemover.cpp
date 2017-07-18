@@ -25,21 +25,18 @@ MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_ma
         int value = board->origin_value(p);
         auto ret = NumberMover::find_value_moves(value, board, *fixed_matrix);
         assert(ret.second == true);
-        movelist_append(&mlist, ret.first);
+        mlist.check_loop_append(ret.first);
         fixed_matrix->set_fixed(p);
         assert(check_number(p, *board));
 //        board->print();
 //        fixed_matrix->print();
     }
-    MoveList ml = move_line_end(last, board, fixed_matrix, left_right);
-    movelist_append(&mlist, ml);
+    move_line_end(last, board, fixed_matrix, &mlist, left_right);
     return mlist;
 }
 
-MoveList LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matrix, bool left_right)
+void LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matrix, MoveList* mlist, bool left_right)
 {
-    MoveList mlist;
-
     int last_value = board->origin_value(last);
     Pos current_last = board->value_pos(last_value);
 
@@ -47,7 +44,7 @@ MoveList LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matr
     if(current_last == last) {
         fixed_matrix->set_fixed(last);
         assert(check_number(last, *board));
-        return mlist;
+        return;
     }
     /* 1 0
      * ? 2
@@ -60,10 +57,10 @@ MoveList LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matr
         if (test_d != Board::NotValid) {
             bool b = board->null_move(test_d);
             assert(b==true);
-            mlist.push_back(test_d);
+            mlist->check_loop_push_back(test_d);
             fixed_matrix->set_fixed(last);
             assert(check_number(last, *board));
-            return mlist;
+            return;
         }
     }
     //非特殊情况
@@ -86,19 +83,26 @@ MoveList LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matr
         p_r_down = {last.row(), last.col()+1};
     }
 
-    //移动最后一个到 预定位置的下两格子
+    //1这里可能产生 ‘循环’
+    // 1 ? 2   1 ? 2    1 0 2    1 2 0  旋转上面第一步   1 0 2   1 ? 2   1 ? 2
+    // ? ? 0 ->? 0 ? -> ? ? ? -> ? ? ?  ------------>  ? ? ? ->? 0 ? ->? ? 0
+    // ? ? 3   ? ? 3    ? ? 3    ? ? 3                 ? ? 3   ? ? 3   ? ? 3
+    //2 循环很可能是递归的，找到一个循环需要处理下一个循环
+    //3 妈的，经过验证除了这里有循环其他地方也会产生循环，
+    //  用自定义movelist来解决！！！不在乎这点性能了！！！反正能够解出来！！
 
+    //移动最后一个到 预定位置的下两格子
     auto ret1 = NumberMover::find_moves(current_last, p_last, board, *fixed_matrix);
     assert(ret1.second == true);
-    movelist_append(&mlist, ret1.first);
+    mlist->check_loop_append(ret1.first);
     fixed_matrix->set_fixed(p_last);
+
 
     //移动0 到last位置
     auto ret2 = NumberMover::find_null_to(p_null, board, *fixed_matrix);
     assert(ret2.second == true);
-    movelist_append(&mlist, ret2.first);
+    mlist->check_loop_append(ret2.first);
     fixed_matrix->set_unfixed(p_last);
-
 
     /* 1 0
      * ? ?
@@ -106,7 +110,7 @@ MoveList LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matr
     */
     //上面 正向旋转
     auto rm1 = BoardRotator::rotate(board, p_r_up, BoardRotator::ClockWise);
-    movelist_append(&mlist, rm1);
+    mlist->check_loop_append(rm1);
 
     /* ? 1
      * ? 0
@@ -114,7 +118,7 @@ MoveList LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matr
     */
     //下面 逆向旋转
     auto rm2 = BoardRotator::rotate(board, p_r_down, BoardRotator::AntiClock);
-    movelist_append(&mlist, rm2);
+    mlist->check_loop_append(rm2);
     /* ? 1
      * 0 2
      * ? ?
@@ -122,7 +126,7 @@ MoveList LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matr
 
     //上面 逆向旋转
     auto rm3 = BoardRotator::rotate(board, p_r_up, BoardRotator::AntiClock);
-    movelist_append(&mlist, rm3);
+    mlist->check_loop_append(rm3);
     /* 1 2
      * ? 0
      * ? ?
@@ -130,7 +134,6 @@ MoveList LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matr
 
     fixed_matrix->set_fixed(last);
     assert(check_number(last, *board));
-    return mlist;
 }
 
 bool LineMover::is_left_right(const PosList &line)

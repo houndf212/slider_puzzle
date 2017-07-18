@@ -14,7 +14,7 @@ std::pair<MoveList, bool> NumberMover::find_null_to(Pos to, Board *board, const 
         assert(d!=Board::NotValid);
         bool b = board->null_move(d);
         assert(b == true);
-        mlist.push_back(d);
+        mlist.check_loop_push_back(d);
     }
     return std::make_pair(mlist, true);
 }
@@ -51,13 +51,13 @@ NumberMover::find_moves(Pos start, Pos finish, Board *board, const BoolMatrix &f
         //第三步  移动 0 到指定位置
         auto null_line = find_null_to(to, board, fixed);
         if (null_line.second == true) {
-            movelist_append(&mlist, null_line.first);
+            mlist.check_loop_append(null_line.first);
             // 第四步 交换 0和点
             Board::Direction d = board->test_null_move_to(start);
             assert(d!=Board::NotValid);
             bool b = board->null_move(d);
             assert(b==true);
-            mlist.push_back(d);
+            mlist.check_loop_push_back(d);
             start = to;
         }
         else {

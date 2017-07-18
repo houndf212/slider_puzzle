@@ -22,7 +22,7 @@ MoveList PuzzleMover::solve(const Board &origin_board)
     std::list<PosList> lines = get_move_lines(board);
     for (const PosList& line : lines) {
         MoveList lst = LineMover::finish_line(line, &board, &fixed);
-        movelist_append(&mlist, lst);
+        mlist.check_loop_append(lst);
 //        board.print();
 //        fixed.print();
         assert(check_line(line, board));
@@ -36,7 +36,7 @@ MoveList PuzzleMover::solve(const Board &origin_board)
         // 必然是右移动一格
         bool b = board.null_move(Board::Null_Right);
         assert(b == true);
-        mlist.push_back(Board::Null_Right);
+        mlist.check_loop_push_back(Board::Null_Right);
     }
     assert(board.isDone());
     assert(!check_loop(mlist));
@@ -107,36 +107,11 @@ bool PuzzleMover::check_loop(const MoveList &mlst)
     if (mlst.size() == 1)
         return false;
 
-    auto is_loop = [](MoveList::value_type d1, MoveList::value_type d2){
-        switch (d1) {
-        case Board::Null_Up:
-            if (d2 == Board::Null_Down)
-                return true;
-            break;
-        case Board::Null_Down:
-            if (d2 == Board::Null_Up)
-                return true;
-            break;
-        case Board::Null_Right:
-            if (d2 == Board::Null_Left)
-                return true;
-            break;
-        case Board::Null_Left:
-            if (d2 == Board::Null_Right)
-                return true;
-            break;
-        default:
-            assert(false);
-            break;
-        }
-        return false;
-    };
-
     auto it = mlst.begin();
     MoveList::value_type d = *it;
     it++;
     for (; it!=mlst.end(); ++it) {
-        if (is_loop(d, *it))
+        if (Board::is_loop(d, *it))
             return true;
         d = *it;
     }

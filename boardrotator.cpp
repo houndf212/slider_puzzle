@@ -23,46 +23,46 @@ MoveList BoardRotator::rotate(Board *board, Pos p1, BoardRotator::ClockDirection
 
     if (clock == ClockWise) {
         if (p0 == p1) {
-            mlist.push_back(Board::Null_Down);
-            mlist.push_back(Board::Null_Right);
-            mlist.push_back(Board::Null_Up);
+            mlist.check_loop_push_back(Board::Null_Down);
+            mlist.check_loop_push_back(Board::Null_Right);
+            mlist.check_loop_push_back(Board::Null_Up);
         }
         else if (p0 == p2) {
-            mlist.push_back(Board::Null_Left);
-            mlist.push_back(Board::Null_Down);
-            mlist.push_back(Board::Null_Right);
+            mlist.check_loop_push_back(Board::Null_Left);
+            mlist.check_loop_push_back(Board::Null_Down);
+            mlist.check_loop_push_back(Board::Null_Right);
         }
         else if (p0 == p3) {
-            mlist.push_back(Board::Null_Right);
-            mlist.push_back(Board::Null_Up);
-            mlist.push_back(Board::Null_Left);
+            mlist.check_loop_push_back(Board::Null_Right);
+            mlist.check_loop_push_back(Board::Null_Up);
+            mlist.check_loop_push_back(Board::Null_Left);
         }
         else if (p0 == p4) {
-            mlist.push_back(Board::Null_Up);
-            mlist.push_back(Board::Null_Left);
-            mlist.push_back(Board::Null_Down);
+            mlist.check_loop_push_back(Board::Null_Up);
+            mlist.check_loop_push_back(Board::Null_Left);
+            mlist.check_loop_push_back(Board::Null_Down);
         }
     }
     else {
         if (p0 == p1) {
-            mlist.push_back(Board::Null_Right);
-            mlist.push_back(Board::Null_Down);
-            mlist.push_back(Board::Null_Left);
+            mlist.check_loop_push_back(Board::Null_Right);
+            mlist.check_loop_push_back(Board::Null_Down);
+            mlist.check_loop_push_back(Board::Null_Left);
         }
         else if (p0 == p2) {
-            mlist.push_back(Board::Null_Down);
-            mlist.push_back(Board::Null_Left);
-            mlist.push_back(Board::Null_Up);
+            mlist.check_loop_push_back(Board::Null_Down);
+            mlist.check_loop_push_back(Board::Null_Left);
+            mlist.check_loop_push_back(Board::Null_Up);
         }
         else if (p0 == p3) {
-            mlist.push_back(Board::Null_Up);
-            mlist.push_back(Board::Null_Right);
-            mlist.push_back(Board::Null_Down);
+            mlist.check_loop_push_back(Board::Null_Up);
+            mlist.check_loop_push_back(Board::Null_Right);
+            mlist.check_loop_push_back(Board::Null_Down);
         }
         else if (p0 == p4) {
-            mlist.push_back(Board::Null_Left);
-            mlist.push_back(Board::Null_Up);
-            mlist.push_back(Board::Null_Right);
+            mlist.check_loop_push_back(Board::Null_Left);
+            mlist.check_loop_push_back(Board::Null_Up);
+            mlist.check_loop_push_back(Board::Null_Right);
         }
     }
     for (Board::Direction d: mlist) {

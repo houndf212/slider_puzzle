@@ -44,7 +44,8 @@ SOURCES += main.cpp\
     linemover.cpp \
     test_linemover.cpp \
     puzzle_mover.cpp \
-    test_puzzlemover.cpp
+    test_puzzlemover.cpp \
+    movelist.cpp
 
 HEADERS  += \
     board.h \
@@ -65,7 +66,8 @@ HEADERS  += \
     resizable_matrix.h \
     boolmatrix.h \
     linemover.h \
-    puzzle_mover.h
+    puzzle_mover.h \
+    movelist.h
 
 DISTFILES += \
     test.txt

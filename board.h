@@ -1,22 +1,29 @@
 ﻿#ifndef BOARD_H
 #define BOARD_H
 #include "matrix.h"
-
 class Board
 {
 public:
     enum Direction
     {
         NotValid,
-        Up,
-        Down,
-        Left,
-        Right,
-        Null_Up = Down,
-        Null_Down = Up,
-        Null_Left = Right,
-        Null_Right = Left,
+        Null_Up = 0x1 | 0x1 <<1, // 0011
+        Null_Down = Null_Up<<2, // 1100
+        Null_Left = 0x1 | 0x1<<2, // 0101
+        Null_Right = Null_Left<<1, //1010
     };
+    static bool is_loop(Direction d1, Direction d2)
+    {
+        static_assert((Null_Up&Null_Down) == 0, "");
+        static_assert((Null_Left&Null_Right) == 0, "");
+
+        static_assert((Null_Up&Null_Right) != 0, "");
+        static_assert((Null_Up&Null_Left) != 0, "");
+
+        static_assert((Null_Down&Null_Right) != 0, "");
+        static_assert((Null_Down&Null_Left) != 0, "");
+        return (d1&d2) == 0;
+    }
 public:
     void gen(int row, int col);
 
@@ -54,11 +61,13 @@ private:
     static constexpr int null_value = 0;
 };
 
-typedef std::list<Board::Direction> MoveList;
-inline void movelist_append(MoveList* to, const MoveList & from)
-{
-    to->insert(end(*to), begin(from), end(from));
-}
+#include "movelist.h"
+
+//typedef std::list<Board::Direction> MoveList;
+//inline void movelist_append(MoveList* to, const MoveList & from)
+//{
+//    to->insert(end(*to), begin(from), end(from));
+//}
 QDebug operator <<(QDebug debug, Board::Direction d);
 
 #endif // BOARD_H
