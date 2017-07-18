@@ -166,7 +166,7 @@ public:
         VertexList path;
         vertex_t smallest = finish;
         auto it = previous.find(smallest);
-        auto cend = previous.end();
+        auto cend = end(previous);
         while (it != cend)
         {
             path.push_back(smallest);

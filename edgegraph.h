@@ -1,4 +1,4 @@
-#ifndef EDGEGRAPH_H
+﻿#ifndef EDGEGRAPH_H
 #define EDGEGRAPH_H
 #include "graph.h"
 #include <unordered_set>
@@ -28,7 +28,7 @@ public:
 
         std::pair<vertex_t, vertex_t> p(min, max);
 
-        if (m_dist.find(p) != m_dist.end())
+        if (m_dist.find(p) != end(m_dist))
             return false;
 
         m_dist[p] = weight;
@@ -62,13 +62,13 @@ protected:
         vertex_t min = std::min(v1, v2);
         vertex_t max = std::max(v1, v2);
         auto it = m_dist.find(std::make_pair(min, max));
-        assert(it!=m_dist.end());
+        assert(it!=end(m_dist));
         return it->second;
     }
 private:
     bool is_vertex_in_graph(vertex_t v) const
     {
-        return m_vertexes.find(v) != m_vertexes.end();
+        return m_vertexes.find(v) != end(m_vertexes);
     }
 private:
     std::unordered_set<vertex_t> m_vertexes;
