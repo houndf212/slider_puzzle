@@ -56,6 +56,7 @@ void GameWindow::onTimeout()
 {
     if (m_movelist.empty()) {
         m_timer->stop();
+        assert(m_board->inner_board().isDone());
         leaveAutoSolve();
         return;
     }
@@ -67,6 +68,9 @@ void GameWindow::onTimeout()
 
 void GameWindow::enterAutoSolve()
 {
+    if (m_board->inner_board().isDone())
+        return;
+
     m_btn_auto_solve->setText("Stop");
     m_btn_reset->setEnabled(false);
     m_view->setEnabled(false);
