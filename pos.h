@@ -13,6 +13,9 @@ public:
     int col() const { return m_col; }
     int& row() { return m_row; }
     int& col() { return m_col; }
+private:
+    friend bool operator==(const Pos &p1, const Pos &p2);
+    friend bool operator!=(const Pos &p1, const Pos &p2);
     bool equal(const Pos& p) const
     {
         return row() == p.row() && col() == p.col();
@@ -25,6 +28,11 @@ private:
 inline bool operator==(const Pos &p1, const Pos &p2)
 {
     return p1.equal(p2);
+}
+
+inline bool operator!=(const Pos &p1, const Pos &p2)
+{
+    return !p1.equal(p2);
 }
 
 inline QDebug operator<<(QDebug d, const Pos &p)

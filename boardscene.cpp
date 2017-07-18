@@ -33,7 +33,7 @@ void BoardScene::onNumberClicked()
     int val = item->getValue();
     Pos p = m_board.value_pos(val);
 
-    Q_ASSERT(item->getCurrentPos().equal(p));
+    Q_ASSERT(item->getCurrentPos() == p);
     Q_ASSERT(m_board.pos_value(p) == val);
 
     Board::Direction d = m_board.test_null_move_to(p);
@@ -54,7 +54,7 @@ void BoardScene::onNumberWheel(BoardRotator::ClockDirection clock)
     int val = item->getValue();
     Pos p = m_board.value_pos(val);
 
-    Q_ASSERT(item->getCurrentPos().equal(p));
+    Q_ASSERT(item->getCurrentPos() == p);
     Q_ASSERT(m_board.pos_value(p) == val);
 
 //    auto mlist = BoardRotator::rotate(m_board, p, clock);
@@ -83,7 +83,7 @@ void BoardScene::gen_graphics(int row, int col)
     for (int r=0; r<row; ++r) {
         for (int c=0; c<col; ++c) {
             Pos p(r, c);
-            if (p.equal(m_board.get_null_pos()))
+            if (p == m_board.get_null_pos())
                 continue;
 
             NumberItem* item = new NumberItem;

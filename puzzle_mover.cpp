@@ -32,7 +32,7 @@ MoveList PuzzleMover::solve(const Board &origin_board)
     // 0 8  8 0
     // solve last "two"
     Pos p_null(board.row_size()-1, board.col_size()-1);
-    if (!board.get_null_pos().equal(p_null)) {
+    if (board.get_null_pos()!=p_null) {
         // 必然是右移动一格
         bool b = board.null_move(Board::Null_Right);
         assert(b == true);
@@ -75,7 +75,7 @@ std::list<PosList> PuzzleMover::get_move_lines(const Board &board)
     }
     //留下最后两个，所以减1
     Pos buttom_right(board.row_size()-1, board.col_size()-1);
-    while (!top_left.equal(buttom_right)) {
+    while (top_left!=buttom_right) {
         PosList left_right;
         for (int col=top_left.col(); col<board.col_size(); ++col) {
             left_right.push_back(Pos(top_left.row(), col));

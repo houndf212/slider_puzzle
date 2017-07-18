@@ -31,7 +31,7 @@ NumberMover::find_value_moves(int val, Board *board, const BoolMatrix &fixed_mat
 std::pair<MoveList, bool>
 NumberMover::find_moves(Pos start, Pos finish, Board *board, const BoolMatrix &fixed_matrix)
 {
-    assert(!start.equal(board->get_null_pos()));
+    assert(start!=board->get_null_pos());
     auto line = find_move_line(start, finish, fixed_matrix);
 
     if (line.second == false)
