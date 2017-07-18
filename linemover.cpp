@@ -14,7 +14,7 @@ MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_ma
 
     // 特殊处理最后一个情况
     //判断是 下上  还是左右
-    bool is_left_right = line.front().row() == line.back().row();
+    bool left_right = line.front().row() == line.back().row();
     Pos last = line.back();
     line.pop_back();
 
@@ -31,6 +31,14 @@ MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_ma
 //        board->print();
 //        fixed_matrix->print();
     }
+    MoveList ml = move_line_end(last, board, fixed_matrix, left_right);
+    movelist_append(&mlist, ml);
+    return mlist;
+}
+
+MoveList LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matrix, bool left_right)
+{
+    MoveList mlist;
 
     int last_value = board->origin_value(last);
     Pos current_last = board->value_pos(last_value);
@@ -65,7 +73,7 @@ MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_ma
     Pos p_r_up;
     Pos p_r_down;
 
-    if (is_left_right) {
+    if (left_right) {
         p_null = {last.row()+1, last.col()};
         p_last = {last.row()+2, last.col()};
 
@@ -114,7 +122,7 @@ MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_ma
     */
 
     // "上"一次
-    Board::Direction d1 = is_left_right ? Board::Null_Up : Board::Null_Left;
+    Board::Direction d1 = left_right ? Board::Null_Up : Board::Null_Left;
     assert(d1!=Board::NotValid);
     bool b1 = board->null_move(d1);
     assert(b1==true);
