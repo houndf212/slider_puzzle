@@ -9,15 +9,21 @@ GameWindow::GameWindow()
     m_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    m_btn_reset = new QPushButton("Reset");
+    m_btn_reset->setFocusPolicy(Qt::NoFocus);
+    connect(m_btn_reset, &QPushButton::clicked, this, &GameWindow::onReset);
 
+    m_btn_auto_solve = new QPushButton("Auto solve");
+    m_btn_auto_solve->setFocusPolicy(Qt::NoFocus);
+    connect(m_btn_auto_solve, &QPushButton::clicked, this, &GameWindow::onAutoSolve);
 
-    m_btn = new QPushButton("Reset");
-    m_btn->setFocusPolicy(Qt::NoFocus);
-    connect(m_btn, &QPushButton::clicked, this, &GameWindow::onReset);
+    m_timer = new QTimer(this);
+    connect(m_timer, &QTimer::timeout, this, &GameWindow::onTimeout);
 
     QVBoxLayout* layout = new QVBoxLayout;
-    layout->addWidget(m_btn);
+    layout->addWidget(m_btn_reset);
     layout->addWidget(m_view);
+    layout->addWidget(m_btn_auto_solve);
 
     setLayout(layout);
 
@@ -28,30 +34,73 @@ GameWindow::GameWindow()
 void GameWindow::onReset()
 {
     SizePickerDialog d(this);
+    d.setSize(QSize(m_board->inner_board().col_size(),
+                    m_board->inner_board().row_size()));
     d.exec();
     QSize s = d.getSize();
     m_board->reset(s.height(), s.width());
 //    m_view->resize(s*100);
     m_view->setMinimumSize(s*100);
-//    resize(sizeHint());
+    //    resize(sizeHint());
 }
 
-void GameWindow::keyPressEvent(QKeyEvent *event)
+void GameWindow::onAutoSolve()
 {
-    switch (event->key()) {
-    case Qt::Key_Up:
-        m_board->move(Board::Null_Down);
-        break;
-    case Qt::Key_Down:
-        m_board->move(Board::Null_Up);
-        break;
-    case Qt::Key_Left:
-        m_board->move(Board::Null_Right);
-        break;
-    case Qt::Key_Right:
-        m_board->move(Board::Null_Left);
-        break;
-    default:
-        break;
-    }
+    if (m_timer->isActive())
+        leaveAutoSolve();
+    else
+        enterAutoSolve();
 }
+
+void GameWindow::onTimeout()
+{
+    if (m_movelist.empty()) {
+        m_timer->stop();
+        leaveAutoSolve();
+        return;
+    }
+    Board::Direction d = m_movelist.front();
+    m_movelist.pop_front();
+    bool b = m_board->move(d);
+    assert(b==true);
+}
+
+void GameWindow::enterAutoSolve()
+{
+    m_btn_auto_solve->setText("Stop");
+    m_btn_reset->setEnabled(false);
+    m_view->setEnabled(false);
+
+    m_movelist = PuzzleMover::solve(m_board->inner_board());
+    m_timer->start(1*1000);
+}
+
+void GameWindow::leaveAutoSolve()
+{
+    m_btn_auto_solve->setText("Auto solve");
+    m_btn_reset->setEnabled(true);
+    m_view->setEnabled(true);
+
+    m_movelist.clear();
+    m_timer->stop();
+}
+
+//void GameWindow::keyPressEvent(QKeyEvent *event)
+//{
+//    switch (event->key()) {
+//    case Qt::Key_Up:
+//        m_board->move(Board::Null_Down);
+//        break;
+//    case Qt::Key_Down:
+//        m_board->move(Board::Null_Up);
+//        break;
+//    case Qt::Key_Left:
+//        m_board->move(Board::Null_Right);
+//        break;
+//    case Qt::Key_Right:
+//        m_board->move(Board::Null_Left);
+//        break;
+//    default:
+//        break;
+//    }
+//}

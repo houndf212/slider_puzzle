@@ -1,4 +1,4 @@
-#ifndef BOARDSCENE_H
+﻿#ifndef BOARDSCENE_H
 #define BOARDSCENE_H
 #include <QtCore>
 #include <QGraphicsScene>
@@ -15,7 +15,7 @@ public:
     Q_SIGNAL void sig_done();
     void reset(int row, int col);
     bool move(Board::Direction d);
-
+    const Board &inner_board() const { return m_board; }
 private:
     Q_SLOT void onNumberClicked();
     Q_SLOT void onNumberWheel(BoardRotator::ClockDirection clock);

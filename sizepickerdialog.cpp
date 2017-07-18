@@ -12,7 +12,7 @@ QSize SizePickerDialog::getSize() const
     return QSize(col->value(), row->value());
 }
 
-void SizePickerDialog::setSize(QSize s)
+void SizePickerDialog::setSize(const QSize &s)
 {
     row->setValue(s.height());
     col->setValue(s.width());
@@ -23,8 +23,8 @@ void SizePickerDialog::createUI()
     row = new QSpinBox;
     col = new QSpinBox;
 
-    row->setRange(2, 10);
-    col->setRange(2, 10);
+    row->setRange(3, 10);
+    col->setRange(3, 10);
 
     btn = new QPushButton("OK");
     connect(btn, &QPushButton::clicked, this, &SizePickerDialog::accept);

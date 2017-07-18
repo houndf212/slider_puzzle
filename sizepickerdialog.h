@@ -1,4 +1,4 @@
-#ifndef SIZEPICKERDIALOG_H
+﻿#ifndef SIZEPICKERDIALOG_H
 #define SIZEPICKERDIALOG_H
 #include <QtWidgets>
 
@@ -8,7 +8,7 @@ class SizePickerDialog : public QDialog
 public:
     explicit SizePickerDialog(QWidget* parent=nullptr);
     QSize getSize() const;
-    void setSize(QSize s);
+    void setSize(const QSize &s);
 private:
     void createUI();
 private:
