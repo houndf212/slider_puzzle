@@ -52,16 +52,21 @@ void LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matrix, 
     */
     // 如果 0 在last "并且" 刚好 last_value 在 last "下"面
     // 备注： 这只是下面的一种特殊情况, 这里快速处理
-    if (board->get_null_pos() == last) {
-        Board::Direction test_d = board->test_null_move_to(current_last);
-        if (test_d != Board::NotValid) {
-            bool b = board->null_move(test_d);
-            assert(b==true);
-            mlist->check_loop_push_back(test_d);
-            fixed_matrix->set_fixed(last);
-            assert(check_number(last, *board));
-            return;
-        }
+    Pos down_last = last;
+    if (left_right)
+        down_last.row()++;
+    else
+        down_last.col()++;
+
+    if (board->get_null_pos() == last && current_last == down_last) {
+        Board::Direction d = board->test_null_move_to(current_last);
+        assert(d != Board::NotValid);
+        bool b = board->null_move(d);
+        assert(b==true);
+        mlist->check_loop_push_back(d);
+        fixed_matrix->set_fixed(last);
+        assert(check_number(last, *board));
+        return;
     }
     //非特殊情况
     Pos p_null = last;
