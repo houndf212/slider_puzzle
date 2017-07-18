@@ -51,6 +51,10 @@ private:
 };
 
 typedef std::list<Board::Direction> MoveList;
+inline void movelist_append(MoveList* to, const MoveList & from)
+{
+    to->insert(end(*to), begin(from), end(from));
+}
 QDebug operator <<(QDebug debug, Board::Direction d);
 
 #endif // BOARD_H

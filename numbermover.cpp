@@ -39,7 +39,7 @@ NumberMover::find_moves(Pos start, Pos finish, Board *board, const BoolMatrix &f
 
     MoveList mlist;
 
-    PosList path(begin(line.first), end(line.first));
+    PosList path = line.first;
     while(!path.empty()) {
         // 第二步 找到 0 到路径中的点的路径
         Pos to = path.front();
@@ -51,7 +51,7 @@ NumberMover::find_moves(Pos start, Pos finish, Board *board, const BoolMatrix &f
         //第三步  移动 0 到指定位置
         auto null_line = find_null_to(to, board, fixed);
         if (null_line.second == true) {
-            std::copy(begin(null_line.first), end(null_line.first), std::back_inserter(mlist));
+            movelist_append(&mlist, null_line.first);
             // 第四步 交换 0和点
             Board::Direction d = board->test_null_move_to(start);
             assert(d!=Board::NotValid);

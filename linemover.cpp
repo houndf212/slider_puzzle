@@ -20,7 +20,7 @@ MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_ma
         int value = board->origin_value(p);
         auto ret = NumberMover::find_value_moves(value, board, *fixed_matrix);
         assert(ret.second == true);
-        std::copy(begin(ret.first), end(ret.first), std::back_inserter(mlist));
+        movelist_append(&mlist, ret.first);
         fixed_matrix->set_fixed(p);
         board->print();
         fixed_matrix->print();
@@ -73,13 +73,13 @@ MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_ma
 
     auto ret1 = NumberMover::find_moves(current_last, p_last, board, *fixed_matrix);
     assert(ret1.second == true);
-    std::copy(begin(ret1.first), end(ret1.first), std::back_inserter(mlist));
+    movelist_append(&mlist, ret1.first);
     fixed_matrix->set_fixed(p_last);
 
     //移动0 到预定位置的正下方
     auto ret2 = NumberMover::find_null_to(p_null, board, *fixed_matrix);
     assert(ret2.second == true);
-    std::copy(begin(ret2.first), end(ret2.first), std::back_inserter(mlist));
+    movelist_append(&mlist, ret2.first);
     fixed_matrix->set_unfixed(p_last);
 
 
@@ -89,14 +89,14 @@ MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_ma
     */
     //先正向旋转上面
     auto rm1 = BoardRotator::rotate(board, p_r_up, BoardRotator::ClockWise);
-    std::copy(begin(rm1), end(rm1), std::back_inserter(mlist));
+    movelist_append(&mlist, rm1);
     /* ? 1
      * 0 ?
      * ? 2
     */
     //先逆向旋转下面
     auto rm2 = BoardRotator::rotate(board, p_r_down, BoardRotator::AntiClock);
-    std::copy(begin(rm2), end(rm2), std::back_inserter(mlist));
+    movelist_append(&mlist, rm2);
     /* ? 1
      * ? 2
      * 0 ?
@@ -116,7 +116,7 @@ MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_ma
 
     // 旋转一次
     auto rm3 = BoardRotator::rotate(board, p_r_up, BoardRotator::AntiClock);
-    std::copy(begin(rm3), end(rm3), std::back_inserter(mlist));
+    movelist_append(&mlist, rm3);
     /* 1 2
      * ? 0
      * ? ?
