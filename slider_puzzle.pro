@@ -42,7 +42,9 @@ SOURCES += main.cpp\
     test_edgegraph.cpp \
     test_numbermover.cpp \
     linemover.cpp \
-    test_linemover.cpp
+    test_linemover.cpp \
+    puzzle_mover.cpp \
+    test_puzzlemover.cpp
 
 HEADERS  += \
     board.h \
@@ -62,7 +64,8 @@ HEADERS  += \
     numbermover.h \
     resizable_matrix.h \
     boolmatrix.h \
-    linemover.h
+    linemover.h \
+    puzzle_mover.h
 
 DISTFILES += \
     test.txt

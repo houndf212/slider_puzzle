@@ -7,10 +7,12 @@ void run_test()
     extern void test_consoleboard();
     extern void test_numbermover();
     extern void test_linemover();
+    extern void test_puzzlemover();
 //    test_consoleboard();
 
 //    test_numbermover();
-    test_linemover();
+//    test_linemover();
+    test_puzzlemover();
 }
 
 int main(int argc, char *argv[])
