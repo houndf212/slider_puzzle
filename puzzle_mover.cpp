@@ -39,6 +39,7 @@ MoveList PuzzleMover::solve(const Board &origin_board)
         mlist.push_back(Board::Null_Right);
     }
     assert(board.isDone());
+    assert(!check_loop(mlist));
     return mlist;
 }
 
@@ -99,4 +100,45 @@ std::list<PosList> PuzzleMover::get_move_lines(const Board &board)
 //        qDebug() << QList<Pos>::fromStdList(line);
 //    }
     return lines;
+}
+
+bool PuzzleMover::check_loop(const MoveList &mlst)
+{
+    if (mlst.size() == 1)
+        return false;
+
+    auto is_loop = [](MoveList::value_type d1, MoveList::value_type d2){
+        switch (d1) {
+        case Board::Null_Up:
+            if (d2 == Board::Null_Down)
+                return true;
+            break;
+        case Board::Null_Down:
+            if (d2 == Board::Null_Up)
+                return true;
+            break;
+        case Board::Null_Right:
+            if (d2 == Board::Null_Left)
+                return true;
+            break;
+        case Board::Null_Left:
+            if (d2 == Board::Null_Right)
+                return true;
+            break;
+        default:
+            assert(false);
+            break;
+        }
+        return false;
+    };
+
+    auto it = mlst.begin();
+    MoveList::value_type d = *it;
+    it++;
+    for (; it!=mlst.end(); ++it) {
+        if (is_loop(d, *it))
+            return true;
+        d = *it;
+    }
+    return false;
 }

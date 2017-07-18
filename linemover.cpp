@@ -67,25 +67,23 @@ MoveList LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matr
         }
     }
     //非特殊情况
-    Pos p_null;
+    Pos p_null = last;
     Pos p_last;
 
     Pos p_r_up;
     Pos p_r_down;
 
     if (left_right) {
-        p_null = {last.row()+1, last.col()};
         p_last = {last.row()+2, last.col()};
 
         p_r_up = {last.row(), last.col()-1};
         p_r_down = {last.row()+1, last.col()-1};
     }
     else {
-        p_null = {last.row(), last.col()+1};
         p_last = {last.row(), last.col()+2};
 
         p_r_up = last;
-        p_r_down = p_null;
+        p_r_down = {last.row(), last.col()+1};
     }
 
     //移动最后一个到 预定位置的下两格子
@@ -95,45 +93,34 @@ MoveList LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matr
     movelist_append(&mlist, ret1.first);
     fixed_matrix->set_fixed(p_last);
 
-    //移动0 到预定位置的正下方
+    //移动0 到last位置
     auto ret2 = NumberMover::find_null_to(p_null, board, *fixed_matrix);
     assert(ret2.second == true);
     movelist_append(&mlist, ret2.first);
     fixed_matrix->set_unfixed(p_last);
 
 
-    /* 1 ？
+    /* 1 0
+     * ? ?
+     * ? 2
+    */
+    //上面 正向旋转
+    auto rm1 = BoardRotator::rotate(board, p_r_up, BoardRotator::ClockWise);
+    movelist_append(&mlist, rm1);
+
+    /* ? 1
      * ? 0
      * ? 2
     */
-    //先正向旋转上面
-    auto rm1 = BoardRotator::rotate(board, p_r_up, BoardRotator::ClockWise);
-    movelist_append(&mlist, rm1);
-    /* ? 1
-     * 0 ?
-     * ? 2
-    */
-    //先逆向旋转下面
+    //下面 逆向旋转
     auto rm2 = BoardRotator::rotate(board, p_r_down, BoardRotator::AntiClock);
     movelist_append(&mlist, rm2);
-    /* ? 1
-     * ? 2
-     * 0 ?
-    */
-
-    // "上"一次
-    Board::Direction d1 = left_right ? Board::Null_Up : Board::Null_Left;
-    assert(d1!=Board::NotValid);
-    bool b1 = board->null_move(d1);
-    assert(b1==true);
-    mlist.push_back(d1);
-
     /* ? 1
      * 0 2
      * ? ?
     */
 
-    // 旋转一次
+    //上面 逆向旋转
     auto rm3 = BoardRotator::rotate(board, p_r_up, BoardRotator::AntiClock);
     movelist_append(&mlist, rm3);
     /* 1 2
