@@ -33,7 +33,6 @@ SOURCES += main.cpp\
     boardgen.cpp \
     gamewindow.cpp \
     sizepickerdialog.cpp \
-    matrixgraph.cpp \
     boardrotator.cpp \
     numbermover.cpp \
     test_console_board.cpp \
@@ -57,7 +56,6 @@ HEADERS  += \
     boardgen.h \
     gamewindow.h \
     sizepickerdialog.h \
-    graph.h \
     edgegraph.h \
     matrixgraph.h \
     boardrotator.h \
@@ -68,7 +66,8 @@ HEADERS  += \
     linemover.h \
     puzzle_mover.h \
     movelist.h \
-    moverparam.h
+    moverparam.h \
+    dijkstra.h
 
 DISTFILES += \
     test.txt

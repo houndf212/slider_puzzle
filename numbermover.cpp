@@ -65,8 +65,11 @@ std::pair<PosList, bool> NumberMover::core_move_line(Pos start, Pos finish, cons
     if (start == finish)
         return std::make_pair(PosList(), true);
 
-    MatrixGraph g(fixed_matrix);
-    auto p = g.dijkstra_shortest_path(start, finish);
-    bool isReach = p.second != g.max_distant;
+    typedef MatrixGraph<int> MG;
+    typedef Dijkstra<MG::vertex_t, MG::distance_t, MG::hash_t> G;
+
+    MG g(fixed_matrix);
+    auto p = G::dijkstra_shortest_path(g, start, finish);
+    bool isReach = p.second != G::max_distant;
     return std::make_pair(p.first, isReach);
 }

@@ -1,4 +1,5 @@
 ﻿#include "edgegraph.h"
+#include <QtCore>
 #include <assert.h>
 void testEdgeGraphFile()
 {
@@ -41,8 +42,9 @@ void testEdgeGraphFile()
     assert(g.vertex_size() == vsize);
 
 //    auto mp = g.dijkstra_shortest_path_all(9808);
-
-    auto p = g.dijkstra_shortest_path(0, 8);
+    typedef Dijkstra<vertex_t, distance_t> G;
+    auto p = G::dijkstra_shortest_path(g, 0, 8);
+    auto p1 = G::dijkstra_shortest_path_all(g, 0);
 //    qDebug() << QVector<vertex_t>::fromStdVector(p.first);
     qDebug() << "dist: " << p.second;
 }

@@ -1,5 +1,5 @@
-﻿#ifndef GRAPH_H
-#define GRAPH_H
+﻿#ifndef Dijkstra_H
+#define Dijkstra_H
 #include <limits>
 #include <algorithm>
 #include <vector>
@@ -9,26 +9,24 @@
 #include <assert.h>
 
 template<class T, class D, class VertexHash = std::hash<T>>
-class Graph
+class Dijkstra
 {
 public:
     typedef T vertex_t;
     typedef D distance_t;
-    static constexpr distance_t max_distant = std::numeric_limits<distance_t>::max();
+
     typedef std::vector<vertex_t> VertexVector;
     typedef std::list<vertex_t> VertexList;
+
     typedef std::unordered_set<vertex_t, VertexHash> VertexSet;
     typedef std::unordered_map<vertex_t, distance_t, VertexHash> DistanceMap;
     typedef std::unordered_map<vertex_t, vertex_t, VertexHash> VertexMap;
-public:
-    virtual ~Graph() = default;
-protected:
-    virtual VertexVector vertexes() const = 0;
-    virtual VertexVector neighbors(vertex_t v1) const = 0;
-    virtual distance_t distance(vertex_t v1, vertex_t v2) const = 0;
-public:
-    std::pair<DistanceMap, VertexMap>
-    dijkstra_shortest_path_all(vertex_t start)
+
+    static constexpr distance_t max_distant = std::numeric_limits<distance_t>::max();
+
+    template<class G>
+    static std::pair<DistanceMap, VertexMap>
+    dijkstra_shortest_path_all(const G &g, vertex_t start)
     {
         // Find the smallest distance in the already in closed list and push it in -> previous
         DistanceMap distances;
@@ -39,7 +37,7 @@ public:
         auto comparator = [&distances] (vertex_t left, vertex_t right) {
             return distances[left] > distances[right]; };
 
-        VertexVector verts = this->vertexes();
+        VertexVector verts = g.vertexes();
         assert(std::find(begin(verts), end(verts), start)!=end(verts));
 
         for (vertex_t vertex : verts)
@@ -65,14 +63,14 @@ public:
             close_list.insert(smallest);
 
             bool isHeapModify = false;
-            VertexVector all_neighbor = this->neighbors(smallest);
+            VertexVector all_neighbor = g.neighbors(smallest);
             for (vertex_t neighbor : all_neighbor)
             {
                 if (close_list.find(neighbor)!=end(close_list))
                     continue;
 
                 distance_t start_dis = distances[smallest];
-                distance_t edge_dis = this->distance(smallest, neighbor);
+                distance_t edge_dis = g.distance(smallest, neighbor);
                 distance_t alt =  start_dis + edge_dis ;
                 if (alt < distances[neighbor])
                 {
@@ -87,8 +85,9 @@ public:
         return std::make_pair(distances, previous);
     }
 
-    std::pair<VertexList, distance_t>
-    dijkstra_shortest_path(vertex_t start, vertex_t finish)
+    template<class G>
+    static std::pair<VertexList, distance_t>
+    dijkstra_shortest_path(const G &g, vertex_t start, vertex_t finish)
     {
         // Find the smallest distance in the already in closed list and push it in -> previous
         DistanceMap distances;
@@ -100,7 +99,7 @@ public:
         auto comparator = [&distances] (vertex_t left, vertex_t right) {
             return distances[left] > distances[right]; };
 
-        VertexVector verts = this->vertexes();
+        VertexVector verts = g.vertexes();
         assert(std::find(begin(verts), end(verts), start)!=end(verts));
         assert(std::find(begin(verts), end(verts), finish)!=end(verts));
 
@@ -138,14 +137,14 @@ public:
             }
 
             bool isHeapModify = false;
-            VertexVector all_neighbor = this->neighbors(smallest);
+            VertexVector all_neighbor = g.neighbors(smallest);
             for (vertex_t neighbor : all_neighbor)
             {
                 if (close_list.find(neighbor)!=end(close_list))
                     continue;
 
                 distance_t start_dis = distances[smallest];
-                distance_t edge_dis = this->distance(smallest, neighbor);
+                distance_t edge_dis = g.distance(smallest, neighbor);
                 distance_t alt =  start_dis + edge_dis ;
                 if (alt < distances[neighbor])
                 {
@@ -178,6 +177,6 @@ public:
     }
 };
 
-#endif // GRAPH_H
+#endif // Dijkstra_H
 
 

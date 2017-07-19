@@ -1,6 +1,6 @@
 ﻿#ifndef EDGEGRAPH_H
 #define EDGEGRAPH_H
-#include "graph.h"
+#include "dijkstra.h"
 #include <unordered_set>
 
 template<class vertex_t>
@@ -15,8 +15,9 @@ struct IntegerPairHash
 };
 
 template<class vertex_t, class distance_t, class PairHash = IntegerPairHash<vertex_t>>
-class EdgeGraph : public Graph<vertex_t, distance_t>
+class EdgeGraph
 {
+    typedef std::vector<vertex_t> VertexVector;
     typedef std::pair<vertex_t, vertex_t> Edge;
 public:
     size_t vertex_size() const { return m_vertexes.size(); }
@@ -41,15 +42,12 @@ public:
 
         return true;
     }
-    // Graph interface
-protected:
-    // keyword typename is need!
-    using typename Graph<vertex_t, distance_t>::VertexVector;
-    VertexVector vertexes() const override
+
+    VertexVector vertexes() const
     {
         return {begin(m_vertexes), end(m_vertexes)};
     }
-    VertexVector neighbors(vertex_t v) const override
+    VertexVector neighbors(vertex_t v) const
     {
         assert(is_vertex_in_graph(v));
 
@@ -57,7 +55,7 @@ protected:
         assert(it != end(m_neighbors));
         return it->second;
     }
-    distance_t distance(vertex_t v1, vertex_t v2) const override
+    distance_t distance(vertex_t v1, vertex_t v2) const
     {
         vertex_t min = std::min(v1, v2);
         vertex_t max = std::max(v1, v2);
