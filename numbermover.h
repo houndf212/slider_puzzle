@@ -1,20 +1,17 @@
 ﻿#ifndef NUMBERMOVER_H
 #define NUMBERMOVER_H
-#include "board.h"
-#include "boolmatrix.h"
+#include "moverparam.h"
 
 class NumberMover
 {
 public:
     // 将0 移动到指定位置，如果成功，board会被修改，否则不会修改
-    static std::pair<MoveList, bool>
-    find_null_to(Pos to, Board *board, const BoolMatrix &fixed);
+    static bool find_null_to(Pos to, MoverParam *param);
 
-    static std::pair<MoveList, bool>
-    find_value_moves(int val, Board *board, const BoolMatrix &fixed_matrix);
+    // warpper for find_moves
+    static bool find_value_moves(int val, MoverParam *param);
 
-    static std::pair<MoveList, bool>
-    find_moves(Pos start, Pos finish, Board *board, const BoolMatrix &fixed_matrix);
+    static bool find_moves(Pos start, Pos finish, MoverParam *param);
 private:
     //核心函数，调用最短路径算法
     static std::pair<PosList, bool>

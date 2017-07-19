@@ -1,14 +1,13 @@
 ﻿#ifndef LINEMOVER_H
 #define LINEMOVER_H
-#include "board.h"
-#include "boolmatrix.h"
+#include "moverparam.h"
 
 class LineMover
 {
 public:
-    static MoveList finish_line(PosList line, Board *board, BoolMatrix *fixed_matrix);
+    static bool finish_line(PosList line, MoverParam *param);
 private:
-    static void move_line_end(Pos last, Board *board, BoolMatrix *fixed_matrix, MoveList* mlist, bool left_right);
+    static bool move_line_end(Pos last, MoverParam *param, bool left_right);
     static bool check_is_line(const PosList &line)
     {
         return is_left_right(line) || is_down_up(line);

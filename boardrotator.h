@@ -1,6 +1,6 @@
 ﻿#ifndef BOARDROTATOR_H
 #define BOARDROTATOR_H
-#include "board.h"
+#include "moverparam.h"
 
 class BoardRotator
 {
@@ -20,7 +20,7 @@ public:
  *
  *
 */
-    static MoveList rotate(Board *board, Pos p1, ClockDirection clock);
+    static bool rotate(MoverParam *param, Pos p1, ClockDirection clock);
 };
 
 #endif // BOARDROTATOR_H

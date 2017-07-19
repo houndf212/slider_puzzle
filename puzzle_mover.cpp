@@ -2,6 +2,7 @@
 #include "linemover.h"
 #include "boardrotator.h"
 
+
 static bool check_line(PosList line, const Board &board)
 {
     for (const Pos &p : line) {
@@ -13,32 +14,41 @@ static bool check_line(PosList line, const Board &board)
 
 MoveList PuzzleMover::solve(const Board &origin_board)
 {
-    Board board = origin_board;
-    BoolMatrix fixed;
-    fixed.resize(board.row_size(), board.col_size());
-    fixed.set_all_unfixed();
+    MoverParam param(origin_board);
+    if (check_solve(&param))
+        return param.move_list;
 
-    MoveList mlist;
-    std::list<PosList> lines = get_move_lines(board);
+    else
+        return MoveList();
+}
+
+bool PuzzleMover::check_solve(MoverParam *param)
+{
+    std::list<PosList> lines = get_move_lines(param->board);
     for (const PosList& line : lines) {
-        MoveList lst = LineMover::finish_line(line, &board, &fixed);
-        mlist.check_loop_append(lst);
-        assert(check_line(line, board));
+        bool b = LineMover::finish_line(line, param);
+        if (b!=true)
+            return false;
+        assert(check_line(line, param->board));
     }
 
     // solve last "two"
     // ? ?  ? ?
     // 0 8  8 0
-    Pos p_null(board.row_size()-1, board.col_size()-1);
-    if (board.get_null_pos()!=p_null) {
+    Pos p_null(param->board.row_size()-1, param->board.col_size()-1);
+    if (param->board.get_null_pos()!=p_null) {
         // 必然是右移动一格
-        bool b = board.null_move(Board::Null_Right);
-        assert(b == true);
-        mlist.check_loop_push_back(Board::Null_Right);
+        bool b = param->board.null_move(Board::Null_Right);
+        if (b == true) {
+            param->move_list.check_loop_push_back(Board::Null_Right);
+        }
+        else {
+            return false;
+        }
     }
-    assert(board.isDone());
-    assert(check_loop(mlist));
-    return mlist;
+    assert(param->board.isDone());
+    assert(check_loop(param->move_list));
+    return true;
 }
 
 std::list<PosList> PuzzleMover::get_move_lines(const Board &board)

@@ -7,7 +7,7 @@ static bool check_number(Pos p, const Board &board)
     return board.origin_value(p) == board.pos_value(p);
 }
 
-MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_matrix)
+bool LineMover::finish_line(PosList line, MoverParam *param)
 {
     assert(line.size() >= 2);
     assert(check_is_line(line));
@@ -18,33 +18,35 @@ MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_ma
     Pos last = line.back();
     line.pop_back();
 
-    MoveList mlist;
     while (!line.empty()) {
         Pos p = line.front();
         line.pop_front();
-        int value = board->origin_value(p);
-        auto ret = NumberMover::find_value_moves(value, board, *fixed_matrix);
-        assert(ret.second == true);
-        mlist.check_loop_append(ret.first);
-        fixed_matrix->set_fixed(p);
-        assert(check_number(p, *board));
-//        board->print();
-//        fixed_matrix->print();
+        int value = param->board.origin_value(p);
+        bool ret = NumberMover::find_value_moves(value, param);
+        if (ret == true) {
+            param->fixed_matrix.set_fixed(p);
+            assert(check_number(p, param->board));
+        }
+        else {
+            return false;
+        }
     }
-    move_line_end(last, board, fixed_matrix, &mlist, left_right);
-    return mlist;
+    bool b = move_line_end(last, param, left_right);
+    if (b==true) {
+        param->fixed_matrix.set_fixed(last);
+        assert(check_number(last, param->board));
+    }
+    return b;
 }
 
-void LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matrix, MoveList* mlist, bool left_right)
+bool LineMover::move_line_end(Pos last, MoverParam *param, bool left_right)
 {
-    int last_value = board->origin_value(last);
-    Pos current_last = board->value_pos(last_value);
+    int last_value = param->board.origin_value(last);
+    Pos current_last = param->board.value_pos(last_value);
 
     // 如果 刚好就在last位置上
     if(current_last == last) {
-        fixed_matrix->set_fixed(last);
-        assert(check_number(last, *board));
-        return;
+        return true;
     }
     /* 1 0
      * ? 2
@@ -58,15 +60,13 @@ void LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matrix, 
     else
         down_last.col()++;
 
-    if (board->get_null_pos() == last && current_last == down_last) {
-        Board::Direction d = board->test_null_move_to(current_last);
+    if (param->board.get_null_pos() == last && current_last == down_last) {
+        Board::Direction d = param->board.test_null_move_to(current_last);
         assert(d != Board::NotValid);
-        bool b = board->null_move(d);
+        bool b = param->board.null_move(d);
         assert(b==true);
-        mlist->check_loop_push_back(d);
-        fixed_matrix->set_fixed(last);
-        assert(check_number(last, *board));
-        return;
+        param->move_list.check_loop_push_back(d);
+        return true;
     }
     //非特殊情况
     Pos p_null = last;
@@ -97,48 +97,53 @@ void LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matrix, 
     //  用自定义movelist来解决！！！不在乎这点性能了！！！反正能够解出来！！
 
     //移动最后一个到 预定位置的下两格子
-    auto ret1 = NumberMover::find_moves(current_last, p_last, board, *fixed_matrix);
-    assert(ret1.second == true);
-    mlist->check_loop_append(ret1.first);
+    bool ret1 = NumberMover::find_moves(current_last, p_last, param);
+    if(ret1 != true)
+        return false;
 
     //移动0 到last位置
     // 临时固定p_last点
-    auto fixed = *fixed_matrix;
-    fixed.set_fixed(p_last);
-    auto ret2 = NumberMover::find_null_to(p_null, board, fixed);
-    assert(ret2.second == true);
-    mlist->check_loop_append(ret2.first);
+    {
+        temp_fixer auto_unfixer(p_last, param->fixed_matrix);
+        bool ret2 = NumberMover::find_null_to(p_null, param);
+        //    auto_unfixer.unfix(); //析构函数主动调用
+        if (ret2 != true)
+            return false;
+    }
 
     /* 1 0
      * ? ?
      * ? 2
     */
     //上面 正向旋转
-    auto rm1 = BoardRotator::rotate(board, p_r_up, BoardRotator::ClockWise);
-    mlist->check_loop_append(rm1);
+    bool rm1 = BoardRotator::rotate(param, p_r_up, BoardRotator::ClockWise);
+    if (rm1!=true)
+        return false;
 
     /* ? 1
      * ? 0
      * ? 2
     */
     //下面 逆向旋转
-    auto rm2 = BoardRotator::rotate(board, p_r_down, BoardRotator::AntiClock);
-    mlist->check_loop_append(rm2);
+    bool rm2 = BoardRotator::rotate(param, p_r_down, BoardRotator::AntiClock);
+    if (rm2!=true)
+        return false;
+
     /* ? 1
      * 0 2
      * ? ?
     */
 
     //上面 逆向旋转
-    auto rm3 = BoardRotator::rotate(board, p_r_up, BoardRotator::AntiClock);
-    mlist->check_loop_append(rm3);
+    bool rm3 = BoardRotator::rotate(param, p_r_up, BoardRotator::AntiClock);
+    if (rm3!=true)
+        return false;
+
     /* 1 2
      * ? 0
      * ? ?
     */
-
-    fixed_matrix->set_fixed(last);
-    assert(check_number(last, *board));
+    return true;
 }
 
 bool LineMover::is_left_right(const PosList &line)

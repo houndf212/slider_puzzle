@@ -1,43 +1,38 @@
 ﻿#include "numbermover.h"
 #include "matrixgraph.h"
 
-std::pair<MoveList, bool> NumberMover::find_null_to(Pos to, Board *board, const BoolMatrix &fixed)
+bool NumberMover::find_null_to(Pos to, MoverParam *param)
 {
-    Pos null_start = board->get_null_pos();
-    auto null_line = core_move_line(null_start, to, fixed);
+    Pos null_start = param->board.get_null_pos();
+    auto null_line = core_move_line(null_start, to, param->fixed_matrix);
     if (null_line.second == false)
-        return std::make_pair(MoveList(), false);
+        return false;
 
-    MoveList mlist;
     for (const Pos &p : null_line.first) {
-        Board::Direction d = board->test_null_move_to(p);
+        Board::Direction d = param->board.test_null_move_to(p);
         assert(d!=Board::NotValid);
-        bool b = board->null_move(d);
+        bool b = param->board.null_move(d);
         assert(b == true);
-        mlist.check_loop_push_back(d);
+        param->move_list.check_loop_push_back(d);
     }
-    return std::make_pair(mlist, true);
+    return true;
 }
 
-std::pair<MoveList, bool>
-NumberMover::find_value_moves(int val, Board *board, const BoolMatrix &fixed_matrix)
+bool NumberMover::find_value_moves(int val, MoverParam *param)
 {
     //第一步  找到 从 要移动的点到移动位置的点 的路径
-    Pos start = board->value_pos(val);
-    Pos finish = board->origin_pos(val);
-    return find_moves(start, finish, board, fixed_matrix);
+    Pos start = param->board.value_pos(val);
+    Pos finish = param->board.origin_pos(val);
+    return find_moves(start, finish, param);
 }
 
-std::pair<MoveList, bool>
-NumberMover::find_moves(Pos start, Pos finish, Board *board, const BoolMatrix &fixed_matrix)
+bool NumberMover::find_moves(Pos start, Pos finish, MoverParam *param)
 {
-    assert(start!=board->get_null_pos());
-    auto line = core_move_line(start, finish, fixed_matrix);
+    assert(start!=param->board.get_null_pos());
+    auto line = core_move_line(start, finish, param->fixed_matrix);
 
     if (line.second == false)
-        return std::make_pair(MoveList(), false);
-
-    MoveList mlist;
+        return false;
 
     PosList path = line.first;
     while(!path.empty()) {
@@ -45,26 +40,24 @@ NumberMover::find_moves(Pos start, Pos finish, Board *board, const BoolMatrix &f
         Pos to = path.front();
         path.pop_front();
 
-        BoolMatrix fixed = fixed_matrix;
-        fixed.set_fixed(start);
-
+        temp_fixer auto_unfixer(start, param->fixed_matrix);
         //第三步  移动 0 到指定位置
-        auto null_line = find_null_to(to, board, fixed);
-        if (null_line.second == true) {
-            mlist.check_loop_append(null_line.first);
+        bool null_line = find_null_to(to, param);
+//        auto_unfixer.unfix(); //析构函数主动调用
+        if (null_line == true) {
             // 第四步 交换 0和点
-            Board::Direction d = board->test_null_move_to(start);
+            Board::Direction d = param->board.test_null_move_to(start);
             assert(d!=Board::NotValid);
-            bool b = board->null_move(d);
+            bool b = param->board.null_move(d);
             assert(b==true);
-            mlist.check_loop_push_back(d);
+            param->move_list.check_loop_push_back(d);
             start = to;
         }
         else {
-            return std::make_pair(MoveList(), false);
+            return false;
         }
     }
-    return std::make_pair(mlist, true);
+    return true;
 }
 
 std::pair<PosList, bool> NumberMover::core_move_line(Pos start, Pos finish, const BoolMatrix &fixed_matrix)

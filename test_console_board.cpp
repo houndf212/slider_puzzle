@@ -29,25 +29,6 @@ void test_consoleboard()
             m.null_move(Board::Null_Left);
             break;
 
-        case 'r':{
-            int row;
-            cin >> row;
-            int col;
-            cin >> col;
-            Pos p(row, col);
-            auto mlist = BoardRotator::rotate(&m, p, BoardRotator::ClockWise);
-        }
-            break;
-
-        case 'R':{
-            int row;
-            cin >> row;
-            int col;
-            cin >> col;
-            Pos p(row, col);
-            auto mlist = BoardRotator::rotate(&m, p, BoardRotator::AntiClock);
-        }
-            break;
         default:
             b = false;
             break;

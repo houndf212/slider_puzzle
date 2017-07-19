@@ -2,27 +2,21 @@
 #include "boardgen.h"
 #include "boolmatrix.h"
 #include "numbermover.h"
+#include "moverparam.h"
 #include <iostream>
 using namespace std;
 
 void test_numbermover()
 {
-    Board board;
-    board.gen(5, 5);
-    BoardGen::gen(&board);
+    Board orgin_board;
+    orgin_board.gen(5, 5);
+    BoardGen::gen(&orgin_board);
 
 
-    BoolMatrix fixed;
-    fixed.resize(5, 5);
-    fixed.set_all_unfixed();
-//    fixed.set_fixed({0, 2});
-//    fixed.set_fixed({1, 2});
-//    fixed.set_fixed({2, 2});
-//    fixed.set_fixed({2, 1});
-//    fixed.set_fixed({2, 0});
+    MoverParam param(orgin_board);
 
     while (true) {
-        board.print();
+        param.board.print();
         qDebug() << "input command:";
         char c;
         cin >> c;
@@ -32,9 +26,9 @@ void test_numbermover()
             int value;
             cin >> value;
 
-            auto path = NumberMover::find_value_moves(value, &board, fixed);
-            if (path.second == true) {
-                qDebug() << QList<Board::Direction>::fromStdList(path.first);
+            bool path = NumberMover::find_value_moves(value, &param);
+            if (path == true) {
+                qDebug() << QList<Board::Direction>::fromStdList(param.move_list);
             }
             else {
                 qDebug() << "cannot reach!";
@@ -46,22 +40,22 @@ void test_numbermover()
             int row, col;
             cin >> row >> col;
             Pos p(row, col);
-            fixed.set_fixed(p);
-            fixed.print();
+            param.fixed_matrix.set_fixed(p);
+            param.fixed_matrix.print();
         }
             break;
 
         case 'w':
-            board.null_move(Board::Null_Down);
+            param.board.null_move(Board::Null_Down);
             break;
         case 's':
-            board.null_move(Board::Null_Up);
+            param.board.null_move(Board::Null_Up);
             break;
         case 'a':
-            board.null_move(Board::Null_Right);
+            param.board.null_move(Board::Null_Right);
             break;
         case 'd':
-            board.null_move(Board::Null_Left);
+            param.board.null_move(Board::Null_Left);
             break;
         default:
             break;
