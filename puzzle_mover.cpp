@@ -104,10 +104,10 @@ std::list<PosList> PuzzleMover::get_move_lines(const Board &board)
 
 bool PuzzleMover::check_loop(const MoveList &mlst)
 {
-    if (mlst.size() == 1)
+    if (mlst.size() < 2)
         return false;
 
-    auto it = mlst.begin();
+    auto it = begin(mlst);
     MoveList::value_type d = *it;
     it++;
     for (; it!=mlst.end(); ++it) {
