@@ -16,8 +16,9 @@ public:
     static std::pair<MoveList, bool>
     find_moves(Pos start, Pos finish, Board *board, const BoolMatrix &fixed_matrix);
 private:
+    //核心函数，调用最短路径算法
     static std::pair<PosList, bool>
-    find_move_line(Pos start, Pos finish, const BoolMatrix &fixed_matrix);
+    core_move_line(Pos start, Pos finish, const BoolMatrix &fixed_matrix);
 };
 
 #endif // NUMBERMOVER_H

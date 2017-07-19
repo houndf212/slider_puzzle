@@ -9,8 +9,10 @@ class Pos
 {
 public:
     Pos(int row=0, int col=0) : m_row(row), m_col(col) {}
-    int row() const { return m_row; }
-    int col() const { return m_col; }
+
+    const int& row() const { return m_row; }
+    const int& col() const { return m_col; }
+
     int& row() { return m_row; }
     int& col() { return m_col; }
 private:

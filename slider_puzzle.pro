@@ -27,7 +27,6 @@ PRECOMPILED_HEADER = pch.h
 
 SOURCES += main.cpp\
     board.cpp \
-    pos.cpp \
     numberitem.cpp \
     graphicsview.cpp \
     boardscene.cpp \

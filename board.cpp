@@ -80,17 +80,6 @@ void Board::print() const
 
 bool Board::isDone() const
 {
-//    int n=1;
-//    for (int row=0; row<matrix.row_size(); ++row) {
-//        for (int col=0; col<matrix.col_size(); ++col) {
-//            int val = matrix.get(Pos(row, col));
-//            // null must at n=row*col also the end
-//            if (val!=n++ && val!=null_value) {
-//                return false;
-//            }
-//        }
-//    }
-//    return true;
     return matrix.equal(origin_matrix);
 }
 
@@ -131,13 +120,12 @@ bool Board::inner_null_move(int dr, int dc)
 void Board::swap_null(Pos p)
 {
     int v = matrix.get(p);
-    int nll = matrix.get(null_pos);
+    assert(matrix.get(null_pos)==null_value);
     matrix.set(null_pos, v);
     value_index[v] = null_pos;
-    matrix.set(p, nll);
-    value_index[nll] = p;
+    matrix.set(p, null_value);
+    value_index[null_value] = p;
     null_pos = p;
-//    qDebug() << isDone();
 }
 
 QDebug operator <<(QDebug debug, Board::Direction d)

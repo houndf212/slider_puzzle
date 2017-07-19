@@ -51,12 +51,14 @@ private:
     void swap_null(Pos p);
 private:
     Matrix matrix;
-    //完成时的矩阵
-    Matrix origin_matrix;
     //方向通过value 追踪pos位置
     std::vector<Pos> value_index;
+
+    //完成时的矩阵
+    Matrix origin_matrix;
     //完成时应该的位置
     std::vector<Pos> origin_value_index;
+
     Pos null_pos;
     static constexpr int null_value = 0;
 };

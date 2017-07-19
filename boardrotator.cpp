@@ -5,8 +5,8 @@
 //  3 4
 MoveList BoardRotator::rotate(Board *board, Pos p1, BoardRotator::ClockDirection clock)
 {
-    MoveList mlist;
     assert(board->isInBoard(p1));
+    MoveList mlist;
 
     Pos p2(p1.row(), p1.col()+1);
     if (!board->isInBoard(p2))

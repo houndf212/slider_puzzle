@@ -4,7 +4,7 @@
 std::pair<MoveList, bool> NumberMover::find_null_to(Pos to, Board *board, const BoolMatrix &fixed)
 {
     Pos null_start = board->get_null_pos();
-    auto null_line = find_move_line(null_start, to, fixed);
+    auto null_line = core_move_line(null_start, to, fixed);
     if (null_line.second == false)
         return std::make_pair(MoveList(), false);
 
@@ -32,7 +32,7 @@ std::pair<MoveList, bool>
 NumberMover::find_moves(Pos start, Pos finish, Board *board, const BoolMatrix &fixed_matrix)
 {
     assert(start!=board->get_null_pos());
-    auto line = find_move_line(start, finish, fixed_matrix);
+    auto line = core_move_line(start, finish, fixed_matrix);
 
     if (line.second == false)
         return std::make_pair(MoveList(), false);
@@ -67,7 +67,7 @@ NumberMover::find_moves(Pos start, Pos finish, Board *board, const BoolMatrix &f
     return std::make_pair(mlist, true);
 }
 
-std::pair<PosList, bool> NumberMover::find_move_line(Pos start, Pos finish, const BoolMatrix &fixed_matrix)
+std::pair<PosList, bool> NumberMover::core_move_line(Pos start, Pos finish, const BoolMatrix &fixed_matrix)
 {
     if (start == finish)
         return std::make_pair(PosList(), true);

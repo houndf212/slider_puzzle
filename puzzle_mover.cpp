@@ -23,14 +23,12 @@ MoveList PuzzleMover::solve(const Board &origin_board)
     for (const PosList& line : lines) {
         MoveList lst = LineMover::finish_line(line, &board, &fixed);
         mlist.check_loop_append(lst);
-//        board.print();
-//        fixed.print();
         assert(check_line(line, board));
     }
 
+    // solve last "two"
     // ? ?  ? ?
     // 0 8  8 0
-    // solve last "two"
     Pos p_null(board.row_size()-1, board.col_size()-1);
     if (board.get_null_pos()!=p_null) {
         // 必然是右移动一格
@@ -39,7 +37,7 @@ MoveList PuzzleMover::solve(const Board &origin_board)
         mlist.check_loop_push_back(Board::Null_Right);
     }
     assert(board.isDone());
-    assert(!check_loop(mlist));
+    assert(check_loop(mlist));
     return mlist;
 }
 
@@ -81,9 +79,10 @@ std::list<PosList> PuzzleMover::get_move_lines(const Board &board)
         for (int col=top_left.col(); col<board.col_size(); ++col) {
             left_right.push_back(Pos(top_left.row(), col));
         }
-        assert(!left_right.empty());
+        assert(left_right.size()>=2);
         lines.push_back(left_right);
 
+        //先左右 后上下，所以上下先达到2
         if (left_right.size() == 2)
             break;
 
@@ -91,29 +90,25 @@ std::list<PosList> PuzzleMover::get_move_lines(const Board &board)
         for (int row=board.row_size()-1; row>top_left.row(); --row) {
             down_up.push_back(Pos(row, top_left.col()));
         }
-        assert(!down_up.empty());
+        assert(down_up.size()>=2);
         lines.push_back(down_up);
         top_left.row()++;
         top_left.col()++;
     }
-//    for (const PosList& line : lines) {
-//        qDebug() << QList<Pos>::fromStdList(line);
-//    }
     return lines;
 }
 
 bool PuzzleMover::check_loop(const MoveList &mlst)
 {
     if (mlst.size() < 2)
-        return false;
+        return true;
 
     auto it = begin(mlst);
-    MoveList::value_type d = *it;
-    it++;
-    for (; it!=mlst.end(); ++it) {
-        if (Board::is_loop(d, *it))
-            return true;
-        d = *it;
+    MoveList::value_type pre = *it;
+    for (it++; it!=end(mlst); ++it) {
+        if (Board::is_loop(pre, *it))
+            return false;
+        pre = *it;
     }
-    return false;
+    return true;
 }

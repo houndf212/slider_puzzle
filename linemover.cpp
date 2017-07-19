@@ -10,7 +10,7 @@ static bool check_number(Pos p, const Board &board)
 MoveList LineMover::finish_line(PosList line, Board *board, BoolMatrix *fixed_matrix)
 {
     assert(line.size() >= 2);
-    assert(is_line(line));
+    assert(check_is_line(line));
 
     // 特殊处理最后一个情况
     //判断是 下上  还是左右
@@ -100,14 +100,14 @@ void LineMover::move_line_end(Pos last, Board *board, BoolMatrix *fixed_matrix, 
     auto ret1 = NumberMover::find_moves(current_last, p_last, board, *fixed_matrix);
     assert(ret1.second == true);
     mlist->check_loop_append(ret1.first);
-    fixed_matrix->set_fixed(p_last);
-
 
     //移动0 到last位置
-    auto ret2 = NumberMover::find_null_to(p_null, board, *fixed_matrix);
+    // 临时固定p_last点
+    auto fixed = *fixed_matrix;
+    fixed.set_fixed(p_last);
+    auto ret2 = NumberMover::find_null_to(p_null, board, fixed);
     assert(ret2.second == true);
     mlist->check_loop_append(ret2.first);
-    fixed_matrix->set_unfixed(p_last);
 
     /* 1 0
      * ? ?
