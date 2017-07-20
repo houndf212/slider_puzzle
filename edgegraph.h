@@ -14,10 +14,15 @@ struct IntegerPairHash
     }
 };
 
-template<class vertex_t, class distance_t, class PairHash = IntegerPairHash<vertex_t>>
+template<class V, class D, class PairHash = IntegerPairHash<V>>
 class EdgeGraph
 {
+public:
+    typedef V vertex_t;
+    typedef D distance_t;
+    typedef std::hash<V> hash_t;
     typedef std::vector<vertex_t> VertexVector;
+private:
     typedef std::pair<vertex_t, vertex_t> Edge;
 public:
     size_t vertex_size() const { return m_vertexes.size(); }

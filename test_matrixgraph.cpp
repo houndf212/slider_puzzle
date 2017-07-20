@@ -14,7 +14,7 @@ void test_matrixgraph()
     m.print();
 
     typedef MatrixGraph<int> MG;
-    typedef Dijkstra<MG::vertex_t, MG::distance_t, MG::hash_t> G;
+    typedef Dijkstra<MG> G;
     MG g(m);
     auto p = G::dijkstra_shortest_path(g, Pos(0, 0), Pos(0, 2));
     auto p1 = G::dijkstra_shortest_path_all(g, Pos(0,0));

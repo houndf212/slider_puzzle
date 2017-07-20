@@ -8,12 +8,13 @@
 #include <unordered_map>
 #include <assert.h>
 
-template<class T, class D, class VertexHash = std::hash<T>>
+template<class G>
 class Dijkstra
 {
 public:
-    typedef T vertex_t;
-    typedef D distance_t;
+    typedef typename G::vertex_t vertex_t;
+    typedef typename G::distance_t distance_t;
+    typedef typename G::hash_t VertexHash;
 
     typedef std::vector<vertex_t> VertexVector;
     typedef std::list<vertex_t> VertexList;
@@ -24,7 +25,6 @@ public:
 
     static constexpr distance_t max_distant = std::numeric_limits<distance_t>::max();
 
-    template<class G>
     static std::pair<DistanceMap, VertexMap>
     dijkstra_shortest_path_all(const G &g, vertex_t start)
     {
@@ -48,7 +48,7 @@ public:
             }
             else
             {
-                distances[vertex] = std::numeric_limits<distance_t>::max();
+                distances[vertex] = max_distant;
             }
 
             open_list.push_back(vertex);
@@ -85,7 +85,6 @@ public:
         return std::make_pair(distances, previous);
     }
 
-    template<class G>
     static std::pair<VertexList, distance_t>
     dijkstra_shortest_path(const G &g, vertex_t start, vertex_t finish)
     {
@@ -111,7 +110,7 @@ public:
             }
             else
             {
-                distances[vertex] = std::numeric_limits<distance_t>::max();
+                distances[vertex] = max_distant;
             }
 
             open_list.push_back(vertex);
@@ -131,7 +130,7 @@ public:
                 break;
             }
 
-            if (distances[smallest] == std::numeric_limits<distance_t>::max())
+            if (distances[smallest] == max_distant)
             {
                 break;
             }

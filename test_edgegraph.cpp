@@ -14,10 +14,12 @@ void testEdgeGraphFile()
 
     QString estr = reader.readLine();
     size_t esize = estr.toInt();
+    qDebug() <<esize;
 
     typedef int vertex_t;
     typedef int distance_t;
-    EdgeGraph<vertex_t, distance_t> g;
+    typedef EdgeGraph<vertex_t, distance_t> EG;
+    EG g;
 
     while(!reader.atEnd()) {
         QString line = reader.readLine();
@@ -42,7 +44,7 @@ void testEdgeGraphFile()
     assert(g.vertex_size() == vsize);
 
 //    auto mp = g.dijkstra_shortest_path_all(9808);
-    typedef Dijkstra<vertex_t, distance_t> G;
+    typedef Dijkstra<EG> G;
     auto p = G::dijkstra_shortest_path(g, 0, 8);
     auto p1 = G::dijkstra_shortest_path_all(g, 0);
 //    qDebug() << QVector<vertex_t>::fromStdVector(p.first);
