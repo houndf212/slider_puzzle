@@ -9,6 +9,7 @@
 #include <queue>
 #include <assert.h>
 
+
 template<class G>
 class Dijkstra
 {
@@ -202,31 +203,6 @@ public:
         return std::make_pair(path, dist);
     }
 
-    class PriorityQueue
-    {
-    public:
-        typedef std::pair<distance_t, vertex_t> PQElement;
-        bool empty() const { return elements.empty(); }
-        void put(vertex_t item, distance_t p) { elements.emplace(p, item); }
-        vertex_t get()
-        {
-            vertex_t smallest = elements.top().second;
-            elements.pop();
-            return smallest;
-        }
-    private:
-        struct PairGreat
-        {
-            bool operator()(const PQElement& e1, const PQElement& e2) const
-            {
-                return e1.first>e2.first;
-            }
-        };
-        std::priority_queue<PQElement, std::vector<PQElement>, PairGreat> elements;
-    };
-
-
-
 /// from wiki
 ///Practical optimizations and infinite graphs[edit]
 ///In common presentations of Dijkstra's algorithm, initially all nodes are entered into the priority queue.
@@ -259,29 +235,36 @@ public:
     static std::pair<DistanceMap, VertexMap>
     ucs_dijkstra_shortest_path_all(const G &g, vertex_t start)
     {
-        PriorityQueue open_set; //为搜索的，与确定过相连的集合
+        VertexVector open_set; //为搜索的，与确定过相连的集合
         VertexSet close_set; //确定最短路径的集合
         DistanceMap cost_so_far; //用来标记已经知道的路径（不一定是最短的）
         VertexMap came_from; //记录最短路径的前继
 
-        open_set.put(start, 0); //初始出发点
+        auto comparator = [&cost_so_far] (vertex_t left, vertex_t right) {
+            return cost_so_far[left] > cost_so_far[right]; };
+
+        open_set.push_back(start);
+        std::push_heap(begin(open_set), end(open_set), comparator);
         cost_so_far[start] = 0;
 //        came_from[start] = start; //我们的算法返回路径中不含有start点
 
         while (!open_set.empty()) {
-            vertex_t smallest = open_set.get();
+            std::pop_heap(begin(open_set), end(open_set), comparator);
+            vertex_t smallest = open_set.back();
+            open_set.pop_back();
+
             close_set.insert(smallest);
 
             for (const auto &next : g.neighbors(smallest)) {
-                if (close_set.find(next) != end(close_set)) //如果已经确定了最短路径，则不需要计算了
+                if (close_set.find(next) != end(close_set))
                     continue;
 
                 distance_t new_cost = cost_so_far[smallest] + g.distance(smallest, next);
-                //未被搜索过，或者路径更短,标记最短值和前继
                 if (cost_so_far.find(next) == end(cost_so_far) || new_cost < cost_so_far[next]) {
                     cost_so_far[next] = new_cost;
                     came_from[next] = smallest;
-                    open_set.put(next, new_cost);
+                    open_set.push_back(next);
+                    std::push_heap(begin(open_set), end(open_set), comparator);
                 }
             }
         }
@@ -292,20 +275,28 @@ public:
     static std::pair<VertexList, distance_t>
     ucs_dijkstra_shortest_path(const G &g, vertex_t start, vertex_t finish)
     {
-        PriorityQueue open_set;
-        VertexSet close_set;
-        DistanceMap cost_so_far;
-        VertexMap came_from;
+        VertexVector open_set; //为搜索的，与确定过相连的集合
+        VertexSet close_set; //确定最短路径的集合
+        DistanceMap cost_so_far; //用来标记已经知道的路径（不一定是最短的）
+        VertexMap came_from; //记录最短路径的前继
 
         VertexList path;
         distance_t dist = max_distant;
 
-        open_set.put(start, 0);
+
+        auto comparator = [&cost_so_far] (vertex_t left, vertex_t right) {
+            return cost_so_far[left] > cost_so_far[right]; };
+
+        open_set.push_back(start);
+        std::push_heap(begin(open_set), end(open_set), comparator);
         cost_so_far[start] = 0;
 //        came_from[start] = start; //我们的算法返回路径中不含有start点
 
         while (!open_set.empty()) {
-            vertex_t smallest = open_set.get();
+            std::pop_heap(begin(open_set), end(open_set), comparator);
+            vertex_t smallest = open_set.back();
+            open_set.pop_back();
+
             close_set.insert(smallest);
 
             if (smallest == finish) {
@@ -322,7 +313,8 @@ public:
                 if (cost_so_far.find(next) == end(cost_so_far) || new_cost < cost_so_far[next]) {
                     cost_so_far[next] = new_cost;
                     came_from[next] = smallest;
-                    open_set.put(next, new_cost);
+                    open_set.push_back(next);
+                    std::push_heap(begin(open_set), end(open_set), comparator);
                 }
             }
         }

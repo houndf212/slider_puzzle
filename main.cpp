@@ -11,7 +11,7 @@ void run_test()
     extern void test_matrixgraph();
     extern void testEdgeGraphFile();
     testEdgeGraphFile();
-//    test_matrixgraph();
+    test_matrixgraph();
 //    test_consoleboard();
 
 //    test_numbermover();
@@ -21,7 +21,7 @@ void run_test()
 
 int main(int argc, char *argv[])
 {
-//    run_test();
+    run_test();
 //    return 0;
     QApplication a(argc, argv);
 

@@ -42,11 +42,11 @@ void test_matrixgraph()
 
     MG g(m);
     qDebug() << G::max_distant;
-//    auto p = G::dijkstra_shortest_path(g, Pos(0, 0), Pos(0, 2));
-//    auto pall = G::dijkstra_shortest_path_all(g, Pos(0,0));
+    auto p = G::dijkstra_shortest_path(g, Pos(0, 0), Pos(0, 2));
+    auto pall = G::dijkstra_shortest_path_all(g, Pos(0,0));
 
-//    print_path(p);
-//    print_all(pall);
+    print_path(p);
+    print_all(pall);
 
 
     auto mp = G::shortest_path(g, Pos(0, 0), Pos(0, 2));
