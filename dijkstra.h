@@ -135,6 +135,7 @@ public:
         VertexVector open_list; // Open list
         VertexSet close_list;
         VertexList path;
+        distance_t dist = max_distant;
 
         auto comparator = [&distances] (vertex_t left, vertex_t right) {
             return distances[left] > distances[right]; };
@@ -173,6 +174,7 @@ public:
             if (smallest == finish)
             {
                 path = find_path(finish, previous);
+                dist = distances[finish];
                 break;
             }
 
@@ -197,7 +199,7 @@ public:
                 make_heap(begin(open_list), end(open_list), comparator);
         }
 
-        return std::make_pair(path, distances[finish]);
+        return std::make_pair(path, dist);
     }
 
     class PriorityQueue
@@ -264,6 +266,7 @@ public:
         VertexMap came_from;
         DistanceMap cost_so_far;
         VertexList path;
+        distance_t dist = max_distant;
 
         open_set.put(start, 0);
 //        came_from[start] = start; //我们的算法返回路径中不含有start点
@@ -275,6 +278,7 @@ public:
 
             if (smallest == finish) {
                 path = find_path(finish, came_from);
+                dist = cost_so_far[finish];
                 break;
             }
 
@@ -290,11 +294,7 @@ public:
                 }
             }
         }
-        //如果cost中不存在，那么肯定是到不了finish
-        distance_t d = max_distant;
-        if (cost_so_far.find(finish)!=end(cost_so_far))
-            d = cost_so_far[finish];
-        return std::make_pair(path, d);
+        return std::make_pair(path, dist);
     }
 };
 
