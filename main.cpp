@@ -8,11 +8,15 @@ void run_test()
     extern void test_numbermover();
     extern void test_linemover();
     extern void test_puzzlemover();
+    extern void test_matrixgraph();
+    extern void testEdgeGraphFile();
+    testEdgeGraphFile();
+//    test_matrixgraph();
 //    test_consoleboard();
 
 //    test_numbermover();
 //    test_linemover();
-    test_puzzlemover();
+//    test_puzzlemover();
 }
 
 int main(int argc, char *argv[])

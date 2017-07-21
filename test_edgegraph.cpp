@@ -1,6 +1,27 @@
 ﻿#include "edgegraph.h"
 #include <QtCore>
 #include <assert.h>
+
+typedef int vertex_t;
+typedef int distance_t;
+typedef EdgeGraph<vertex_t, distance_t> EG;
+typedef Dijkstra<EG> G;
+
+void print_path(const std::pair<G::VertexList, G::distance_t>& p)
+{
+    qDebug() << "path: "<<QList<vertex_t>::fromStdList(p.first);
+    qDebug() << "dist: " << p.second;
+}
+
+void print_all(const std::pair<G::DistanceMap, G::VertexMap>& p)
+{
+    for (const auto &v : p.first) {
+        auto path = G::find_path(v.first, p.second);
+        qDebug() << v.first <<
+                    " : "<<v.second <<
+                    " : "<<QList<vertex_t>::fromStdList(path);
+    }
+}
 void testEdgeGraphFile()
 {
     QFile file("../test.txt");
@@ -16,9 +37,7 @@ void testEdgeGraphFile()
     size_t esize = estr.toInt();
     qDebug() <<esize;
 
-    typedef int vertex_t;
-    typedef int distance_t;
-    typedef EdgeGraph<vertex_t, distance_t> EG;
+
     EG g;
 
     while(!reader.atEnd()) {
@@ -33,7 +52,7 @@ void testEdgeGraphFile()
         qDebug() << line;
         vertex_t v1 = lst.at(0).toInt();
         vertex_t v2 = lst.at(1).toInt();
-        distance_t d = lst.at(2).toDouble();
+        distance_t d = lst.at(2).toInt();
 
         g.add_edge(v1, v2, d);
 
@@ -44,9 +63,18 @@ void testEdgeGraphFile()
     assert(g.vertex_size() == vsize);
 
 //    auto mp = g.dijkstra_shortest_path_all(9808);
-    typedef Dijkstra<EG> G;
+
+    {
+    auto p = G::shortest_path(g, 0, 8);
+    auto p1 = G::shortest_path_all(g, 0);
+    print_path(p);
+    print_all(p1);
+    }
+
+    {
     auto p = G::dijkstra_shortest_path(g, 0, 8);
     auto p1 = G::dijkstra_shortest_path_all(g, 0);
-//    qDebug() << QVector<vertex_t>::fromStdVector(p.first);
-    qDebug() << "dist: " << p.second;
+    print_path(p);
+    print_all(p1);
+    }
 }

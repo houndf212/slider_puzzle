@@ -69,7 +69,7 @@ std::pair<PosList, bool> NumberMover::core_move_line(Pos start, Pos finish, cons
     typedef Dijkstra<MG> G;
 
     MG g(fixed_matrix);
-    auto p = G::dijkstra_shortest_path(g, start, finish);
+    auto p = G::shortest_path(g, start, finish);
     bool isReach = p.second != G::max_distant;
     return std::make_pair(p.first, isReach);
 }

@@ -6,6 +6,7 @@
 #include <list>
 #include <unordered_set>
 #include <unordered_map>
+#include <queue>
 #include <assert.h>
 
 template<class G>
@@ -25,6 +26,40 @@ public:
 
     static constexpr distance_t max_distant = std::numeric_limits<distance_t>::max();
 
+
+    // 返回所有最短路径， 如果不能到达 distanceMap[v] = max
+    static std::pair<VertexList, distance_t>
+    shortest_path(const G &g, vertex_t start, vertex_t finish)
+    {
+        return my_dijkstra_shortest_path(g, start, finish);
+    }
+
+    //返回从start 到其它点的最短路径， 如果first中没有v，那么v就到达不了
+    static std::pair<DistanceMap, VertexMap>
+    shortest_path_all(const G &g, vertex_t start)
+    {
+        return my_dijkstra_shortest_path_all(g, start);
+    }
+
+    //从 path_all返回中的 second 查找返回路径，前提是要注意 fisrt，中要包含finish点
+    static VertexList find_path(vertex_t finish, const VertexMap &previous)
+    {
+        VertexList path;
+        vertex_t smallest = finish;
+        auto it = previous.find(smallest);
+        auto cend = end(previous);
+        while (it != cend)
+        {
+            path.push_back(smallest);
+            smallest = it->second;
+            it = previous.find(smallest);
+        }
+        path.reverse();
+        return path;
+    }
+
+public:
+    // 返回所有最短路径， 如果不能到达 distanceMap[v] = max
     static std::pair<DistanceMap, VertexMap>
     dijkstra_shortest_path_all(const G &g, vertex_t start)
     {
@@ -62,6 +97,11 @@ public:
             open_list.pop_back();
             close_list.insert(smallest);
 
+            //必须添加这个跳出，在所有为标记点距离都是max 即是说， 从start 不能达到那些区域
+            //反过来说， 这个图，有孤立点的点!
+            if (distances[smallest] == max_distant)
+                break;
+
             bool isHeapModify = false;
             VertexVector all_neighbor = g.neighbors(smallest);
             for (vertex_t neighbor : all_neighbor)
@@ -85,6 +125,7 @@ public:
         return std::make_pair(distances, previous);
     }
 
+    // 返回所有最短路径， 如果不能到达 distance = max
     static std::pair<VertexList, distance_t>
     dijkstra_shortest_path(const G &g, vertex_t start, vertex_t finish)
     {
@@ -124,14 +165,14 @@ public:
             open_list.pop_back();
             close_list.insert(smallest);
 
+            //必须添加这个跳出，在所有为标记点距离都是max 即是说， 从start 不能达到那些区域
+            //反过来说， 这个图，有孤立点的点!
+            if (distances[smallest] == max_distant)
+                break;
+
             if (smallest == finish)
             {
                 path = find_path(finish, previous);
-                break;
-            }
-
-            if (distances[smallest] == max_distant)
-            {
                 break;
             }
 
@@ -159,20 +200,102 @@ public:
         return std::make_pair(path, distances[finish]);
     }
 
-    static VertexList find_path(vertex_t finish, const VertexMap &previous)
+    template<class T, class priority_t>
+    class PriorityQueue
     {
-        VertexList path;
-        vertex_t smallest = finish;
-        auto it = previous.find(smallest);
-        auto cend = end(previous);
-        while (it != cend)
+    public:
+        typedef std::pair<priority_t, T> PQElement;
+        bool empty() const { return elements.empty(); }
+        void put(T item, priority_t p) { elements.emplace(p, item); }
+        T get()
         {
-            path.push_back(smallest);
-            smallest = it->second;
-            it = previous.find(smallest);
+            T smallest = elements.top().second;
+            elements.pop();
+            return smallest;
         }
-        path.reverse();
-        return path;
+    private:
+        struct PairGreat
+        {
+            bool operator()(const PQElement& e1, const PQElement& e2) const
+            {
+                return e1.first>e2.first;
+            }
+        };
+        std::priority_queue<PQElement, std::vector<PQElement>, PairGreat> elements;
+    };
+
+    //返回从start 到其它点的最短路径， 如果distancemap中没有v，那么v就到达不了
+    static std::pair<DistanceMap, VertexMap>
+    my_dijkstra_shortest_path_all(const G &g, vertex_t start)
+    {
+        PriorityQueue<vertex_t, distance_t> open_set;
+        VertexSet close_set;
+        VertexMap came_from;
+        DistanceMap cost_so_far;
+
+        open_set.put(start, 0);
+//        came_from[start] = start; //我们的算法返回路径中不含有start点
+        cost_so_far[start] = 0;
+
+        while (!open_set.empty()) {
+            vertex_t smallest = open_set.get();
+            close_set.insert(smallest);
+
+            for (const auto &next : g.neighbors(smallest)) {
+                if (close_set.find(next) != end(close_set))
+                    continue;
+
+                distance_t new_cost = cost_so_far[smallest] + g.distance(smallest, next);
+                if (cost_so_far.find(next) == end(cost_so_far) || new_cost < cost_so_far[next]) {
+                    cost_so_far[next] = new_cost;
+                    came_from[next] = smallest;
+                    open_set.put(next, new_cost);
+                }
+            }
+        }
+        return std::make_pair(cost_so_far, came_from);
+    }
+
+    // 返回所有最短路径， 如果不能到达 distance = max
+    static std::pair<VertexList, distance_t>
+    my_dijkstra_shortest_path(const G &g, vertex_t start, vertex_t finish)
+    {
+        PriorityQueue<vertex_t, distance_t> open_set;
+        VertexSet close_set;
+        VertexMap came_from;
+        DistanceMap cost_so_far;
+        VertexList path;
+
+        open_set.put(start, 0);
+//        came_from[start] = start; //我们的算法返回路径中不含有start点
+        cost_so_far[start] = 0;
+
+        while (!open_set.empty()) {
+            vertex_t smallest = open_set.get();
+            close_set.insert(smallest);
+
+            if (smallest == finish) {
+                path = find_path(finish, came_from);
+                break;
+            }
+
+            for (const auto &next : g.neighbors(smallest)) {
+                if (close_set.find(next) != end(close_set))
+                    continue;
+
+                distance_t new_cost = cost_so_far[smallest] + g.distance(smallest, next);
+                if (cost_so_far.find(next) == end(cost_so_far) || new_cost < cost_so_far[next]) {
+                    cost_so_far[next] = new_cost;
+                    came_from[next] = smallest;
+                    open_set.put(next, new_cost);
+                }
+            }
+        }
+        //如果cost中不存在，那么肯定是到不了finish
+        distance_t d = max_distant;
+        if (cost_so_far.find(finish)!=end(cost_so_far))
+            d = cost_so_far[finish];
+        return std::make_pair(path, d);
     }
 };
 
