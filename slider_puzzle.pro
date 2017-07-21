@@ -45,7 +45,8 @@ SOURCES += main.cpp\
     puzzle_mover.cpp \
     test_puzzlemover.cpp \
     movelist.cpp \
-    moverparam.cpp
+    moverparam.cpp \
+    test_prioorityqueue.cpp
 
 HEADERS  += \
     board.h \
