@@ -1,7 +1,7 @@
 ﻿#include "puzzle_mover.h"
 #include "boardgen.h"
 
-bool check_solve(Board board, const MoveList &ml)
+static bool check_solve(Board board, const MoveList &ml)
 {
     for (auto d : ml) {
         bool b = board.null_move(d);

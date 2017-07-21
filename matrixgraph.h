@@ -53,6 +53,8 @@ public:
     }
     distance_t distance(vertex_t v1, vertex_t v2) const
     {
+        Q_UNUSED(v1);
+        Q_UNUSED(v2);
         assert(matrix.has(v1));
         assert(matrix.has(v2));
         return 1;
