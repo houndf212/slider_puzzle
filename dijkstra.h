@@ -31,14 +31,14 @@ public:
     static std::pair<VertexList, distance_t>
     shortest_path(const G &g, vertex_t start, vertex_t finish)
     {
-        return my_dijkstra_shortest_path(g, start, finish);
+        return ucs_dijkstra_shortest_path(g, start, finish);
     }
 
     //返回从start 到其它点的最短路径， 如果first中没有v，那么v就到达不了
     static std::pair<DistanceMap, VertexMap>
     shortest_path_all(const G &g, vertex_t start)
     {
-        return my_dijkstra_shortest_path_all(g, start);
+        return ucs_dijkstra_shortest_path_all(g, start);
     }
 
     //从 path_all返回中的 second 查找返回路径，前提是要注意 fisrt，中要包含finish点
@@ -225,28 +225,59 @@ public:
         std::priority_queue<PQElement, std::vector<PQElement>, PairGreat> elements;
     };
 
+
+
+/// from wiki
+///Practical optimizations and infinite graphs[edit]
+///In common presentations of Dijkstra's algorithm, initially all nodes are entered into the priority queue.
+/// This is, however, not necessary: the algorithm can start with a priority queue that contains only one item,
+/// and insert new items as they are discovered (instead of doing a decrease-key, check whether the key is in the queue;
+/// if it is, decrease its key, otherwise insert it).[3]:198 This variant has the same worst-case bounds as the common variant, but maintains a smaller priority queue in practice, speeding up the queue operations.[4]
+
+///Moreover, not inserting all nodes in a graph makes it possible to extend the algorithm to find the shortest path from a single source to the closest of a set of target nodes on infinite graphs or those too large to represent in memory.
+/// The resulting algorithm is called uniform-cost search (UCS) in the artificial intelligence literature[4][11][12] and can be expressed in pseudocode as
+/*  procedure UniformCostSearch(Graph, start, goal)
+    node ← start
+    cost ← 0
+    frontier ← priority queue containing node only
+    explored ← empty set
+    do
+      if frontier is empty
+        return failure
+      node ← frontier.pop()
+      if node is goal
+        return solution
+      explored.add(node)
+      for each of node's neighbors n
+        if n is not in explored or frontier
+            frontier.add(n)
+        else if n is in frontier with higher cost
+            replace existing node with n
+
+            */
     //返回从start 到其它点的最短路径， 如果distancemap中没有v，那么v就到达不了
     static std::pair<DistanceMap, VertexMap>
-    my_dijkstra_shortest_path_all(const G &g, vertex_t start)
+    ucs_dijkstra_shortest_path_all(const G &g, vertex_t start)
     {
-        PriorityQueue open_set;
-        VertexSet close_set;
-        VertexMap came_from;
-        DistanceMap cost_so_far;
+        PriorityQueue open_set; //为搜索的，与确定过相连的集合
+        VertexSet close_set; //确定最短路径的集合
+        DistanceMap cost_so_far; //用来标记已经知道的路径（不一定是最短的）
+        VertexMap came_from; //记录最短路径的前继
 
-        open_set.put(start, 0);
-//        came_from[start] = start; //我们的算法返回路径中不含有start点
+        open_set.put(start, 0); //初始出发点
         cost_so_far[start] = 0;
+//        came_from[start] = start; //我们的算法返回路径中不含有start点
 
         while (!open_set.empty()) {
             vertex_t smallest = open_set.get();
             close_set.insert(smallest);
 
             for (const auto &next : g.neighbors(smallest)) {
-                if (close_set.find(next) != end(close_set))
+                if (close_set.find(next) != end(close_set)) //如果已经确定了最短路径，则不需要计算了
                     continue;
 
                 distance_t new_cost = cost_so_far[smallest] + g.distance(smallest, next);
+                //未被搜索过，或者路径更短,标记最短值和前继
                 if (cost_so_far.find(next) == end(cost_so_far) || new_cost < cost_so_far[next]) {
                     cost_so_far[next] = new_cost;
                     came_from[next] = smallest;
@@ -259,18 +290,19 @@ public:
 
     // 返回所有最短路径， 如果不能到达 distance = max
     static std::pair<VertexList, distance_t>
-    my_dijkstra_shortest_path(const G &g, vertex_t start, vertex_t finish)
+    ucs_dijkstra_shortest_path(const G &g, vertex_t start, vertex_t finish)
     {
         PriorityQueue open_set;
         VertexSet close_set;
-        VertexMap came_from;
         DistanceMap cost_so_far;
+        VertexMap came_from;
+
         VertexList path;
         distance_t dist = max_distant;
 
         open_set.put(start, 0);
-//        came_from[start] = start; //我们的算法返回路径中不含有start点
         cost_so_far[start] = 0;
+//        came_from[start] = start; //我们的算法返回路径中不含有start点
 
         while (!open_set.empty()) {
             vertex_t smallest = open_set.get();
