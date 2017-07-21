@@ -21,7 +21,7 @@ void run_test()
 
 int main(int argc, char *argv[])
 {
-    run_test();
+//    run_test();
 //    return 0;
     QApplication a(argc, argv);
 

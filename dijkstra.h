@@ -96,7 +96,9 @@ public:
             pop_heap(begin(open_list), end(open_list), comparator);
             vertex_t smallest = open_list.back();
             open_list.pop_back();
-            close_list.insert(smallest);
+            auto p = close_list.insert(smallest);
+            Q_UNUSED(p);
+            assert(p.second);
 
             //必须添加这个跳出，在所有为标记点距离都是max 即是说， 从start 不能达到那些区域
             //反过来说， 这个图，有孤立点的点!
@@ -165,7 +167,9 @@ public:
             pop_heap(begin(open_list), end(open_list), comparator);
             vertex_t smallest = open_list.back();
             open_list.pop_back();
-            close_list.insert(smallest);
+            auto p = close_list.insert(smallest);
+            Q_UNUSED(p);
+            assert(p.second);
 
             //必须添加这个跳出，在所有为标记点距离都是max 即是说， 从start 不能达到那些区域
             //反过来说， 这个图，有孤立点的点!
@@ -253,33 +257,14 @@ public:
 
         VertexSet close_set; //确定最短路径的集合
 
-        typedef std::priority_queue<vertex_t, std::vector<vertex_t>, DistanceMapGreater> PQ;
         DistanceMapGreater compare(cost_so_far);
-        PQ open_set(compare); //未搜索的，与确定过相连的集合
+        VertexVector open_set; //未搜索的，与确定过相连的集合
 
-        open_set.push(start);
-        cost_so_far[start] = 0;
-//        came_from[start] = start; //我们的算法返回路径中不含有start点
+        init(start, open_set, cost_so_far);
 
         while (!open_set.empty()) {
-            vertex_t smallest = open_set.top();
-            open_set.pop();
-
-            close_set.insert(smallest);
-
-            close_set.insert(smallest);
-
-            for (const auto &next : g.neighbors(smallest)) {
-                if (close_set.find(next) != end(close_set))
-                    continue;
-
-                distance_t new_cost = cost_so_far[smallest] + g.distance(smallest, next);
-                if (cost_so_far.find(next) == end(cost_so_far) || new_cost < cost_so_far[next]) {
-                    cost_so_far[next] = new_cost;
-                    came_from[next] = smallest;
-                    open_set.push(next);
-                }
-            }
+            vertex_t smallest = get_smallest(open_set, close_set, compare);
+            recal_smallest_neighbors(smallest, g, open_set, cost_so_far, came_from, close_set, compare);
         }
         return std::make_pair(cost_so_far, came_from);
     }
@@ -294,42 +279,87 @@ public:
 
         VertexSet close_set; //确定最短路径的集合
 
-        typedef std::priority_queue<vertex_t, std::vector<vertex_t>, DistanceMapGreater> PQ;
         DistanceMapGreater compare(cost_so_far);
-        PQ open_set(compare); //未搜索的，与确定过相连的集合
+        VertexVector open_set; //未搜索的，与确定过相连的集合
 
         VertexList path;
         distance_t dist = max_distant;
 
-        open_set.push(start);
-        cost_so_far[start] = 0;
-//        came_from[start] = start; //我们的算法返回路径中不含有start点
+        init(start, open_set, cost_so_far);
 
         while (!open_set.empty()) {
-            vertex_t smallest = open_set.top();
-            open_set.pop();
-
-            close_set.insert(smallest);
+            vertex_t smallest = get_smallest(open_set, close_set, compare);
 
             if (smallest == finish) {
                 path = find_path(finish, came_from);
-                dist = cost_so_far[finish];
+                dist = cost_so_far.at(finish);
                 break;
             }
 
-            for (const auto &next : g.neighbors(smallest)) {
-                if (close_set.find(next) != end(close_set))
-                    continue;
-
-                distance_t new_cost = cost_so_far[smallest] + g.distance(smallest, next);
-                if (cost_so_far.find(next) == end(cost_so_far) || new_cost < cost_so_far[next]) {
-                    cost_so_far[next] = new_cost;
-                    came_from[next] = smallest;
-                    open_set.push(next);
-                }
-            }
+            recal_smallest_neighbors(smallest, g, open_set, cost_so_far, came_from, close_set, compare);
         }
         return std::make_pair(path, dist);
+    }
+
+private:
+    //初始化 start 到 openset
+    static void init(vertex_t start,
+                     VertexVector &open_set,
+                     DistanceMap &cost_so_far)
+    {
+        open_set.push_back(start);
+        cost_so_far.emplace(start, 0);
+//        came_from[start] = start; //我们的算法返回路径中不含有start点
+    }
+
+    //从 openset 找到最小的，并加入到closeset中
+    static vertex_t get_smallest(VertexVector &open_set,
+                                 VertexSet  &close_set,
+                                 const DistanceMapGreater &compare)
+    {
+        std::pop_heap(begin(open_set), end(open_set), compare);
+        vertex_t smallest = open_set.back();
+        open_set.pop_back();
+
+        auto p = close_set.insert(smallest);
+        Q_UNUSED(p);
+        assert(p.second);
+        return smallest;
+    }
+
+    static void recal_smallest_neighbors(vertex_t smallest,
+                                         const G &g,
+                                         VertexVector &open_set,
+                                         DistanceMap &cost_so_far,
+                                         VertexMap &came_from,
+                                         const VertexSet  &close_set,
+                                         const DistanceMapGreater &compare)
+    {
+        for (const auto &next : g.neighbors(smallest)) {
+            //如果已经在closeset 说明已经是最短路径了
+            if (close_set.find(next) != end(close_set))
+                continue;
+
+            distance_t new_cost = cost_so_far.at(smallest) + g.distance(smallest, next);
+            //还未搜索
+            if (cost_so_far.find(next) == end(cost_so_far)) {
+                auto p1 = cost_so_far.emplace(next, new_cost);
+                Q_UNUSED(p1);
+                assert(p1.second);
+                auto p2 = came_from.emplace(next, smallest);
+                Q_UNUSED(p2);
+                assert(p2.second);
+                open_set.push_back(next);
+                std::push_heap(begin(open_set), end(open_set), compare);
+            }
+            //重新找到最短路径
+            else if (new_cost < cost_so_far.at(next)) {
+                cost_so_far[next] = new_cost;
+                came_from[next] = smallest;
+                //重新构建堆
+                std::make_heap(begin(open_set), end(open_set), compare);
+            }
+        }
     }
 };
 
