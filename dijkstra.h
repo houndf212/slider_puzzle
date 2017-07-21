@@ -200,16 +200,15 @@ public:
         return std::make_pair(path, distances[finish]);
     }
 
-    template<class T, class priority_t>
     class PriorityQueue
     {
     public:
-        typedef std::pair<priority_t, T> PQElement;
+        typedef std::pair<distance_t, vertex_t> PQElement;
         bool empty() const { return elements.empty(); }
-        void put(T item, priority_t p) { elements.emplace(p, item); }
-        T get()
+        void put(vertex_t item, distance_t p) { elements.emplace(p, item); }
+        vertex_t get()
         {
-            T smallest = elements.top().second;
+            vertex_t smallest = elements.top().second;
             elements.pop();
             return smallest;
         }
@@ -228,7 +227,7 @@ public:
     static std::pair<DistanceMap, VertexMap>
     my_dijkstra_shortest_path_all(const G &g, vertex_t start)
     {
-        PriorityQueue<vertex_t, distance_t> open_set;
+        PriorityQueue open_set;
         VertexSet close_set;
         VertexMap came_from;
         DistanceMap cost_so_far;
@@ -260,7 +259,7 @@ public:
     static std::pair<VertexList, distance_t>
     my_dijkstra_shortest_path(const G &g, vertex_t start, vertex_t finish)
     {
-        PriorityQueue<vertex_t, distance_t> open_set;
+        PriorityQueue open_set;
         VertexSet close_set;
         VertexMap came_from;
         DistanceMap cost_so_far;
