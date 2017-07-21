@@ -12,11 +12,11 @@ void test_linemover()
 
     board.print();
     PosList line;
-    line.push_back({0, 0});
-    line.push_back({0, 1});
-    line.push_back({0, 2});
-    line.push_back({0, 3});
-    line.push_back({0, 4});
+    line.emplace_back(0, 0);
+    line.emplace_back(0, 1);
+    line.emplace_back(0, 2);
+    line.emplace_back(0, 3);
+    line.emplace_back(0, 4);
 
     MoverParam param(board);
 

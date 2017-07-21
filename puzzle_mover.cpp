@@ -65,9 +65,9 @@ std::list<PosList> PuzzleMover::get_move_lines(const Board &board)
         for (int row=0; row<top_left.row(); ++row) {
             PosList left_right;
             for (int col=0; col<board.col_size(); ++col) {
-                left_right.push_back(Pos(row, col));
+                left_right.emplace_back(row, col);
             }
-            lines.push_back(left_right);
+            lines.push_back(std::move(left_right));
         }
     }
     // 1 2 3
@@ -77,9 +77,9 @@ std::list<PosList> PuzzleMover::get_move_lines(const Board &board)
         for (int col=0; col<top_left.col(); ++col) {
             PosList down_up;
             for (int row=board.row_size()-1; row>=0; --row) {
-                down_up.push_back(Pos(row, col));
+                down_up.emplace_back(row, col);
             }
-            lines.push_back(down_up);
+            lines.push_back(std::move(down_up));
         }
     }
     //留下最后两个，所以减1
@@ -87,21 +87,23 @@ std::list<PosList> PuzzleMover::get_move_lines(const Board &board)
     while (top_left!=buttom_right) {
         PosList left_right;
         for (int col=top_left.col(); col<board.col_size(); ++col) {
-            left_right.push_back(Pos(top_left.row(), col));
+            left_right.emplace_back(top_left.row(), col);
         }
-        assert(left_right.size()>=2);
-        lines.push_back(left_right);
+
+        size_t size = left_right.size();
+        assert(size>=2);
+        lines.push_back(std::move(left_right));
 
         //先左右 后上下，所以上下先达到2
-        if (left_right.size() == 2)
+        if (size == 2)
             break;
 
         PosList down_up;
         for (int row=board.row_size()-1; row>top_left.row(); --row) {
-            down_up.push_back(Pos(row, top_left.col()));
+            down_up.emplace_back(row, top_left.col());
         }
         assert(down_up.size()>=2);
-        lines.push_back(down_up);
+        lines.push_back(std::move(down_up));
         top_left.row()++;
         top_left.col()++;
     }
