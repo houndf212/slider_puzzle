@@ -25,6 +25,11 @@ public:
     MatrixGraph(const BoolMatrix &m) : matrix(m) {}
     // Graph interface
 
+    distance_t heuristic(vertex_t v1, vertex_t v2) const
+    {
+        return std::abs(v1.row()-v1.row()) + std::abs(v1.col()-v2.col());
+    }
+
     VertexVector vertexes() const
     {
         VertexVector vec;

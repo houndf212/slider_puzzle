@@ -54,4 +54,7 @@ void test_matrixgraph()
 
     print_path(mp);
     print_all(mpall);
+
+    auto ap = G::AStart_path(g, Pos(0, 0), Pos(0, 2));
+    print_path(ap);
 }

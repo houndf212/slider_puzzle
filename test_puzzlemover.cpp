@@ -1,5 +1,6 @@
 ﻿#include "puzzle_mover.h"
 #include "boardgen.h"
+#include <QtCore>
 
 static bool check_solve(Board board, const MoveList &ml)
 {
@@ -12,15 +13,18 @@ static bool check_solve(Board board, const MoveList &ml)
 
 void test_puzzlemover()
 {
-    int i=1000;
+    QElapsedTimer timer;
+    timer.start();
+    int i=100;
     while (i-->0) {
         qDebug() << "round: "<<i;
         Board board;
-        board.gen(5, 5);
+        board.gen(30, 30);
         BoardGen::gen(&board);
 //        board.print();
         auto ml = PuzzleMover::solve(board);
 //        qDebug() <<"move steps: " <<ml.size();
         assert(check_solve(board, ml));
     }
+    qDebug() << "slapsed msec: "<<timer.elapsed();
 }

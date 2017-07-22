@@ -10,19 +10,21 @@ void run_test()
     extern void test_puzzlemover();
     extern void test_matrixgraph();
     extern void testEdgeGraphFile();
-    testEdgeGraphFile();
+    extern void test_astar();
+//    testEdgeGraphFile();
     test_matrixgraph();
 //    test_consoleboard();
 
 //    test_numbermover();
 //    test_linemover();
 //    test_puzzlemover();
+//    test_astar();
 }
 
 int main(int argc, char *argv[])
 {
-//    run_test();
-//    return 0;
+    run_test();
+    return 0;
     QApplication a(argc, argv);
 
     GameWindow w;

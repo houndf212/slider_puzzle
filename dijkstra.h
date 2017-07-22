@@ -354,12 +354,82 @@ private:
             }
             //重新找到最短路径
             else if (new_cost < cost_so_far.at(next)) {
-                cost_so_far[next] = new_cost;
-                came_from[next] = smallest;
-                //重新构建堆
+                cost_so_far.at(next) = new_cost;
+                came_from.at(next) = smallest;
+                //重新构建堆,没得可以修改堆权重的操作，只有重新构建堆了
                 std::make_heap(begin(open_set), end(open_set), compare);
             }
         }
+    }
+public:
+    static std::pair<VertexList, distance_t>
+    AStart_path(const G &g, vertex_t start, vertex_t finish)
+    {
+        VertexMap came_from;
+        DistanceMap cost_so_far;
+        DistanceMap heuristic_cost;
+
+        DistanceMapGreater compare(heuristic_cost);
+        VertexVector open_set;
+        VertexSet close_set;
+
+        VertexList path;
+        distance_t dist = max_distant;
+
+        //init;
+        cost_so_far.emplace(start, 0);
+        open_set.push_back(start);
+
+        while (!open_set.empty()) {
+            std::pop_heap(begin(open_set), end(open_set), compare);
+            vertex_t current = open_set.back();
+            open_set.pop_back();
+
+            auto p = close_set.insert(current);
+            Q_UNUSED(p);
+            assert(p.second);
+
+            if (current == finish) {
+                path = find_path(finish, came_from);
+                dist = cost_so_far.at(finish);
+                break;
+            }
+
+            for (const auto &next : g.neighbors(current)) {
+                //如果已经在closeset 说明已经是最短路径了
+                if (close_set.find(next) != end(close_set))
+                    continue;
+
+                distance_t new_cost = cost_so_far.at(current) + g.distance(current, next);
+                //还未搜索
+                if (cost_so_far.find(next) == end(cost_so_far)) {
+                    auto p1 = cost_so_far.emplace(next, new_cost);
+                    Q_UNUSED(p1);
+                    assert(p1.second);
+
+                    distance_t heuristic_d = new_cost + g.heuristic(next, finish);
+                    auto p2 = heuristic_cost.emplace(next, heuristic_d);
+                    assert(p2.second);
+                    open_set.push_back(next);
+                    std::push_heap(begin(open_set), end(open_set), compare);
+
+                    auto p3 = came_from.emplace(next, current);
+                    Q_UNUSED(p3);
+                    assert(p3.second);
+                }
+                //重新找到最短路径
+                else if (new_cost < cost_so_far.at(next)) {
+                    cost_so_far.at(next) = new_cost;
+
+                    distance_t heuristic_d = new_cost + g.heuristic(next, finish);
+                    heuristic_cost.at(next) = heuristic_d;
+                    //重新构建堆,没得可以修改堆权重的操作，只有重新构建堆了
+                    std::make_heap(begin(open_set), end(open_set), compare);
+                    came_from.at(next) = current;
+                }
+            }
+        }
+        return std::make_pair(path, dist);
     }
 };
 
