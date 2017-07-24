@@ -46,7 +46,7 @@ public:
                 && 0<=p.col() && p.col()<col_size();
     }
 
-    bool equal(const Resizable_Matrix<T>& m) const
+    bool equal(const Resizable_Matrix& m) const
     {
         if (row_size() != m.row_size() ||
                 col_size() != m.col_size())
