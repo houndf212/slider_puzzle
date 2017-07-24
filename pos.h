@@ -37,12 +37,6 @@ inline bool operator!=(const Pos &p1, const Pos &p2)
     return !p1.equal(p2);
 }
 
-inline QDebug operator<<(QDebug d, const Pos &p)
-{
-    d<<"("<<p.row()<<", "<<p.col()<<")";
-    return d;
-}
-
 typedef std::vector<Pos> PosVector;
 typedef std::list<Pos> PosList;
 

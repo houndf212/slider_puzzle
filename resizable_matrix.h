@@ -40,16 +40,6 @@ public:
             std::fill(begin(v), end(v), val);
     }
 
-    void print() const
-    {
-        // use qvector
-        for (const auto& v : m)
-        {
-            qDebug() << QVector<T>::fromStdVector(v);
-        }
-        qDebug() << "";
-    }
-
     bool isInMatrix(Pos p) const
     {
         return 0<=p.row() && p.row()<row_size()

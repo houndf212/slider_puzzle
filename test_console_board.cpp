@@ -2,6 +2,7 @@
 #include "board.h"
 #include "boardgen.h"
 #include "boardrotator.h"
+#include "debug_output.h"
 using namespace std;
 
 void test_consoleboard()
@@ -11,7 +12,7 @@ void test_consoleboard()
     BoardGen::gen(&m);
     bool b = true;
     while (b) {
-        m.print();
+        print(m);
         qDebug() << "input: ";
         char c;
         cin>>c;

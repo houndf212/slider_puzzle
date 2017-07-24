@@ -1,5 +1,6 @@
 ﻿#include "linemover.h"
 #include "boardgen.h"
+#include "debug_output.h"
 
 void test_linemover()
 {
@@ -10,7 +11,7 @@ void test_linemover()
     fixed.resize(5, 5);
     fixed.set_all_unfixed();
 
-    board.print();
+    print(board);
     PosList line;
     line.emplace_back(0, 0);
     line.emplace_back(0, 1);
@@ -21,6 +22,6 @@ void test_linemover()
     MoverParam param(board);
 
     LineMover::finish_line(line, &param);
-    param.board.print();
-    param.fixed_matrix.print();
+    print(param.board);
+    print(param.fixed_matrix);
 }

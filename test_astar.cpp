@@ -1,5 +1,6 @@
-#include "matrixgraph.h"
+﻿#include "matrixgraph.h"
 #include "matrix.h"
+#include "debug_output.h"
 
 constexpr int ROW = 10;
 constexpr int COL = 10;
@@ -17,12 +18,13 @@ void test_astar()
     m.set_not({1, 2});
     m.set_not({2, 1});
     m.set_not({3, 1});
-    m.print();
+    print(m);
 
     m.set_not({3, 0});
 
     MG g(m);
     auto p = G::AStart_path(g, Pos(0, 0), Pos(0, 2));
-    qDebug() << "path: "<<QList<Pos>::fromStdList(p.first);
+    qDebug() << "path: ";
+    print(p.first);
     qDebug() << "dist: " << p.second;
 }

@@ -1,6 +1,7 @@
 ﻿#include "edgegraph.h"
 #include <QtCore>
 #include <assert.h>
+#include "debug_output.h"
 
 typedef int vertex_t;
 typedef int distance_t;
@@ -9,7 +10,8 @@ typedef Dijkstra<EG> G;
 
 void print_path(const std::pair<G::VertexList, G::distance_t>& p)
 {
-    qDebug() << "path: "<<QList<vertex_t>::fromStdList(p.first);
+    qDebug() << "path: ";
+    print(p.first);
     qDebug() << "dist: " << p.second;
 }
 
@@ -19,7 +21,8 @@ void print_all(const std::pair<G::DistanceMap, G::VertexMap>& p)
         auto path = G::find_path(v.first, p.second);
         qDebug() << v.first <<
                     " : "<<v.second <<
-                    " : "<<QList<vertex_t>::fromStdList(path);
+                    " : ";
+        print(path);
     }
 }
 void testEdgeGraphFile()

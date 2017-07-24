@@ -1,5 +1,6 @@
 ﻿#include "matrixgraph.h"
 #include "matrix.h"
+#include "debug_output.h"
 
 constexpr int ROW = 10;
 constexpr int COL = 10;
@@ -14,8 +15,8 @@ void print_path(const std::pair<G::VertexList, G::distance_t>& p)
     for (auto pos : p.first) {
         m.set(pos, 1);
     }
-    m.print();
-    qDebug() << "path: "<<QList<Pos>::fromStdList(p.first);
+    print(m);
+    print(p.first);
     qDebug() << "dist: " << p.second;
 }
 
@@ -28,7 +29,7 @@ void print_all(const std::pair<G::DistanceMap, G::VertexMap>& p)
     for (const auto &pos : dis) {
         m.set(pos.first, pos.second);
     }
-    m.print();
+    print(m);
 }
 
 
@@ -47,7 +48,7 @@ void test_matrixgraph()
     m.set_not({6, 7});
     m.set_not({6, 6});
     m.set_not({6, 5});
-    m.print();
+    print(m);
 
     MG g(m);
     qDebug() << G::max_distant;

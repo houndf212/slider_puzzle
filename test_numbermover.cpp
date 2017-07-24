@@ -3,6 +3,7 @@
 #include "boolmatrix.h"
 #include "numbermover.h"
 #include "moverparam.h"
+#include "debug_output.h"
 #include <iostream>
 using namespace std;
 
@@ -16,7 +17,7 @@ void test_numbermover()
     MoverParam param(orgin_board);
 
     while (true) {
-        param.board.print();
+        print(param.board);
         qDebug() << "input command:";
         char c;
         cin >> c;
@@ -28,7 +29,7 @@ void test_numbermover()
 
             bool path = NumberMover::find_value_moves(value, &param);
             if (path == true) {
-                qDebug() << QList<Board::Direction>::fromStdList(param.move_list);
+                print(param.move_list);
             }
             else {
                 qDebug() << "cannot reach!";
@@ -41,7 +42,7 @@ void test_numbermover()
             cin >> row >> col;
             Pos p(row, col);
             param.fixed_matrix.set_fixed(p);
-            param.fixed_matrix.print();
+            print(param.fixed_matrix);
         }
             break;
 

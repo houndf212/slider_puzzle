@@ -39,12 +39,13 @@ public:
     Pos origin_pos(int val) const;
     int origin_value(Pos p) const;
 
-    void print() const;
     bool isDone() const;
 
     bool isInBoard(Pos p) const { return matrix.isInMatrix(p); }
     int row_size() const { return matrix.row_size(); }
     int col_size() const { return matrix.col_size(); }
+
+    const Matrix &inner_matrix() const { return matrix; }
 private:
     void init_matrix();
     bool inner_null_move(int dr, int dc);
@@ -64,12 +65,5 @@ private:
 };
 
 #include "movelist.h"
-
-//typedef std::list<Board::Direction> MoveList;
-//inline void movelist_append(MoveList* to, const MoveList & from)
-//{
-//    to->insert(end(*to), begin(from), end(from));
-//}
-QDebug operator <<(QDebug debug, Board::Direction d);
 
 #endif // BOARD_H

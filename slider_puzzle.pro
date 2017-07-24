@@ -47,7 +47,8 @@ SOURCES += main.cpp\
     movelist.cpp \
     moverparam.cpp \
     test_prioorityqueue.cpp \
-    test_astar.cpp
+    test_astar.cpp \
+    debug_output.cpp
 
 HEADERS  += \
     board.h \
@@ -70,7 +71,8 @@ HEADERS  += \
     puzzle_mover.h \
     movelist.h \
     moverparam.h \
-    dijkstra.h
+    dijkstra.h \
+    debug_output.h
 
 DISTFILES += \
     test.txt

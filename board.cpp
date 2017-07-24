@@ -73,11 +73,6 @@ int Board::origin_value(Pos p) const
     return origin_matrix.get(p);
 }
 
-void Board::print() const
-{
-    return matrix.print();
-}
-
 bool Board::isDone() const
 {
     return matrix.equal(origin_matrix);
@@ -126,28 +121,4 @@ void Board::swap_null(Pos p)
     matrix.set(p, null_value);
     value_index[null_value] = p;
     null_pos = p;
-}
-
-QDebug operator <<(QDebug debug, Board::Direction d)
-{
-    switch (d) {
-    case Board::Null_Up:
-        debug << "null_up";
-        break;
-    case Board::Null_Down:
-        debug << "null_down";
-        break;
-    case Board::Null_Right:
-        debug << "null_right";
-        break;
-    case Board::Null_Left:
-        debug << "null_left";
-        break;
-    case Board::NotValid:
-        debug << "not_valid";
-        break;
-    default:
-        break;
-    }
-    return debug;
 }
