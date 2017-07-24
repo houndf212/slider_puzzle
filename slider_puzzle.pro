@@ -48,7 +48,8 @@ SOURCES += main.cpp\
     moverparam.cpp \
     test_prioorityqueue.cpp \
     test_astar.cpp \
-    debug_output.cpp
+    debug_output.cpp \
+    test_search_board.cpp
 
 HEADERS  += \
     board.h \

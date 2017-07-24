@@ -1,11 +1,25 @@
 ﻿#include "board.h"
 #include <QtCore>
 
+Board::Board(const Matrix &m)
+{
+    build_origin(m.row_size(), m.col_size());
+    matrix = m;
+    value_index.resize(matrix.row_size()*matrix.col_size());
+
+    for (int row=0; row<matrix.row_size(); ++row) {
+        for (int col=0; col<matrix.col_size(); ++col) {
+            Pos p(row, col);
+            int val = matrix.get(p);
+            value_index[val] = p;
+        }
+    }
+    null_pos = value_index.at(null_value);
+}
+
 void Board::gen(int row, int col)
 {
-    matrix.resize(row, col);
-    value_index.resize(row*col+1);
-    init_matrix();
+    init_matrix(row, col);
 }
 
 bool Board::null_move(Board::Direction d)
@@ -78,23 +92,11 @@ bool Board::isDone() const
     return matrix.equal(origin_matrix);
 }
 
-void Board::init_matrix()
+void Board::init_matrix(int row, int col)
 {
-    int n = 1;
-    for (int r=0; r<matrix.row_size(); ++r) {
-        for (int c=0; c<matrix.col_size(); ++c) {
-            Pos p(r, c);
-            matrix.set(p, n);
-            value_index[n] = p;
-            ++n;
-        }
-    }
-
-    null_pos.row() = matrix.row_size() - 1;
-    null_pos.col() = matrix.col_size() - 1;
-    matrix.set(null_pos, null_value);
-    origin_matrix = matrix;
-    origin_value_index = value_index;
+    build_origin(row, col);
+    matrix = origin_matrix;
+    value_index = origin_value_index;
 }
 
 bool Board::inner_null_move(int dr, int dc)
@@ -121,4 +123,25 @@ void Board::swap_null(Pos p)
     matrix.set(p, null_value);
     value_index[null_value] = p;
     null_pos = p;
+}
+
+void Board::build_origin(int row, int col)
+{
+    origin_matrix.resize(row, col);
+    origin_value_index.resize(row*col+1);
+    int n = 1;
+    for (int r=0; r<row; ++r) {
+        for (int c=0; c<col; ++c) {
+            Pos p(r, c);
+            origin_matrix.set(p, n);
+            origin_value_index[n] = p;
+            ++n;
+        }
+    }
+
+    null_pos.row() = origin_matrix.row_size() - 1;
+    null_pos.col() = origin_matrix.col_size() - 1;
+
+    origin_matrix.set(null_pos, null_value);
+    origin_value_index[null_value] = null_pos;
 }

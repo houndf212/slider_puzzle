@@ -48,19 +48,9 @@ public:
 
     bool equal(const Resizable_Matrix& m) const
     {
-        if (row_size() != m.row_size() ||
-                col_size() != m.col_size())
-            return false;
-
-        for (int row=0; row<row_size(); ++row) {
-            for (int col=0; col<col_size(); ++col) {
-                Pos p(row, col);
-                if (get(p)!=m.get(p)) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return row_size() == m.row_size() &&
+                col_size() == m.col_size() &&
+                this->m == m.m;
     }
 private:
     std::vector<std::vector<T>> m;

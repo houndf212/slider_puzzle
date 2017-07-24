@@ -25,6 +25,8 @@ public:
         return (d1&d2) == 0;
     }
 public:
+    Board() = default;
+    Board(const Matrix &m);
     void gen(int row, int col);
 
     bool null_move(Direction d);
@@ -47,9 +49,11 @@ public:
 
     const Matrix &inner_matrix() const { return matrix; }
 private:
-    void init_matrix();
+    void init_matrix(int row, int col);
     bool inner_null_move(int dr, int dc);
     void swap_null(Pos p);
+
+    void build_origin(int row, int col);
 private:
     Matrix matrix;
     //方向通过value 追踪pos位置
