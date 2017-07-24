@@ -16,7 +16,6 @@ void print(const Matrix& m)
         }
         std::cout << std::endl;
     }
-    std::cout << std::endl;
 }
 
 template<>
@@ -28,7 +27,6 @@ void print(const BoolMatrix& m)
         }
         std::cout << std::endl;
     }
-    std::cout << std::endl;
 }
 
 template<>

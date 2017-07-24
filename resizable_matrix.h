@@ -52,10 +52,22 @@ public:
                 col_size() == m.col_size() &&
                 this->m == m.m;
     }
+    bool less(const Resizable_Matrix& m) const
+    {
+        assert(row_size() == m.row_size());
+        assert(col_size() == m.col_size());
+        return this->m < m.m;
+    }
 private:
     std::vector<std::vector<T>> m;
     int n_row;
     int n_col;
 };
+
+template<class T>
+bool operator <(const Resizable_Matrix<T>& m1, const Resizable_Matrix<T>& m2)
+{
+    return m1.less(m2);
+}
 
 #endif // RESIZABLE_MATRIX_H
