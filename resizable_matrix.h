@@ -70,4 +70,10 @@ bool operator <(const Resizable_Matrix<T>& m1, const Resizable_Matrix<T>& m2)
     return m1.less(m2);
 }
 
+template<class T>
+bool operator ==(const Resizable_Matrix<T>& m1, const Resizable_Matrix<T>& m2)
+{
+    return m1.equal(m2);
+}
+
 #endif // RESIZABLE_MATRIX_H

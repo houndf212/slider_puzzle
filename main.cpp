@@ -18,15 +18,15 @@ void run_test()
 
 //    test_numbermover();
 //    test_linemover();
-//    test_puzzlemover();
+    test_puzzlemover();
 //    test_astar();
-    test_search_board();
+//    test_search_board();
 }
 
 int main(int argc, char *argv[])
 {
-    run_test();
-    return 0;
+//    run_test();
+//    return 0;
     QApplication a(argc, argv);
 
     GameWindow w;

@@ -78,6 +78,9 @@ void GameWindow::enterAutoSolve()
     m_view->setEnabled(false);
 
     m_movelist = PuzzleMover::solve(m_board->inner_board());
+    qDebug() << "old sover size: " << m_movelist.size();
+    m_movelist = PuzzleMover::search_solve(m_board->inner_board());
+    qDebug() << "new sover size: " << m_movelist.size();
     m_timer->start(1*300);
 }
 

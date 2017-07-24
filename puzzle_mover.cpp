@@ -1,6 +1,8 @@
 ﻿#include "puzzle_mover.h"
 #include "linemover.h"
 #include "boardrotator.h"
+#include "boardgraph.h"
+#include "dijkstra.h"
 
 
 static bool check_line(PosList line, const Board &board)
@@ -10,6 +12,20 @@ static bool check_line(PosList line, const Board &board)
             return false;
     }
     return true;
+}
+
+MoveList PuzzleMover::search_solve(const Board &b)
+{
+    Matrix start = b.inner_matrix();
+    Matrix finish = b.inner_origin_matrix();
+
+    print(start);
+    typedef BoardGraph<int> BG;
+    typedef Dijkstra<BG> G;
+    BG g;
+    auto path = G::AStart_path(g, start, finish);
+    path.first.push_front(start);
+    return BG::toMoveList(path.first);
 }
 
 MoveList PuzzleMover::solve(const Board &origin_board)

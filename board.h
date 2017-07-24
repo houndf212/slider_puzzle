@@ -48,6 +48,7 @@ public:
     int col_size() const { return matrix.col_size(); }
 
     const Matrix &inner_matrix() const { return matrix; }
+    const Matrix &inner_origin_matrix() const { return origin_matrix; }
 private:
     void init_matrix(int row, int col);
     bool inner_null_move(int dr, int dc);

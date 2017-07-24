@@ -4,15 +4,22 @@
 #include "debug_output.h"
 #include <list>
 #include <set>
+#include "dijkstra.h"
+#include "boardgraph.h"
+#include <iostream>
 
 typedef std::pair<Matrix, MoveList> MatrixPair;
 typedef std::list<MatrixPair> MatrixList;
-typedef std::set<MatrixPair> MatrixSet;
 
-bool operator<(const MatrixPair& mp1, const MatrixPair& mp2)
+struct Comp
 {
-    return mp1.first < mp2.first;
-}
+    bool operator()(const MatrixPair& mp1, const MatrixPair& mp2) const
+    {
+        return mp1.first < mp2.first;
+    }
+};
+
+typedef std::set<MatrixPair, Comp> MatrixSet;
 
 //测试用搜索方法来计算移动结果
 
@@ -25,6 +32,18 @@ bool check_matrix_board()
 
     Board b2(b.inner_matrix());
     auto path2 = PuzzleMover::solve(b2);
+
+
+
+    auto path = path1;
+    MatrixSet s;
+    s.emplace(b.inner_matrix(), path);
+    assert(s.size() == 1);
+    s.emplace(b.inner_matrix(), path);
+    assert(s.size() == 1);
+    path.check_loop_push_back(Board::Null_Down);
+    s.emplace(b.inner_matrix(), path);
+    assert(s.size() == 1);
 
     return path1 == path2;
 }
@@ -75,11 +94,41 @@ MatrixList next_children(const MatrixSet &s, const MatrixPair &m)
     return lst;
 }
 
-void depth_first(const Matrix &m1, const Matrix &m2)
+void can_reach(MatrixSet &s, const MatrixPair &m, const Matrix &g) throw (MatrixPair)
 {
+    qDebug() << "s size: " << s.size();
+    if (g.equal(m.first))
+        throw m;
 
+    MatrixList children = next_children(s, m);
+    for (const auto &c : children) {
+            s.insert(c);
+            can_reach(s, c, g);
+    }
 }
-void width_first(const Matrix &m1, const Matrix &m2);
+
+bool depth_first_seach(const Matrix &start, const Matrix &goal)
+{
+    print(start);
+    print(goal);
+    MatrixPair sp(start, MoveList());
+    MatrixSet s;
+    s.insert(sp);
+    try {
+        MatrixList children = next_children(s, sp);
+        for (const auto &c : children) {
+                s.insert(c);
+                can_reach(s, c, goal);
+                qDebug() << "reach one line end";
+        }
+        return false;
+    }
+    catch (const MatrixPair & p) {
+        qDebug() << "move size: " << p.second.size();
+        print(p.second);
+        return true;
+    }
+}
 
 
 void test_next()
@@ -96,7 +145,7 @@ void test_next()
 void test_next_children()
 {
     Board b;
-    b.gen(3, 3);
+    b.gen(2, 2);
     BoardGen::gen(&b);
     MatrixPair m = std::make_pair(b.inner_matrix(), MoveList());
     MatrixSet s;
@@ -112,14 +161,24 @@ void test_next_children()
     }
 }
 
-void find_status(MatrixSet &s)
-{
-
-}
 void test_search_board()
 {
-    assert(check_matrix_board());
-    test_next_children();
+//    assert(check_matrix_board());
+    Board b;
+    b.gen(3, 3);
+    BoardGen::gen(&b);
+
+    typedef BoardGraph<int> BG;
+    typedef Dijkstra<BG> G;
+
+    BG g;
+    auto p = G::AStart_path(g, b.inner_matrix(), b.inner_origin_matrix());
+    print(b.inner_matrix());
+    std::cout<<"###"<<std::endl;
+    for (const auto & m : p.first) {
+        print(m);
+    }
+    std::cout << p.second <<std::endl;
 }
 
 

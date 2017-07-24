@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <queue>
 #include <assert.h>
-
+#include <iostream>
 
 template<class G>
 class Dijkstra
@@ -429,6 +429,7 @@ public:
                 }
             }
         }
+//        std::cout << "close size: "<<close_set.size() << std::endl;
         return std::make_pair(path, dist);
     }
 };

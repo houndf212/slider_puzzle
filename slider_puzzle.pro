@@ -10,7 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = slider_puzzle
 TEMPLATE = app
-CONFIG += console
+#CONFIG += console
 QMAKE_CXXFLAGS_RELEASE += -DNDEBUG
 
 # The following define makes your compiler emit warnings if you use
@@ -49,7 +49,8 @@ SOURCES += main.cpp\
     test_prioorityqueue.cpp \
     test_astar.cpp \
     debug_output.cpp \
-    test_search_board.cpp
+    test_search_board.cpp \
+    boardgraph.cpp
 
 HEADERS  += \
     board.h \
@@ -73,7 +74,8 @@ HEADERS  += \
     movelist.h \
     moverparam.h \
     dijkstra.h \
-    debug_output.h
+    debug_output.h \
+    boardgraph.h
 
 DISTFILES += \
     test.txt

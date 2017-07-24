@@ -66,7 +66,10 @@ void BoardScene::onNumberClicked()
 
 void BoardScene::gen_board(int row, int col)
 {
-    m_board.gen(row, col);
+    if (m_board.row_size()!=row ||
+            m_board.col_size() != col)
+        m_board.gen(row, col);
+
     BoardGen::gen(&m_board);
 }
 

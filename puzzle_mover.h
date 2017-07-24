@@ -5,6 +5,7 @@
 class PuzzleMover
 {
 public:
+    static MoveList search_solve(const Board& b);
     static MoveList solve(const Board& origin_board);
 private:
     static bool check_solve(MoverParam* param);

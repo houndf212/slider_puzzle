@@ -16,6 +16,7 @@ void print(const Matrix& m)
         }
         std::cout << std::endl;
     }
+    std::cout << std::endl;
 }
 
 template<>

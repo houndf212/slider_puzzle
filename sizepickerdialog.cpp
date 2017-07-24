@@ -23,8 +23,8 @@ void SizePickerDialog::createUI()
     row = new QSpinBox;
     col = new QSpinBox;
 
-    row->setRange(3, 10);
-    col->setRange(3, 10);
+    row->setRange(2, 10);
+    col->setRange(2, 10);
 
     btn = new QPushButton("OK");
     connect(btn, &QPushButton::clicked, this, &SizePickerDialog::accept);
