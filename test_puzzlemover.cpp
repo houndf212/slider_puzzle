@@ -5,8 +5,8 @@
 static bool check_solve(Board board, const MoveList &ml)
 {
     for (auto d : ml) {
-        bool b = board.null_move(d);
-        assert(b==true);
+        if (!board.null_move(d))
+            return false;
     }
     return board.isDone();
 }

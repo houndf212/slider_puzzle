@@ -4,11 +4,12 @@
 size_t BoardGraph::MatrixHash::operator()(const Matrix &m) const
 {
     std::string str;
+    str.reserve(m.row_size()*m.col_size());
     for (int row=0; row<m.row_size(); ++row) {
         for (int col=0; col<m.col_size(); ++col) {
             Pos p(row, col);
             int v = m.get(p);
-            str+=std::to_string(v);
+            str.push_back(v);
         }
     }
     return std::hash<std::string>()(str);

@@ -36,7 +36,8 @@ bool Board::null_move(Direction d)
 
 Direction Board::test_null_move_to(Pos p) const
 {
-    return Board_API::hint_test_null_move_to(matrix, get_null_pos(), p);
+    assert(matrix.isInMatrix(p));
+    return Board_API::direction_to(get_null_pos(), p);
 }
 
 Pos Board::get_null_pos() const

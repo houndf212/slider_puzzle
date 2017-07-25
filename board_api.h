@@ -20,7 +20,7 @@ public:
 
     static Pos get_null_pos(const Matrix &m);
 
-    static Direction hint_test_null_move_to(const Matrix &m, Pos null_hint, Pos p);
+    static Direction direction_to(Pos from, Pos to);
     static bool hint_null_move(Matrix *m, Pos null_hint, Direction d);
 
     //用于 boardgraph

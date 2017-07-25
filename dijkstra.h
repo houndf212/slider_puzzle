@@ -409,6 +409,7 @@ public:
 
                     distance_t heuristic_d = new_cost + g.heuristic(next, finish);
                     auto p2 = heuristic_cost.emplace(next, heuristic_d);
+                    Q_UNUSED(p2);
                     assert(p2.second);
                     open_set.push_back(next);
                     std::push_heap(begin(open_set), end(open_set), compare);

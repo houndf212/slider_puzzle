@@ -5,7 +5,7 @@ std::pair<Matrix, PosVector> Board_API::build_origin(int row, int col)
     Matrix origin_matrix;
     origin_matrix.resize(row, col);
 
-    std::vector<Pos> origin_value_index;
+    PosVector origin_value_index;
     origin_value_index.resize(row*col+1);
 
     int n = 1;
@@ -92,12 +92,10 @@ Pos Board_API::get_null_pos(const Matrix &m)
     return Pos(-1, -1);
 }
 
-Direction Board_API::hint_test_null_move_to(const Matrix &m, Pos null_pos, Pos p)
+Direction Board_API::direction_to(Pos from, Pos to)
 {
-    assert(m.isInMatrix(p));
-    assert(null_pos == get_null_pos(m));
-    int drow = p.row() - null_pos.row();
-    int dcol = p.col() - null_pos.col();
+    int drow = to.row() - from.row();
+    int dcol = to.col() - from.col();
     if (drow == 0) {
         if (dcol == 1)
             return Direction::Null_Right;
