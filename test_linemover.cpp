@@ -5,8 +5,8 @@
 void test_linemover()
 {
     Board board;
-    board.gen(5, 5);
-    BoardGen::gen(&board);
+    board.resize(5, 5);
+    board.gen();
     BoolMatrix fixed;
     fixed.resize(5, 5);
     fixed.set_all_unfixed();

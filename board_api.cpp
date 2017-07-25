@@ -36,7 +36,8 @@ PosVector Board_API::build_index(const Matrix &m)
         for (int col=0; col<m.col_size(); ++col) {
             Pos p(row, col);
             int val = m.get(p);
-            value_index.at(val) = p;
+            assert(0<=val && size_t(val)<value_index.size());
+            value_index[val] = p;
         }
     }
     return value_index;
@@ -61,11 +62,6 @@ void Board_API::move(Pos *p, Board_API::Direction d)
         assert(false);
         break;
     }
-}
-
-void Board_API::gen(Matrix *m, int row, int col)
-{
-    m->resize(row, col);
 }
 
 bool Board_API::isDone(const Matrix &m)

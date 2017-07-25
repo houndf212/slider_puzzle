@@ -19,8 +19,8 @@ void test_puzzlemover()
     while (i-->0) {
         qDebug() << "round: "<<i;
         Board board;
-        board.gen(30, 30);
-        BoardGen::gen(&board);
+        board.resize(30, 30);
+        board.gen();
 //        board.print();
         auto ml = PuzzleMover::solve(board);
 //        qDebug() <<"move steps: " <<ml.size();

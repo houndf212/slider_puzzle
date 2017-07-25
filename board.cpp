@@ -1,5 +1,6 @@
 ﻿#include "board.h"
 #include "board_api.h"
+#include "boardgen.h"
 
 Board::Board(const Matrix &m)
 {
@@ -9,7 +10,14 @@ Board::Board(const Matrix &m)
     null_pos = value_index.at(null_value);
 }
 
-void Board::gen(int row, int col)
+void Board::gen()
+{
+    BoardGen::gen(&matrix);
+    value_index = Board_API::build_index(matrix);
+    null_pos = value_index[null_value];
+}
+
+void Board::resize(int row, int col)
 {
     std::tie(origin_matrix, origin_value_index) = Board_API::build_origin(row, col);
     matrix = origin_matrix;

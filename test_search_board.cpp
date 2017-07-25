@@ -13,8 +13,8 @@ void test_search_board()
 {
 //    assert(check_matrix_board());
     Board b;
-    b.gen(3, 3);
-    BoardGen::gen(&b);
+    b.resize(3, 3);
+    b.gen();
 
     typedef BoardGraph BG;
     typedef Dijkstra<BG> G;

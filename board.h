@@ -40,7 +40,9 @@ public:
 public:
     Board() = default;
     Board(const Matrix &m);
-    void gen(int row, int col);
+
+    void gen();
+    void resize(int row, int col);
 
     bool null_move(Direction d);
 

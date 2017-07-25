@@ -10,8 +10,8 @@ using namespace std;
 void test_numbermover()
 {
     Board orgin_board;
-    orgin_board.gen(5, 5);
-    BoardGen::gen(&orgin_board);
+    orgin_board.resize(5, 5);
+    orgin_board.gen();
 
 
     MoverParam param(orgin_board);

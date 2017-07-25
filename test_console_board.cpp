@@ -1,6 +1,5 @@
 ﻿#include <iostream>
 #include "board.h"
-#include "boardgen.h"
 #include "boardrotator.h"
 #include "debug_output.h"
 using namespace std;
@@ -8,8 +7,8 @@ using namespace std;
 void test_consoleboard()
 {
     Board m;
-    m.gen(5, 5);
-    BoardGen::gen(&m);
+    m.resize(5, 5);
+    m.gen();
     bool b = true;
     while (b) {
         print(m);
