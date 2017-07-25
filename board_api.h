@@ -6,8 +6,9 @@
 
 class Board_API
 {
-    static constexpr int null_value = 0;
 public:
+    static constexpr int null_value = 0;
+
     static std::pair<Matrix, PosVector> build_origin(int row, int col);
     static PosVector build_index(const Matrix &m);
 public:

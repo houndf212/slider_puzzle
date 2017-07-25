@@ -16,7 +16,7 @@ public:
 
     Direction test_null_move_to(Pos p) const;
 
-    Pos get_null_pos() const { return null_pos; }
+    Pos get_null_pos() const;
 
     int pos_value(Pos p) const;
     Pos value_pos(int value) const;
@@ -41,9 +41,6 @@ private:
     Matrix origin_matrix;
     //完成时应该的位置
     std::vector<Pos> origin_value_index;
-
-    Pos null_pos;
-    static constexpr int null_value = 0;
 };
 
 #include "movelist.h"
