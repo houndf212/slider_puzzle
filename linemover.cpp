@@ -61,8 +61,8 @@ bool LineMover::move_line_end(Pos last, MoverParam *param, bool left_right)
         down_last.col()++;
 
     if (param->board.get_null_pos() == last && current_last == down_last) {
-        Board::Direction d = param->board.test_null_move_to(current_last);
-        assert(d != Board::NotValid);
+        Direction d = param->board.test_null_move_to(current_last);
+        assert(d != Direction::NotValid);
         bool b = param->board.null_move(d);
         assert(b==true);
         param->move_list.check_loop_push_back(d);

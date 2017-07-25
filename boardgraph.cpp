@@ -23,7 +23,7 @@ MoveList BoardGraph::toMoveList(const BoardGraph::VertexList &lst, const Matrix 
         const Matrix &b2(*it);
         Pos p2 = Board_API::get_null_pos(b2);
         auto d = Board_API::hint_test_null_move_to(b1, p1, p2);
-        assert(d!=Board::NotValid);
+        assert(d!=Direction::NotValid);
         bool b = Board_API::hint_null_move(&b1, p1, d);
         assert(b);
         p1 = p2;
@@ -50,7 +50,7 @@ BoardGraph::VertexVector BoardGraph::neighbors(const BoardGraph::vertex_t &m)
 {
     VertexVector lst;
     Pos nil = Board_API::get_null_pos(m);
-    auto func = [&](Board::Direction d)
+    auto func = [&](Direction d)
     {
         Matrix b = m;
         if (Board_API::hint_null_move(&b, nil, d)) {
@@ -58,10 +58,10 @@ BoardGraph::VertexVector BoardGraph::neighbors(const BoardGraph::vertex_t &m)
         }
     };
 
-    func(Board::Null_Down);
-    func(Board::Null_Up);
-    func(Board::Null_Right);
-    func(Board::Null_Left);
+    func(Direction::Null_Down);
+    func(Direction::Null_Up);
+    func(Direction::Null_Right);
+    func(Direction::Null_Left);
 
     return lst;
 }

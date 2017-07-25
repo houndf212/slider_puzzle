@@ -1,11 +1,11 @@
 ﻿#include "movelist.h"
 
-void MoveList::check_loop_push_back(Board::Direction d)
+void MoveList::check_loop_push_back(Direction d)
 {
-    if (!empty() && Board::is_reverse(d, back()))
+    if (!empty() && is_reverse(d, back()))
         pop_back();
     else
-        std::list<Board::Direction>::push_back(d);
+        std::list<Direction>::push_back(d);
 }
 
 void MoveList::check_loop_append(const MoveList &ml)

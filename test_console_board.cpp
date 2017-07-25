@@ -17,16 +17,16 @@ void test_consoleboard()
         cin>>c;
         switch (c) {
         case 'w':
-            m.null_move(Board::Null_Down);
+            m.null_move(Direction::Null_Down);
             break;
         case 's':
-            m.null_move(Board::Null_Up);
+            m.null_move(Direction::Null_Up);
             break;
         case 'a':
-            m.null_move(Board::Null_Right);
+            m.null_move(Direction::Null_Right);
             break;
         case 'd':
-            m.null_move(Board::Null_Left);
+            m.null_move(Direction::Null_Left);
             break;
 
         default:

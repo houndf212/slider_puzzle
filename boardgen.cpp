@@ -20,16 +20,16 @@ void BoardGen::gen(Matrix *board)
         Pos null_pos = Board_API::get_null_pos(*board);
         switch (d) {
         case 1:
-            Board_API::hint_null_move(board, null_pos, Board::Null_Up);
+            Board_API::hint_null_move(board, null_pos, Direction::Null_Up);
             break;
         case 2:
-            Board_API::hint_null_move(board, null_pos, Board::Null_Down);
+            Board_API::hint_null_move(board, null_pos, Direction::Null_Down);
             break;
         case 3:
-            Board_API::hint_null_move(board, null_pos, Board::Null_Left);
+            Board_API::hint_null_move(board, null_pos, Direction::Null_Left);
             break;
         case 4:
-            Board_API::hint_null_move(board, null_pos, Board::Null_Right);
+            Board_API::hint_null_move(board, null_pos, Direction::Null_Right);
             break;
         default:
             assert(false);

@@ -25,7 +25,7 @@ void Board::resize(int row, int col)
     null_pos = value_index.at(null_value);
 }
 
-bool Board::null_move(Board::Direction d)
+bool Board::null_move(Direction d)
 {
     bool b = Board_API::hint_null_move(&matrix, null_pos, d);
     if (b) {
@@ -39,7 +39,7 @@ bool Board::null_move(Board::Direction d)
     return b;
 }
 
-Board::Direction Board::test_null_move_to(Pos p) const
+Direction Board::test_null_move_to(Pos p) const
 {
     return Board_API::hint_test_null_move_to(matrix, null_pos, p);
 }

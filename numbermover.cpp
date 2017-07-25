@@ -9,8 +9,8 @@ bool NumberMover::find_null_to(Pos to, MoverParam *param)
         return false;
 
     for (const Pos &p : null_line.first) {
-        Board::Direction d = param->board.test_null_move_to(p);
-        assert(d!=Board::NotValid);
+        Direction d = param->board.test_null_move_to(p);
+        assert(d!=Direction::NotValid);
         bool b = param->board.null_move(d);
         assert(b == true);
         param->move_list.check_loop_push_back(d);
@@ -46,8 +46,8 @@ bool NumberMover::find_moves(Pos start, Pos finish, MoverParam *param)
 //        auto_unfixer.unfix(); //析构函数主动调用
         if (null_line == true) {
             // 第四步 交换 0和点
-            Board::Direction d = param->board.test_null_move_to(start);
-            assert(d!=Board::NotValid);
+            Direction d = param->board.test_null_move_to(start);
+            assert(d!=Direction::NotValid);
             bool b = param->board.null_move(d);
             assert(b==true);
             param->move_list.check_loop_push_back(d);

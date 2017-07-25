@@ -78,7 +78,8 @@ HEADERS  += \
     dijkstra.h \
     debug_output.h \
     boardgraph.h \
-    board_api.h
+    board_api.h \
+    movedirection.h
 
 DISTFILES += \
     test.txt

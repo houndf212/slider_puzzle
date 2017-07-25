@@ -14,7 +14,7 @@ void BoardScene::reset(int row, int col)
     gen_graphics(row, col);
 }
 
-bool BoardScene::move(Board::Direction d)
+bool BoardScene::move(Direction d)
 {
     Pos np = m_board.get_null_pos();
     if (!m_board.null_move(d))
@@ -36,8 +36,8 @@ void BoardScene::onNumberClicked()
     Q_ASSERT(item->getCurrentPos() == p);
     Q_ASSERT(m_board.pos_value(p) == val);
 
-    Board::Direction d = m_board.test_null_move_to(p);
-    if (d!=Board::NotValid) {
+    Direction d = m_board.test_null_move_to(p);
+    if (d!=Direction::NotValid) {
         Pos np = m_board.get_null_pos();
         bool b = m_board.null_move(d);
         assert(b!=false);

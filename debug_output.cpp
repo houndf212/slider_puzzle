@@ -55,22 +55,22 @@ void  print(const PosList &lst)
 }
 
 template<>
-void print(const Board::Direction &d)
+void print(const Direction &d)
 {
     switch (d) {
-    case Board::Null_Up:
+    case Direction::Null_Up:
         std::cout << "null_up";
         break;
-    case Board::Null_Down:
+    case Direction::Null_Down:
         std::cout << "null_down";
         break;
-    case Board::Null_Right:
+    case Direction::Null_Right:
         std::cout << "null_right";
         break;
-    case Board::Null_Left:
+    case Direction::Null_Left:
         std::cout << "null_left";
         break;
-    case Board::NotValid:
+    case Direction::NotValid:
         std::cout << "not_valid";
         break;
     default:

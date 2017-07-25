@@ -14,7 +14,7 @@ public:
     QGraphicsScene* get_scene() const { return m_scene; }
     Q_SIGNAL void sig_done();
     void reset(int row, int col);
-    bool move(Board::Direction d);
+    bool move(Direction d);
     const Board &inner_board() const { return m_board; }
 private:
     Q_SLOT void onNumberClicked();

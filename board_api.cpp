@@ -43,7 +43,7 @@ PosVector Board_API::build_index(const Matrix &m)
     return value_index;
 }
 
-void Board_API::move(Pos *p, Board_API::Direction d)
+void Board_API::move(Pos *p, Direction d)
 {
     switch (d) {
     case Direction::Null_Up:
@@ -92,7 +92,7 @@ Pos Board_API::get_null_pos(const Matrix &m)
     return Pos(-1, -1);
 }
 
-Board_API::Direction Board_API::hint_test_null_move_to(const Matrix &m, Pos null_pos, Pos p)
+Direction Board_API::hint_test_null_move_to(const Matrix &m, Pos null_pos, Pos p)
 {
     assert(m.isInMatrix(p));
     assert(null_pos == get_null_pos(m));
@@ -113,7 +113,7 @@ Board_API::Direction Board_API::hint_test_null_move_to(const Matrix &m, Pos null
     return Direction::NotValid;
 }
 
-bool Board_API::hint_null_move(Matrix *m, Pos null_hint, Board_API::Direction d)
+bool Board_API::hint_null_move(Matrix *m, Pos null_hint, Direction d)
 {
     assert(get_null_pos(*m) == null_hint);
     Pos to = null_hint;
@@ -127,7 +127,7 @@ bool Board_API::hint_null_move(Matrix *m, Pos null_hint, Board_API::Direction d)
     return true;
 }
 
-Board_API::Direction Board_API::get_direction(const Matrix &m1, const Matrix &m2)
+Direction Board_API::get_direction(const Matrix &m1, const Matrix &m2)
 {
     Pos p1 = get_null_pos(m1);
 

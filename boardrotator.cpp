@@ -25,49 +25,49 @@ bool BoardRotator::rotate(MoverParam *param, Pos p1, BoardRotator::ClockDirectio
     MoveList move_list;
     if (clock == ClockWise) {
         if (p0 == p1) {
-            move_list.check_loop_push_back(Board::Null_Down);
-            move_list.check_loop_push_back(Board::Null_Right);
-            move_list.check_loop_push_back(Board::Null_Up);
+            move_list.check_loop_push_back(Direction::Null_Down);
+            move_list.check_loop_push_back(Direction::Null_Right);
+            move_list.check_loop_push_back(Direction::Null_Up);
         }
         else if (p0 == p2) {
-            move_list.check_loop_push_back(Board::Null_Left);
-            move_list.check_loop_push_back(Board::Null_Down);
-            move_list.check_loop_push_back(Board::Null_Right);
+            move_list.check_loop_push_back(Direction::Null_Left);
+            move_list.check_loop_push_back(Direction::Null_Down);
+            move_list.check_loop_push_back(Direction::Null_Right);
         }
         else if (p0 == p3) {
-            move_list.check_loop_push_back(Board::Null_Right);
-            move_list.check_loop_push_back(Board::Null_Up);
-            move_list.check_loop_push_back(Board::Null_Left);
+            move_list.check_loop_push_back(Direction::Null_Right);
+            move_list.check_loop_push_back(Direction::Null_Up);
+            move_list.check_loop_push_back(Direction::Null_Left);
         }
         else if (p0 == p4) {
-            move_list.check_loop_push_back(Board::Null_Up);
-            move_list.check_loop_push_back(Board::Null_Left);
-            move_list.check_loop_push_back(Board::Null_Down);
+            move_list.check_loop_push_back(Direction::Null_Up);
+            move_list.check_loop_push_back(Direction::Null_Left);
+            move_list.check_loop_push_back(Direction::Null_Down);
         }
     }
     else {
         if (p0 == p1) {
-            move_list.check_loop_push_back(Board::Null_Right);
-            move_list.check_loop_push_back(Board::Null_Down);
-            move_list.check_loop_push_back(Board::Null_Left);
+            move_list.check_loop_push_back(Direction::Null_Right);
+            move_list.check_loop_push_back(Direction::Null_Down);
+            move_list.check_loop_push_back(Direction::Null_Left);
         }
         else if (p0 == p2) {
-            move_list.check_loop_push_back(Board::Null_Down);
-            move_list.check_loop_push_back(Board::Null_Left);
-            move_list.check_loop_push_back(Board::Null_Up);
+            move_list.check_loop_push_back(Direction::Null_Down);
+            move_list.check_loop_push_back(Direction::Null_Left);
+            move_list.check_loop_push_back(Direction::Null_Up);
         }
         else if (p0 == p3) {
-            move_list.check_loop_push_back(Board::Null_Up);
-            move_list.check_loop_push_back(Board::Null_Right);
-            move_list.check_loop_push_back(Board::Null_Down);
+            move_list.check_loop_push_back(Direction::Null_Up);
+            move_list.check_loop_push_back(Direction::Null_Right);
+            move_list.check_loop_push_back(Direction::Null_Down);
         }
         else if (p0 == p4) {
-            move_list.check_loop_push_back(Board::Null_Left);
-            move_list.check_loop_push_back(Board::Null_Up);
-            move_list.check_loop_push_back(Board::Null_Right);
+            move_list.check_loop_push_back(Direction::Null_Left);
+            move_list.check_loop_push_back(Direction::Null_Up);
+            move_list.check_loop_push_back(Direction::Null_Right);
         }
     }
-    for (Board::Direction d: move_list) {
+    for (Direction d: move_list) {
         bool b = param->board.null_move(d);
         assert(b==true);
         param->move_list.check_loop_push_back(d);

@@ -1,12 +1,11 @@
 ﻿#ifndef BOARD_API_H
 #define BOARD_API_H
 #include "matrix.h"
-#include "board.h"
+#include "movedirection.h"
 //这个类来完成board的操作，目的是达到操作最少
 
 class Board_API
 {
-    typedef Board::Direction Direction;
     static constexpr int null_value = 0;
 public:
     static std::pair<Matrix, PosVector> build_origin(int row, int col);

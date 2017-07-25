@@ -53,9 +53,9 @@ bool PuzzleMover::check_solve(MoverParam *param)
     Pos p_null(param->board.row_size()-1, param->board.col_size()-1);
     if (param->board.get_null_pos()!=p_null) {
         // 必然是右移动一格
-        bool b = param->board.null_move(Board::Null_Right);
+        bool b = param->board.null_move(Direction::Null_Right);
         if (b == true) {
-            param->move_list.check_loop_push_back(Board::Null_Right);
+            param->move_list.check_loop_push_back(Direction::Null_Right);
         }
         else {
             return false;
@@ -133,7 +133,7 @@ bool PuzzleMover::check_loop(const MoveList &mlst)
     auto it = begin(mlst);
     MoveList::value_type pre = *it;
     for (it++; it!=end(mlst); ++it) {
-        if (Board::is_reverse(pre, *it))
+        if (is_reverse(pre, *it))
             return false;
         pre = *it;
     }

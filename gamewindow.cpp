@@ -62,7 +62,7 @@ void GameWindow::onTimeout()
         leaveAutoSolve();
         return;
     }
-    Board::Direction d = m_movelist.front();
+    Direction d = m_movelist.front();
     m_movelist.pop_front();
     bool b = m_board->move(d);
     assert(b==true);
@@ -98,16 +98,16 @@ void GameWindow::leaveAutoSolve()
 //{
 //    switch (event->key()) {
 //    case Qt::Key_Up:
-//        m_board->move(Board::Null_Down);
+//        m_board->move(Direction::Null_Down);
 //        break;
 //    case Qt::Key_Down:
-//        m_board->move(Board::Null_Up);
+//        m_board->move(Direction::Null_Up);
 //        break;
 //    case Qt::Key_Left:
-//        m_board->move(Board::Null_Right);
+//        m_board->move(Direction::Null_Right);
 //        break;
 //    case Qt::Key_Right:
-//        m_board->move(Board::Null_Left);
+//        m_board->move(Direction::Null_Left);
 //        break;
 //    default:
 //        break;
