@@ -18,16 +18,12 @@ MoveList BoardGraph::toMoveList(const BoardGraph::VertexList &lst, const Matrix 
 {
     MoveList ms;
     Matrix b1(start);
-    Pos p1 = Board_API::get_null_pos(b1);
     for (auto it=begin(lst); it!=end(lst); ++it) {
         const Matrix &b2(*it);
-        Pos p2 = Board_API::get_null_pos(b2);
-        auto d = Board_API::hint_test_null_move_to(b1, p1, p2);
+        Direction d = Board_API::get_direction(b1, b2);
         assert(d!=Direction::NotValid);
-        bool b = Board_API::hint_null_move(&b1, p1, d);
-        assert(b);
-        p1 = p2;
         ms.check_loop_push_back(d);
+        b1 = b2;
     }
     return ms;
 }

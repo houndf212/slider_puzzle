@@ -68,21 +68,3 @@ bool Board::isDone() const
 {
     return Board_API::isDone(matrix);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
