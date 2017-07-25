@@ -50,7 +50,9 @@ SOURCES += main.cpp\
     test_astar.cpp \
     debug_output.cpp \
     test_search_board.cpp \
-    boardgraph.cpp
+    boardgraph.cpp \
+    matrixgraph.cpp \
+    board_api.cpp
 
 HEADERS  += \
     board.h \
@@ -75,7 +77,8 @@ HEADERS  += \
     moverparam.h \
     dijkstra.h \
     debug_output.h \
-    boardgraph.h
+    boardgraph.h \
+    board_api.h
 
 DISTFILES += \
     test.txt

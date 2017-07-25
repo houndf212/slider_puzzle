@@ -20,12 +20,11 @@ MoveList PuzzleMover::search_solve(const Board &b)
     Matrix finish = b.inner_origin_matrix();
 
     print(start);
-    typedef BoardGraph<int> BG;
+    typedef BoardGraph BG;
     typedef Dijkstra<BG> G;
     BG g;
     auto path = G::AStart_path(g, start, finish);
-    path.first.push_front(start);
-    return BG::toMoveList(path.first);
+    return BG::toMoveList(path.first, start);
 }
 
 MoveList PuzzleMover::solve(const Board &origin_board)
@@ -134,7 +133,7 @@ bool PuzzleMover::check_loop(const MoveList &mlst)
     auto it = begin(mlst);
     MoveList::value_type pre = *it;
     for (it++; it!=end(mlst); ++it) {
-        if (Board::is_loop(pre, *it))
+        if (Board::is_reverse(pre, *it))
             return false;
         pre = *it;
     }

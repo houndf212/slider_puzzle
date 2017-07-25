@@ -4,7 +4,7 @@
 
 constexpr int ROW = 10;
 constexpr int COL = 10;
-typedef MatrixGraph<int> MG;
+typedef MatrixGraph MG;
 typedef Dijkstra<MG> G;
 
 void print_path(const std::pair<G::VertexList, G::distance_t>& p)

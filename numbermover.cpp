@@ -65,7 +65,7 @@ std::pair<PosList, bool> NumberMover::core_move_line(Pos start, Pos finish, cons
     if (start == finish)
         return std::make_pair(PosList(), true);
 
-    typedef MatrixGraph<int> MG;
+    typedef MatrixGraph MG;
     typedef Dijkstra<MG> G;
 
     MG g(fixed_matrix);

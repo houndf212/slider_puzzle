@@ -4,7 +4,7 @@
 #include <vector>
 #include <queue>
 #include <deque>
-
+#include <algorithm>
 class Pos
 {
 public:
@@ -35,6 +35,11 @@ inline bool operator==(const Pos &p1, const Pos &p2)
 inline bool operator!=(const Pos &p1, const Pos &p2)
 {
     return !p1.equal(p2);
+}
+
+inline int Manhattan_Distance(const Pos &p1, const Pos &p2)
+{
+    return std::abs(p1.row()-p2.row())+std::abs(p1.col()-p2.col());
 }
 
 typedef std::vector<Pos> PosVector;

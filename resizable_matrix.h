@@ -48,9 +48,9 @@ public:
 
     bool equal(const Resizable_Matrix& m) const
     {
-        return row_size() == m.row_size() &&
-                col_size() == m.col_size() &&
-                this->m == m.m;
+        assert(row_size() == m.row_size());
+        assert(col_size() == m.col_size());
+        return this->m == m.m;
     }
     bool less(const Resizable_Matrix& m) const
     {
