@@ -2,13 +2,14 @@
 
 std::pair<Matrix, PosVector> Board_API::build_origin(int row, int col)
 {
+    assert(row*col < std::numeric_limits<Matrix::value_type>::max());
     Matrix origin_matrix;
     origin_matrix.resize(row, col);
 
     PosVector origin_value_index;
     origin_value_index.resize(row*col+1);
 
-    int n = 1;
+    Matrix::value_type n = 1;
     for (int r=0; r<row; ++r) {
         for (int c=0; c<col; ++c) {
             Pos p(r, c);

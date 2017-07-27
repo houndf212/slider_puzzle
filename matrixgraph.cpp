@@ -3,8 +3,8 @@
 size_t MatrixGraph::PosHash::operator()(const Pos &p) const
 {
     constexpr int half = sizeof(p.row())*8/2;
-    static_assert(half==16, "");
-    size_t c = p.row() << half | p.col();
+    static_assert(sizeof(p.row())<=sizeof(size_t)/2, "");
+    size_t c = size_t(p.row()) << half | size_t(p.col());
     return std::hash<size_t>()(c);
 }
 
@@ -34,10 +34,10 @@ MatrixGraph::VertexVector MatrixGraph::neighbors(MatrixGraph::vertex_t v1) const
         if (matrix.isInMatrix(p) && matrix.has(p))
             vec.push_back(p);
     };
-    func({v1.row()+1, v1.col()});
-    func({v1.row()-1, v1.col()});
-    func({v1.row(), v1.col()+1});
-    func({v1.row(), v1.col()-1});
+    func(Pos(v1.row()+1, v1.col()));
+    func(Pos(v1.row()-1, v1.col()));
+    func(Pos(v1.row(), v1.col()+1));
+    func(Pos(v1.row(), v1.col()-1));
     return vec;
 }
 

@@ -19,6 +19,8 @@ public:
     typedef std::vector<Matrix> VertexVector;
     typedef std::list<Matrix> VertexList;
 
+    static std::string toString(const Matrix &m);
+
     static MoveList toMoveList(const VertexList& lst, const Matrix &start);
     static VertexList toMatrixList(const MoveList& mlst, const Matrix &start);
 

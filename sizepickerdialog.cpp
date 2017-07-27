@@ -1,4 +1,6 @@
 ﻿#include "sizepickerdialog.h"
+#include "matrix.h"
+#include <cmath>
 
 SizePickerDialog::SizePickerDialog(QWidget *parent)
     :QDialog(parent)
@@ -23,8 +25,9 @@ void SizePickerDialog::createUI()
     row = new QSpinBox;
     col = new QSpinBox;
 
-    row->setRange(2, 10);
-    col->setRange(2, 10);
+    int max_size = std::sqrt(double(std::numeric_limits<Matrix::value_type>::max()));
+    row->setRange(2, max_size);
+    col->setRange(2, max_size);
 
     btn = new QPushButton("OK");
     connect(btn, &QPushButton::clicked, this, &SizePickerDialog::accept);

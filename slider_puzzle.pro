@@ -52,7 +52,8 @@ SOURCES += main.cpp\
     test_search_board.cpp \
     boardgraph.cpp \
     matrixgraph.cpp \
-    board_api.cpp
+    board_api.cpp \
+    test_optimize_move.cpp
 
 HEADERS  += \
     board.h \
@@ -79,7 +80,8 @@ HEADERS  += \
     debug_output.h \
     boardgraph.h \
     board_api.h \
-    movedirection.h
+    movedirection.h \
+    basic_pos.h
 
 DISTFILES += \
     test.txt

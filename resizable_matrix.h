@@ -11,6 +11,8 @@ template <class T>
 class Resizable_Matrix
 {
 public:
+    typedef T value_type;
+
     void resize(int row, int col)
     {
         std::vector<T> vec(col, T());

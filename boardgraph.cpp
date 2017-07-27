@@ -3,6 +3,11 @@
 
 size_t BoardGraph::MatrixHash::operator()(const Matrix &m) const
 {
+    return std::hash<std::string>()(BoardGraph::toString(m));
+}
+
+std::string BoardGraph::toString(const Matrix &m)
+{
     std::string str;
     str.reserve(m.row_size()*m.col_size());
     for (int row=0; row<m.row_size(); ++row) {
@@ -12,7 +17,7 @@ size_t BoardGraph::MatrixHash::operator()(const Matrix &m) const
             str.push_back(v);
         }
     }
-    return std::hash<std::string>()(str);
+    return str;
 }
 
 MoveList BoardGraph::toMoveList(const BoardGraph::VertexList &lst, const Matrix &start)

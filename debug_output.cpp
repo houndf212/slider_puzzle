@@ -12,7 +12,7 @@ void print(const Matrix& m)
 {
     for (int row=0; row<m.row_size(); ++row) {
         for (int col=0; col<m.col_size(); ++col) {
-            std::cout << std::setw(2) << m.get(Pos(row, col))<<" ";
+            std::cout << std::setw(2) << int(m.get(Pos(row, col)))<<" ";
         }
         std::cout << std::endl;
     }
@@ -24,7 +24,7 @@ void print(const BoolMatrix& m)
 {
     for (int row=0; row<m.row_size(); ++row) {
         for (int col=0; col<m.col_size(); ++col) {
-            std::cout<< m.get(Pos(row, col))<<" ";
+            std::cout<< int(m.get(Pos(row, col)))<<" ";
         }
         std::cout << std::endl;
     }

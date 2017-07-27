@@ -70,22 +70,24 @@ bool LineMover::move_line_end(Pos last, MoverParam *param, bool left_right)
     }
     //非特殊情况
     Pos p_null = last;
-    Pos p_last;
+    Pos p_last = last;
 
-    Pos p_r_up;
-    Pos p_r_down;
+    Pos p_r_up = last;
+    Pos p_r_down = last;
 
     if (left_right) {
-        p_last = {last.row()+2, last.col()};
+        p_last.row()+=2;
 
-        p_r_up = {last.row(), last.col()-1};
-        p_r_down = {last.row()+1, last.col()-1};
+        p_r_up.col()--;
+
+        p_r_down.row()++;
+        p_r_down.col()--;
     }
     else {
-        p_last = {last.row(), last.col()+2};
+        p_last.col()+=2;
 
-        p_r_up = last;
-        p_r_down = {last.row(), last.col()+1};
+//        p_r_up = last;
+        p_r_down.col()++;
     }
 
     //1这里可能产生 ‘循环’
