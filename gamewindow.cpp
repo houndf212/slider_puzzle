@@ -77,10 +77,11 @@ void GameWindow::enterAutoSolve()
     m_btn_reset->setEnabled(false);
     m_view->setEnabled(false);
 
-    m_movelist = PuzzleMover::solve(m_board->inner_board());
-    qDebug() << "old sover size: " << m_movelist.size();
-    m_movelist = PuzzleMover::search_solve(m_board->inner_board());
-    qDebug() << "new sover size: " << m_movelist.size();
+    if (m_board->inner_board().row_size()*m_board->inner_board().col_size()>3*3)
+        m_movelist = PuzzleMover::solve(m_board->inner_board());
+    else
+        m_movelist = PuzzleMover::search_solve(m_board->inner_board());
+
     m_timer->start(1*300);
 }
 

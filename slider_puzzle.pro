@@ -53,7 +53,8 @@ SOURCES += main.cpp\
     boardgraph.cpp \
     matrixgraph.cpp \
     board_api.cpp \
-    test_optimize_move.cpp
+    test_optimize_move.cpp \
+    test_gen.cpp
 
 HEADERS  += \
     board.h \

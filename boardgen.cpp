@@ -3,37 +3,51 @@
 #include <chrono>
 #include "board_api.h"
 
-// TODO  怎么实现一个合理的算法产生一个随机的
-// 随机产生一个 排列 只有一半的几率能解 ，那怎么修改不能解的情况， 需要考虑查下资料完成这个功能
+// 计算逆序对
+static int count_inversion(const std::vector<Matrix::value_type> &vec)
+{
+    int count = 0;
+    for(int i=0; i<vec.size()-1; ++i) {
+        for(int j=i+1; j<vec.size(); ++j) {
+            if(vec[i]>vec[j])
+                count++;
+        }
+    }
+    return count;
+}
+
 void BoardGen::gen(Matrix *board)
 {
     using namespace std;
     typedef std::default_random_engine::result_type type_t;
     type_t seed = chrono::system_clock::now().time_since_epoch().count();
-    std::uniform_int_distribution<int> dist(1, 4);
     std::default_random_engine rng;
     rng.seed(seed);
+
+    auto frng = [&rng](int n) {
+        return rng() % n;
+    };
+
     int size = board->row_size()*board->col_size();
-    int n = std::max( int(rng() % size*10), size*5);
-    while(n-->0) {
-        int d = dist(rng);
-        Pos null_pos = Board_API::get_null_pos(*board);
-        switch (d) {
-        case 1:
-            Board_API::hint_null_move(board, null_pos, Direction::Null_Up);
-            break;
-        case 2:
-            Board_API::hint_null_move(board, null_pos, Direction::Null_Down);
-            break;
-        case 3:
-            Board_API::hint_null_move(board, null_pos, Direction::Null_Left);
-            break;
-        case 4:
-            Board_API::hint_null_move(board, null_pos, Direction::Null_Right);
-            break;
-        default:
-            assert(false);
-            break;
+    std::vector<Matrix::value_type> vec(size-1, 0);
+    //0 放最后，计算逆序对的时候不计算最后一个
+    std::iota(begin(vec), end(vec), 1);
+
+    std::random_shuffle(begin(vec), end(vec), frng);
+
+    int inversion = count_inversion(vec);
+
+    //如果逆序对个数为奇数，那么交换第一和第二
+    if (inversion % 2 != 0)
+        std::swap(vec[0], vec[1]);
+
+    //0始终放在最后
+    vec.push_back(Board_API::null_value);
+
+    int index = 0;
+    for (int row=0; row<board->row_size(); ++row) {
+        for (int col=0; col<board->col_size(); ++col) {
+            board->set(Pos(row, col), vec[index++]);
         }
     }
 }

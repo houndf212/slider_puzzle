@@ -19,7 +19,6 @@ MoveList PuzzleMover::search_solve(const Board &b)
     Matrix start = b.inner_matrix();
     Matrix finish = b.inner_origin_matrix();
 
-    print(start);
     typedef BoardGraph BG;
     typedef Dijkstra<BG> G;
     BG g;

@@ -13,6 +13,7 @@ void run_test()
     extern void test_astar();
     extern void test_search_board();
     extern void test_optimize_move();
+    extern void test_gen();
 //    testEdgeGraphFile();
 //    test_matrixgraph();
 //    test_consoleboard();
@@ -21,8 +22,9 @@ void run_test()
 //    test_linemover();
 //    test_puzzlemover();
 //    test_astar();
-    test_search_board();
+//    test_search_board();
 //    test_optimize_move();
+    test_gen();
 }
 
 int main(int argc, char *argv[])
