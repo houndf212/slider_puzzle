@@ -6,8 +6,8 @@
 
 class Board_API
 {
+    static constexpr Matrix::value_type start_value = 1;
 public:
-    static constexpr Matrix::value_type start_value = 2;
     static constexpr Matrix::value_type null_value = 0;
 
     static std::pair<Matrix, PosVector> build_origin(int row, int col);
@@ -15,7 +15,7 @@ public:
 public:
     static void move(Pos *p, Direction d);
 
-    static void gen(Matrix* m, int row, int col);
+    static PosVector gen(Matrix* board);
 
     static bool isDone(const Matrix &m);
 

@@ -1,5 +1,4 @@
 ﻿#include "boardscene.h"
-#include "boardgen.h"
 
 BoardScene::BoardScene(QObject *parent)
     :QObject(parent)

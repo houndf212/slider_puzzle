@@ -1,5 +1,4 @@
 ﻿#include "linemover.h"
-#include "boardgen.h"
 #include "debug_output.h"
 
 void test_linemover()

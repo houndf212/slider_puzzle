@@ -1,5 +1,4 @@
 ﻿#include "board.h"
-#include "boardgen.h"
 #include "boolmatrix.h"
 #include "numbermover.h"
 #include "moverparam.h"

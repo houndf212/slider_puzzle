@@ -1,4 +1,6 @@
 ﻿#include "board_api.h"
+#include <random>
+#include <chrono>
 
 std::pair<Matrix, PosVector> Board_API::build_origin(int row, int col)
 {
@@ -63,6 +65,58 @@ void Board_API::move(Pos *p, Direction d)
         assert(false);
         break;
     }
+}
+
+// 计算逆序对
+static int count_inversion(const std::vector<Matrix::value_type> &vec)
+{
+    int count = 0;
+    for(size_t i=0; i<vec.size()-1; ++i) {
+        for(size_t j=i+1; j<vec.size(); ++j) {
+            if(vec[i]>vec[j])
+                count++;
+        }
+    }
+    return count;
+}
+
+PosVector Board_API::gen(Matrix *board)
+{
+    using namespace std;
+    typedef std::default_random_engine::result_type type_t;
+    type_t seed = chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine rng;
+    rng.seed(seed);
+
+    int size = board->row_size()*board->col_size();
+    std::vector<Matrix::value_type> vec(size-1, 0);
+    //0 放最后，计算逆序对的时候不计算最后一个
+    std::iota(begin(vec), end(vec), Board_API::start_value);
+
+    std::shuffle(begin(vec), end(vec), rng);
+
+    int inversion = count_inversion(vec);
+
+    //如果逆序对个数为奇数，那么交换第一和第二
+    if (inversion % 2 != 0)
+        std::swap(vec[0], vec[1]);
+
+    //0始终放在最后
+    vec.push_back(Matrix::value_type(Board_API::null_value));
+
+    PosVector index_vec;
+    index_vec.resize(vec.size());
+    int index = 0;
+    for (int row=0; row<board->row_size(); ++row) {
+        for (int col=0; col<board->col_size(); ++col) {
+            Pos p(row, col);
+            auto v = vec[index];
+            board->set(p, v);
+            index_vec[v] = p;
+            ++index;
+        }
+    }
+    return index_vec;
 }
 
 bool Board_API::isDone(const Matrix &m)

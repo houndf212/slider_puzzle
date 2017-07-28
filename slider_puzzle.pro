@@ -31,7 +31,6 @@ SOURCES += main.cpp\
     numberitem.cpp \
     graphicsview.cpp \
     boardscene.cpp \
-    boardgen.cpp \
     gamewindow.cpp \
     sizepickerdialog.cpp \
     boardrotator.cpp \
@@ -63,7 +62,6 @@ HEADERS  += \
     numberitem.h \
     graphicsview.h \
     boardscene.h \
-    boardgen.h \
     gamewindow.h \
     sizepickerdialog.h \
     edgegraph.h \

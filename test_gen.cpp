@@ -1,5 +1,4 @@
-﻿#include "boardgen.h"
-#include "board_api.h"
+﻿#include "board_api.h"
 #include "puzzle_mover.h"
 
 static bool check_solve(Board board, const MoveList &ml)

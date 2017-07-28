@@ -1,5 +1,4 @@
 ﻿#include "board.h"
-#include "boardgen.h"
 #include "puzzle_mover.h"
 #include "debug_output.h"
 #include <list>

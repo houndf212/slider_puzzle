@@ -1,5 +1,4 @@
 ﻿#include "puzzle_mover.h"
-#include "boardgen.h"
 #include <QtCore>
 
 static bool check_solve(Board board, const MoveList &ml)
