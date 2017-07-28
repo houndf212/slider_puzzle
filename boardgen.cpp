@@ -7,8 +7,8 @@
 static int count_inversion(const std::vector<Matrix::value_type> &vec)
 {
     int count = 0;
-    for(int i=0; i<vec.size()-1; ++i) {
-        for(int j=i+1; j<vec.size(); ++j) {
+    for(size_t i=0; i<vec.size()-1; ++i) {
+        for(size_t j=i+1; j<vec.size(); ++j) {
             if(vec[i]>vec[j])
                 count++;
         }
@@ -24,16 +24,12 @@ void BoardGen::gen(Matrix *board)
     std::default_random_engine rng;
     rng.seed(seed);
 
-    auto frng = [&rng](int n) {
-        return rng() % n;
-    };
-
     int size = board->row_size()*board->col_size();
     std::vector<Matrix::value_type> vec(size-1, 0);
     //0 放最后，计算逆序对的时候不计算最后一个
     std::iota(begin(vec), end(vec), 1);
 
-    std::random_shuffle(begin(vec), end(vec), frng);
+    std::shuffle(begin(vec), end(vec), rng);
 
     int inversion = count_inversion(vec);
 
