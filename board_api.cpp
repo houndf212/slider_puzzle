@@ -9,7 +9,7 @@ std::pair<Matrix, PosVector> Board_API::build_origin(int row, int col)
     PosVector origin_value_index;
     origin_value_index.resize(row*col+1);
 
-    Matrix::value_type n = 1;
+    Matrix::value_type n = start_value;
     for (int r=0; r<row; ++r) {
         for (int c=0; c<col; ++c) {
             Pos p(r, c);
@@ -31,7 +31,7 @@ std::pair<Matrix, PosVector> Board_API::build_origin(int row, int col)
 PosVector Board_API::build_index(const Matrix &m)
 {
     PosVector value_index;
-    value_index.resize(m.row_size()*m.col_size());
+    value_index.resize(m.row_size()*m.col_size()+start_value-1);
 
     for (int row=0; row<m.row_size(); ++row) {
         for (int col=0; col<m.col_size(); ++col) {
@@ -67,14 +67,14 @@ void Board_API::move(Pos *p, Direction d)
 
 bool Board_API::isDone(const Matrix &m)
 {
-    Matrix::value_type n=0;
+    Matrix::value_type n = start_value;
     for (int row=0; row<m.row_size(); ++row) {
         for (int col=0; col<m.col_size(); ++col) {
-            n++;
             Pos p(row, col);
             auto val = m.get(p);
             if (val!=0 && val!=n)
                 return false;
+            ++n;
         }
     }
     return true;

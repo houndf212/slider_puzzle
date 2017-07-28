@@ -1,4 +1,4 @@
-#ifndef NUMBERITEM_H
+﻿#ifndef NUMBERITEM_H
 #define NUMBERITEM_H
 #include <QtCore>
 #include <QGraphicsItem>
@@ -16,8 +16,8 @@ public:
 
     void animate_move(QPointF p, int msec);
 
-    int getValue() const { return m_value; }
-    void setValue(int val);
+    Matrix::value_type getValue() const { return m_value; }
+    void setValue(Matrix::value_type val) { m_value = val; }
 
     Pos getCurrentPos() const { return m_pos; }
     void setCurrentPos(Pos p) { m_pos = p; }
@@ -28,7 +28,7 @@ protected:
 private:
     void init_animation();
 private:
-    int m_value;
+    Matrix::value_type m_value;
     Pos m_pos;
     QPropertyAnimation* pos_animate;
 };

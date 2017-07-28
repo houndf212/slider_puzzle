@@ -27,7 +27,7 @@ void BoardGen::gen(Matrix *board)
     int size = board->row_size()*board->col_size();
     std::vector<Matrix::value_type> vec(size-1, 0);
     //0 放最后，计算逆序对的时候不计算最后一个
-    std::iota(begin(vec), end(vec), 1);
+    std::iota(begin(vec), end(vec), Board_API::start_value);
 
     std::shuffle(begin(vec), end(vec), rng);
 

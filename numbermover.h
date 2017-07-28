@@ -9,7 +9,7 @@ public:
     static bool find_null_to(Pos to, MoverParam *param);
 
     // warpper for find_moves
-    static bool find_value_moves(int val, MoverParam *param);
+    static bool find_value_moves(Matrix::value_type val, MoverParam *param);
 
     static bool find_moves(Pos start, Pos finish, MoverParam *param);
 private:

@@ -18,7 +18,7 @@ bool NumberMover::find_null_to(Pos to, MoverParam *param)
     return true;
 }
 
-bool NumberMover::find_value_moves(int val, MoverParam *param)
+bool NumberMover::find_value_moves(Matrix::value_type val, MoverParam *param)
 {
     //第一步  找到 从 要移动的点到移动位置的点 的路径
     Pos start = param->board.value_pos(val);

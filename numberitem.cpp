@@ -1,4 +1,4 @@
-#include "numberitem.h"
+﻿#include "numberitem.h"
 #include <QPainter>
 #include <QGraphicsSceneWheelEvent>
 
@@ -19,10 +19,7 @@ void NumberItem::animate_move(QPointF p, int msec)
     pos_animate->start();
 }
 
-void NumberItem::setValue(int val)
-{
-    m_value = val;
-}
+
 
 void NumberItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {

@@ -83,9 +83,9 @@ BoardGraph::distance_t BoardGraph::heuristic(const BoardGraph::vertex_t &v1, con
     assert(v1.col_size() == v2.col_size());
 //    assert(Board_API::isDone(v2));
 
-    std::vector<Pos> index1;
+    std::vector<Pos> index1, index2;
     index1.resize(v1.row_size()*v1.col_size());
-    auto index2 = index1;
+    index2.resize(index1.size());
     //cal index
     for (int row=0; row<v1.row_size(); ++row) {
         for (int col=0; col<v1.col_size(); ++col) {
