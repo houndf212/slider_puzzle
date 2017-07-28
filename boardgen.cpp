@@ -38,7 +38,7 @@ void BoardGen::gen(Matrix *board)
         std::swap(vec[0], vec[1]);
 
     //0始终放在最后
-    vec.push_back(Board_API::null_value);
+    vec.push_back(Matrix::value_type(Board_API::null_value));
 
     int index = 0;
     for (int row=0; row<board->row_size(); ++row) {
