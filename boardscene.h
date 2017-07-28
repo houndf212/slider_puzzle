@@ -13,20 +13,19 @@ public:
     explicit BoardScene(QObject* parent=nullptr);
     QGraphicsScene* get_scene() const { return m_scene; }
     Q_SIGNAL void sig_done();
-    void reset(int row, int col);
+    void resize_board(int row, int col);
+    void gen();
     bool move(Direction d);
     const Board &inner_board() const { return m_board; }
 private:
     Q_SLOT void onNumberClicked();
 //    Q_SLOT void onNumberWheel(BoardRotator::ClockDirection clock);
 private:
-    void gen_board(int row, int col);
     void gen_graphics(int row, int col);
-
     void move_number(Matrix::value_type val, Pos p);
 private:
     QGraphicsScene* m_scene;
-    std::unordered_map<int, NumberItem*> m_itemMap;
+    std::unordered_map<Matrix::value_type, NumberItem*> m_itemMap;
     Board m_board;
 private:
     static constexpr int SCALE = 50;

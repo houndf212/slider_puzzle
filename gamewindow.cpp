@@ -9,9 +9,13 @@ GameWindow::GameWindow()
     m_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    m_btn_reset = new QPushButton("Reset");
-    m_btn_reset->setFocusPolicy(Qt::NoFocus);
-    connect(m_btn_reset, &QPushButton::clicked, this, &GameWindow::onReset);
+    m_btn_resize = new QPushButton("Resize");
+    m_btn_resize->setFocusPolicy(Qt::NoFocus);
+    connect(m_btn_resize, &QPushButton::clicked, this, &GameWindow::onResize);
+
+    btn_gen = new QPushButton("Random");
+    btn_gen->setFocusPolicy(Qt::NoFocus);
+    connect(btn_gen, &QPushButton::clicked, this, &GameWindow::onGen);
 
     m_btn_auto_solve = new QPushButton("Auto solve");
     m_btn_auto_solve->setFocusPolicy(Qt::NoFocus);
@@ -21,7 +25,8 @@ GameWindow::GameWindow()
     connect(m_timer, &QTimer::timeout, this, &GameWindow::onTimeout);
 
     QHBoxLayout* btnLayout = new QHBoxLayout;
-    btnLayout->addWidget(m_btn_reset);
+    btnLayout->addWidget(m_btn_resize);
+    btnLayout->addWidget(btn_gen);
     btnLayout->addWidget(m_btn_auto_solve);
     QVBoxLayout* layout = new QVBoxLayout;
     layout->addLayout(btnLayout);
@@ -29,21 +34,26 @@ GameWindow::GameWindow()
 
     setLayout(layout);
 
-    m_board->reset(3, 3);
+    m_board->resize_board(3, 3);
     m_view->setMinimumSize(300, 300);
 }
 
-void GameWindow::onReset()
+void GameWindow::onResize()
 {
     SizePickerDialog d(this);
     d.setSize(QSize(m_board->inner_board().col_size(),
                     m_board->inner_board().row_size()));
     d.exec();
     QSize s = d.getSize();
-    m_board->reset(s.height(), s.width());
+    m_board->resize_board(s.height(), s.width());
 //    m_view->resize(s*100);
     m_view->setMinimumSize(s*100);
     //    resize(sizeHint());
+}
+
+void GameWindow::onGen()
+{
+    m_board->gen();
 }
 
 void GameWindow::onAutoSolve()
@@ -74,7 +84,8 @@ void GameWindow::enterAutoSolve()
         return;
 
     m_btn_auto_solve->setText("Stop");
-    m_btn_reset->setEnabled(false);
+    m_btn_resize->setEnabled(false);
+    btn_gen->setEnabled(false);
     m_view->setEnabled(false);
 
     if (m_board->inner_board().row_size()*m_board->inner_board().col_size()>3*3)
@@ -88,7 +99,8 @@ void GameWindow::enterAutoSolve()
 void GameWindow::leaveAutoSolve()
 {
     m_btn_auto_solve->setText("Auto solve");
-    m_btn_reset->setEnabled(true);
+    m_btn_resize->setEnabled(true);
+    btn_gen->setEnabled(true);
     m_view->setEnabled(true);
 
     m_movelist.clear();

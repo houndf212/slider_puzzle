@@ -4,13 +4,29 @@ BoardScene::BoardScene(QObject *parent)
     :QObject(parent)
 {
     m_scene = new QGraphicsScene(this);
-    reset(3, 3);
+    resize_board(3, 3);
 }
 
-void BoardScene::reset(int row, int col)
+void BoardScene::resize_board(int row, int col)
 {
-    gen_board(row, col);
-    gen_graphics(row, col);
+    if (m_board.row_size() !=row || m_board.col_size()!=col) {
+        m_board.resize(row, col);
+        gen_graphics(row, col);
+    }
+}
+
+void BoardScene::gen()
+{
+    m_board.gen();
+    for (int row=0; row<m_board.row_size(); ++row) {
+        for (int col=0; col<m_board.col_size(); ++col) {
+            Pos p(row, col);
+            if (p == m_board.get_null_pos())
+                continue;
+            auto val = m_board.pos_value(p);
+            move_number(val, p);
+        }
+    }
 }
 
 bool BoardScene::move(Direction d)
@@ -63,13 +79,6 @@ void BoardScene::onNumberClicked()
 ////    m_board.print();
 //}
 
-void BoardScene::gen_board(int row, int col)
-{
-    if (m_board.row_size() !=row || m_board.col_size()!=col)
-        m_board.resize(row, col);
-
-    m_board.gen();
-}
 
 void BoardScene::gen_graphics(int row, int col)
 {
@@ -92,7 +101,7 @@ void BoardScene::gen_graphics(int row, int col)
 //            connect(item, &NumberItem::wheel, this, &BoardScene::onNumberWheel);
             m_scene->addItem(item);
             auto val = m_board.pos_value(p);
-            m_itemMap.insert(std::make_pair(val, item));
+            m_itemMap.emplace(val, item);
             item->setRect(0, 0, SCALE, SCALE);
             item->setValue(val);
             item->setCurrentPos(p);
@@ -103,10 +112,7 @@ void BoardScene::gen_graphics(int row, int col)
 
 void BoardScene::move_number(Matrix::value_type val, Pos p)
 {
-    typedef std::unordered_map<int, NumberItem*>::const_iterator Iter;
-    Iter it = m_itemMap.find(val);
-    Q_ASSERT(it != m_itemMap.cend());
-    NumberItem *item = it->second;
+    NumberItem *item = m_itemMap.at(val);
     item->setCurrentPos(p);
     item->animate_move(QPointF(p.col()*SCALE, p.row()*SCALE), 300);
 }

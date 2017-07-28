@@ -12,7 +12,8 @@ public:
     GameWindow();
 
 private:
-    Q_SLOT void onReset();
+    Q_SLOT void onResize();
+    Q_SLOT void onGen();
     Q_SLOT void onAutoSolve();
     Q_SLOT void onTimeout();
 
@@ -21,8 +22,8 @@ private:
 private:
     BoardScene* m_board;
     GraphicsView *m_view;
-    QPushButton *m_btn_reset;
-
+    QPushButton *m_btn_resize;
+    QPushButton *btn_gen;
     QPushButton* m_btn_auto_solve;
     QTimer *m_timer;
     MoveList m_movelist;
