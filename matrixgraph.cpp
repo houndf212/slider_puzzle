@@ -4,7 +4,7 @@ size_t MatrixGraph::PosHash::operator()(const Pos &p) const
 {
     constexpr int half = sizeof(p.row())*8/2;
     static_assert(sizeof(p.row())<=sizeof(size_t)/2, "");
-    size_t c = size_t(p.row()) << half | size_t(p.col());
+    size_t c = static_cast<size_t>(p.row()) << half | static_cast<size_t>(p.col());
     return std::hash<size_t>()(c);
 }
 

@@ -36,8 +36,8 @@ PosVector Board_API::build_index(const Matrix &m)
     for (int row=0; row<m.row_size(); ++row) {
         for (int col=0; col<m.col_size(); ++col) {
             Pos p(row, col);
-            int val = m.get(p);
-            assert(0<=val && size_t(val)<value_index.size());
+            auto val = m.get(p);
+            assert(0<=val && static_cast<size_t>(val)<value_index.size());
             value_index[val] = p;
         }
     }
@@ -67,12 +67,12 @@ void Board_API::move(Pos *p, Direction d)
 
 bool Board_API::isDone(const Matrix &m)
 {
-    int n=0;
+    Matrix::value_type n=0;
     for (int row=0; row<m.row_size(); ++row) {
         for (int col=0; col<m.col_size(); ++col) {
             n++;
             Pos p(row, col);
-            int val = m.get(p);
+            auto val = m.get(p);
             if (val!=0 && val!=n)
                 return false;
         }
@@ -120,7 +120,7 @@ bool Board_API::hint_null_move(Matrix *m, Pos null_hint, Direction d)
     if (!m->isInMatrix(to))
         return false;
 
-    int val = m->get(to);
+    auto val = m->get(to);
     m->set(null_hint, val);
     m->set(to, null_value);
     return true;

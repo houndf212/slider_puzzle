@@ -13,7 +13,7 @@ std::string BoardGraph::toString(const Matrix &m)
     for (int row=0; row<m.row_size(); ++row) {
         for (int col=0; col<m.col_size(); ++col) {
             Pos p(row, col);
-            int v = m.get(p);
+            auto v = m.get(p);
             str.push_back(v);
         }
     }
@@ -90,8 +90,8 @@ BoardGraph::distance_t BoardGraph::heuristic(const BoardGraph::vertex_t &v1, con
     for (int row=0; row<v1.row_size(); ++row) {
         for (int col=0; col<v1.col_size(); ++col) {
             Pos p(row, col);
-            int val1 = v1.get(p);
-            int val2 = v2.get(p);
+            auto val1 = v1.get(p);
+            auto val2 = v2.get(p);
             index1[val1] = p;
             index2[val2] = p;
         }

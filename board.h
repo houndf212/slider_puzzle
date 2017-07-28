@@ -18,11 +18,11 @@ public:
 
     Pos get_null_pos() const;
 
-    int pos_value(Pos p) const;
-    Pos value_pos(int value) const;
+    Matrix::value_type pos_value(Pos p) const;
+    Pos value_pos(Matrix::value_type value) const;
 
-    Pos origin_pos(int val) const;
-    int origin_value(Pos p) const;
+    Pos origin_pos(Matrix::value_type val) const;
+    Matrix::value_type origin_value(Pos p) const;
 
     bool isDone() const;
 

@@ -104,7 +104,7 @@ std::list<PosList> PuzzleMover::get_move_lines(const Board &board)
             left_right.emplace_back(top_left.row(), col);
         }
 
-        size_t size = left_right.size();
+        auto size = left_right.size();
         assert(size>=2);
         lines.push_back(std::move(left_right));
 

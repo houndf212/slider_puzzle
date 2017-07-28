@@ -20,7 +20,7 @@ bool BoardScene::move(Direction d)
     if (!m_board.null_move(d))
         return false;
 
-    int val = m_board.pos_value(np);
+    auto val = m_board.pos_value(np);
     move_number(val, np);
     return true;
 }
@@ -30,7 +30,7 @@ void BoardScene::onNumberClicked()
     NumberItem *item = dynamic_cast<NumberItem *>(sender());
     Q_ASSERT(item!=nullptr);
 
-    int val = item->getValue();
+    auto val = item->getValue();
     Pos p = m_board.value_pos(val);
 
     Q_ASSERT(item->getCurrentPos() == p);
@@ -92,7 +92,7 @@ void BoardScene::gen_graphics(int row, int col)
             connect(item, &NumberItem::clicked, this, &BoardScene::onNumberClicked);
 //            connect(item, &NumberItem::wheel, this, &BoardScene::onNumberWheel);
             m_scene->addItem(item);
-            int val = m_board.pos_value(p);
+            auto val = m_board.pos_value(p);
             m_itemMap.insert(std::make_pair(val, item));
             item->setRect(0, 0, SCALE, SCALE);
             item->setValue(val);
@@ -102,7 +102,7 @@ void BoardScene::gen_graphics(int row, int col)
     }
 }
 
-void BoardScene::move_number(int val, Pos p)
+void BoardScene::move_number(Matrix::value_type val, Pos p)
 {
     typedef std::unordered_map<int, NumberItem*>::const_iterator Iter;
     Iter it = m_itemMap.find(val);

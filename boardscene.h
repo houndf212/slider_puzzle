@@ -23,7 +23,7 @@ private:
     void gen_board(int row, int col);
     void gen_graphics(int row, int col);
 
-    void move_number(int val, Pos p);
+    void move_number(Matrix::value_type val, Pos p);
 private:
     QGraphicsScene* m_scene;
     std::unordered_map<int, NumberItem*> m_itemMap;

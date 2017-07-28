@@ -34,10 +34,10 @@ void testEdgeGraphFile()
     QTextStream reader(&file);
 
     QString vstr = reader.readLine();
-    size_t vsize = vstr.toInt();
+    size_t vsize = vstr.toUInt();
 
     QString estr = reader.readLine();
-    size_t esize = estr.toInt();
+    size_t esize = estr.toUInt();
     qDebug() <<esize;
 
 
