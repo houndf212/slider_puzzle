@@ -46,9 +46,8 @@ void GameWindow::onResize()
     d.exec();
     QSize s = d.getSize();
     m_board->resize_board(s.height(), s.width());
-//    m_view->resize(s*100);
     m_view->setMinimumSize(s*100);
-    //    resize(sizeHint());
+    m_view->fitInView(m_board->get_scene()->sceneRect());
 }
 
 void GameWindow::onGen()

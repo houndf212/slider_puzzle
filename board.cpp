@@ -22,6 +22,7 @@ void Board::resize(int row, int col)
 
 bool Board::null_move(Direction d)
 {
+    assert(d != Direction::NotValid);
     Pos null_pos = get_null_pos();
     bool b = Board_API::hint_null_move(&matrix, null_pos, d);
     if (b) {

@@ -105,9 +105,11 @@ void BoardScene::gen_graphics(int row, int col)
             item->setRect(0, 0, SCALE, SCALE);
             item->setValue(val);
             item->setCurrentPos(p);
+//            move_number(val, p);
             item->setPos(c*SCALE, r*SCALE);
         }
     }
+    gen();
 }
 
 void BoardScene::move_number(Matrix::value_type val, Pos p)
