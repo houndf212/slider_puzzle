@@ -26,61 +26,62 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 PRECOMPILED_HEADER = pch.h
 
-SOURCES += main.cpp\
-    board.cpp \
-    numberitem.cpp \
-    graphicsview.cpp \
-    boardscene.cpp \
-    gamewindow.cpp \
-    sizepickerdialog.cpp \
-    boardrotator.cpp \
-    numbermover.cpp \
-    test_console_board.cpp \
-    test_matrixgraph.cpp \
-    test_edgegraph.cpp \
-    test_numbermover.cpp \
-    linemover.cpp \
-    test_linemover.cpp \
-    puzzle_mover.cpp \
-    test_puzzlemover.cpp \
-    movelist.cpp \
-    moverparam.cpp \
-    test_prioorityqueue.cpp \
-    test_astar.cpp \
-    debug_output.cpp \
-    test_search_board.cpp \
-    boardgraph.cpp \
-    matrixgraph.cpp \
-    board_api.cpp \
-    test_optimize_move.cpp \
-    test_gen.cpp
-
-HEADERS  += \
+HEADERS += \
+    basic_pos.h \
     board.h \
-    matrix.h \
-    pos.h \
-    numberitem.h \
-    graphicsview.h \
-    boardscene.h \
-    gamewindow.h \
-    sizepickerdialog.h \
-    edgegraph.h \
-    matrixgraph.h \
+    board_api.h \
+    boardgraph.h \
     boardrotator.h \
-    pch.h \
-    numbermover.h \
-    resizable_matrix.h \
+    boardscene.h \
     boolmatrix.h \
+    debug_output.h \
+    dijkstra.h \
+    edgegraph.h \
+    gamewindow.h \
+    graphicsview.h \
     linemover.h \
-    puzzle_mover.h \
+    matrix.h \
+    matrixgraph.h \
+    movedirection.h \
     movelist.h \
     moverparam.h \
-    dijkstra.h \
-    debug_output.h \
-    boardgraph.h \
-    board_api.h \
-    movedirection.h \
-    basic_pos.h
+    numberitem.h \
+    numbermover.h \
+    pos.h \
+    puzzle_mover.h \
+    resizable_matrix.h \
+    sizepickerdialog.h
 
-DISTFILES += \
-    test.txt
+SOURCES += \
+    board.cpp \
+    board_api.cpp \
+    boardgraph.cpp \
+    boardrotator.cpp \
+    boardscene.cpp \
+    debug_output.cpp \
+    gamewindow.cpp \
+    graphicsview.cpp \
+    linemover.cpp \
+    main.cpp \
+    matrixgraph.cpp \
+    movelist.cpp \
+    moverparam.cpp \
+    numberitem.cpp \
+    numbermover.cpp \
+    puzzle_mover.cpp \
+    sizepickerdialog.cpp
+
+Debug {
+SOURCES += \
+    test_astar.cpp \
+    test_console_board.cpp \
+    test_edgegraph.cpp \
+    test_gen.cpp \
+    test_linemover.cpp \
+    test_matrixgraph.cpp \
+    test_numbermover.cpp \
+    test_optimize_move.cpp \
+    test_prioorityqueue.cpp \
+    test_puzzlemover.cpp \
+    test_search_board.cpp
+}

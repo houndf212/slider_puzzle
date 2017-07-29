@@ -24,7 +24,7 @@ void run_test()
 //    test_astar();
 //    test_search_board();
 //    test_optimize_move();
-    test_gen();
+//    test_gen();
 }
 
 int main(int argc, char *argv[])
