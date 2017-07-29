@@ -92,6 +92,7 @@ void GameWindow::enterAutoSolve()
     else
         m_movelist = PuzzleMover::search_solve(m_board->inner_board());
 
+    assert(m_board->inner_board().can_solve(m_movelist));
     m_timer->start(1*300);
 }
 

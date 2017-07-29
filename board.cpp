@@ -1,6 +1,14 @@
 ﻿#include "board.h"
 #include "board_api.h"
 
+void Board::clone(const Board &b)
+{
+    matrix = b.matrix;
+    value_index = b.value_index;
+    origin_matrix = b.origin_matrix;
+    origin_value_index = b.origin_value_index;
+}
+
 Board::Board(const Matrix &m)
 {
     std::tie(origin_matrix, origin_value_index) = Board_API::build_origin(m.row_size(), m.col_size());
@@ -67,4 +75,15 @@ Matrix::value_type Board::origin_value(Pos p) const
 bool Board::isDone() const
 {
     return Board_API::isDone(matrix);
+}
+
+bool Board::can_solve(const MoveList &ml) const
+{
+    Board board;
+    board.clone(*this);
+    for (auto d : ml) {
+        if (!board.null_move(d))
+            return false;
+    }
+    return board.isDone();
 }

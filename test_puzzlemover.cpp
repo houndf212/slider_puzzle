@@ -1,15 +1,6 @@
 ﻿#include "puzzle_mover.h"
 #include <QtCore>
 
-static bool check_solve(Board board, const MoveList &ml)
-{
-    for (auto d : ml) {
-        if (!board.null_move(d))
-            return false;
-    }
-    return board.isDone();
-}
-
 void test_puzzlemover()
 {
     QElapsedTimer timer;
@@ -23,7 +14,7 @@ void test_puzzlemover()
 //        board.print();
         auto ml = PuzzleMover::solve(board);
 //        qDebug() <<"move steps: " <<ml.size();
-        assert(check_solve(board, ml));
+        assert(board.can_solve(ml));
     }
     qDebug() << "slapsed msec: "<<timer.elapsed();
 }

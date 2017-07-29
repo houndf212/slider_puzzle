@@ -1,12 +1,17 @@
 ﻿#ifndef BOARD_H
 #define BOARD_H
 #include "matrix.h"
-#include "movedirection.h"
+#include "movelist.h"
 
 class Board
 {
 public:
     Board() = default;
+
+    Board(const Board &) = delete;
+    Board &operator=(const Board &) = delete;
+    void clone(const Board &b);
+
     Board(const Matrix &m);
 
     void gen();
@@ -25,6 +30,8 @@ public:
     Matrix::value_type origin_value(Pos p) const;
 
     bool isDone() const;
+
+    bool can_solve(const MoveList &ml) const;
 
     bool isInBoard(Pos p) const { return matrix.isInMatrix(p); }
     int row_size() const { return matrix.row_size(); }

@@ -1,15 +1,6 @@
 ﻿#include "board_api.h"
 #include "puzzle_mover.h"
 
-static bool check_solve(Board board, const MoveList &ml)
-{
-    for (auto d : ml) {
-        if (!board.null_move(d))
-            return false;
-    }
-    return board.isDone();
-}
-
 void test_gen()
 {
 // 2*2 -> 10*10;
@@ -25,8 +16,7 @@ void test_gen()
                 b.gen();
 
                 MoveList ml = PuzzleMover::solve(b);
-                bool bt = check_solve(b, ml);
-                assert(bt);
+                assert(b.can_solve(ml));
             }
             qDebug() << "finish: "<<row<<":"<<col;
         }
