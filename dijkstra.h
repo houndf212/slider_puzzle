@@ -178,8 +178,8 @@ public:
 
             if (smallest == finish)
             {
-                path = find_path(finish, previous);
-                dist = distances[finish];
+                path = find_path(smallest, previous);
+                dist = distances[smallest];
                 break;
             }
 
@@ -291,8 +291,8 @@ public:
             vertex_t smallest = get_smallest(open_set, close_set, compare);
 
             if (smallest == finish) {
-                path = find_path(finish, came_from);
-                dist = cost_so_far.at(finish);
+                path = find_path(smallest, came_from);
+                dist = cost_so_far.at(smallest);
                 break;
             }
 
@@ -390,8 +390,8 @@ public:
             assert(p.second);
 
             if (current == finish) {
-                path = find_path(finish, came_from);
-                dist = cost_so_far.at(finish);
+                path = find_path(current, came_from);
+                dist = cost_so_far.at(current);
                 break;
             }
 
