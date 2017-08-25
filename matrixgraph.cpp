@@ -10,7 +10,7 @@ size_t MatrixGraph::PosHash::operator()(const Pos &p) const
 
 MatrixGraph::distance_t MatrixGraph::heuristic(MatrixGraph::vertex_t v1, MatrixGraph::vertex_t v2) const
 {
-    return std::abs(v1.row()-v1.row()) + std::abs(v1.col()-v2.col());
+    return Manhattan_Distance(v1, v2);
 }
 
 MatrixGraph::VertexVector MatrixGraph::vertexes() const
