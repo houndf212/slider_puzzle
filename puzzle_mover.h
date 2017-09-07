@@ -10,7 +10,9 @@ public:
 private:
     static bool check_solve(MoverParam* param);
     static std::list<PosList> get_move_lines(const Board &board);
+public:
     static bool check_loop(const MoveList &mlst);
+    static bool check_loop_new(const MoveList &mlst);
 };
 
 #endif // PUZZLE_MOVER_H

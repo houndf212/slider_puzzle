@@ -61,7 +61,7 @@ bool PuzzleMover::check_solve(MoverParam *param)
         }
     }
     assert(param->board.isDone());
-    assert(check_loop(param->move_list));
+    assert(check_loop_new(param->move_list));
     return true;
 }
 
@@ -137,4 +137,29 @@ bool PuzzleMover::check_loop(const MoveList &mlst)
         pre = *it;
     }
     return true;
+}
+
+bool PuzzleMover::check_loop_new(const MoveList &mlst)
+{
+    if (mlst.size() < 2)
+        return true;
+
+    return std::adjacent_find(begin(mlst), end(mlst), is_reverse) == end(mlst);
+}
+
+void test_check_loop()
+{
+    {
+        MoveList mlst;
+        mlst.assign({Direction::Null_Down, Direction::Null_Down, Direction::Null_Up});
+        assert(!PuzzleMover::check_loop(mlst));
+        assert(!PuzzleMover::check_loop_new(mlst));
+    }
+
+    {
+        MoveList mlst;
+        mlst.assign({Direction::Null_Down, Direction::Null_Down});
+        assert(PuzzleMover::check_loop(mlst));
+        assert(PuzzleMover::check_loop_new(mlst));
+    }
 }

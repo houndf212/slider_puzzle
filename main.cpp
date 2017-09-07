@@ -14,6 +14,8 @@ void run_test()
     extern void test_search_board();
     extern void test_optimize_move();
     extern void test_gen();
+    extern void test_check_loop();
+//    test_check_loop();
 //    testEdgeGraphFile();
 //    test_matrixgraph();
 //    test_consoleboard();
