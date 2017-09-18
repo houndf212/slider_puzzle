@@ -70,6 +70,7 @@ bool BoardRotator::rotate(MoverParam *param, Pos p1, BoardRotator::ClockDirectio
     for (Direction d: move_list) {
         bool b = param->board.null_move(d);
         assert(b==true);
+        Q_UNUSED(b);
         param->move_list.check_loop_push_back(d);
     }
     return true;

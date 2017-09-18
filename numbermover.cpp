@@ -13,6 +13,7 @@ bool NumberMover::find_null_to(Pos to, MoverParam *param)
         assert(d!=Direction::NotValid);
         bool b = param->board.null_move(d);
         assert(b == true);
+        Q_UNUSED(b);
         param->move_list.check_loop_push_back(d);
     }
     return true;
@@ -50,6 +51,7 @@ bool NumberMover::find_moves(Pos start, Pos finish, MoverParam *param)
             assert(d!=Direction::NotValid);
             bool b = param->board.null_move(d);
             assert(b==true);
+            Q_UNUSED(b);
             param->move_list.check_loop_push_back(d);
             start = to;
         }

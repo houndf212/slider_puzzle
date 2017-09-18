@@ -2,10 +2,12 @@
 #include "numbermover.h"
 #include "boardrotator.h"
 
+#ifndef NDEBUG
 static bool check_number(Pos p, const Board &board)
 {
     return board.origin_value(p) == board.pos_value(p);
 }
+#endif
 
 bool LineMover::finish_line(PosList line, MoverParam *param)
 {
@@ -65,6 +67,7 @@ bool LineMover::move_line_end(Pos last, MoverParam *param, bool left_right)
         assert(d != Direction::NotValid);
         bool b = param->board.null_move(d);
         assert(b==true);
+        Q_UNUSED(b);
         param->move_list.check_loop_push_back(d);
         return true;
     }

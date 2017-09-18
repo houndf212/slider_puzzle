@@ -42,6 +42,7 @@ BoardGraph::VertexList BoardGraph::toMatrixList(const MoveList &mlst, const Matr
     for (auto d : mlst) {
         bool bt = Board_API::hint_null_move(&b, null_pos, d);
         assert(bt);
+        Q_UNUSED(bt);
         Board_API::move(&null_pos, d);
         vl.push_back(b);
     }

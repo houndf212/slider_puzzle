@@ -4,7 +4,7 @@
 #include "boardgraph.h"
 #include "dijkstra.h"
 
-
+#ifndef NDEBUG
 static bool check_line(PosList line, const Board &board)
 {
     for (const Pos &p : line) {
@@ -13,6 +13,7 @@ static bool check_line(PosList line, const Board &board)
     }
     return true;
 }
+#endif
 
 MoveList PuzzleMover::search_solve(const Board &b)
 {

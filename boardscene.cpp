@@ -56,6 +56,7 @@ void BoardScene::onNumberClicked()
         Pos np = m_board.get_null_pos();
         bool b = m_board.null_move(d);
         assert(b!=false);
+        Q_UNUSED(b);
         move_number(val, np);
     }
 }

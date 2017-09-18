@@ -75,6 +75,7 @@ void GameWindow::onTimeout()
     m_movelist.pop_front();
     bool b = m_board->move(d);
     assert(b==true);
+    Q_UNUSED(b);
 }
 
 void GameWindow::enterAutoSolve()
