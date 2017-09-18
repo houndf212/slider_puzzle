@@ -27,6 +27,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 PRECOMPILED_HEADER = pch.h
 
 HEADERS += \
+    pch.h \
     basic_pos.h \
     board.h \
     board_api.h \
