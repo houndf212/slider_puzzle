@@ -1,5 +1,6 @@
 ﻿#ifndef BOARD_H
 #define BOARD_H
+#include <memory>
 #include "matrix.h"
 #include "movelist.h"
 
@@ -38,16 +39,16 @@ public:
     int col_size() const { return matrix.col_size(); }
 
     const Matrix &inner_matrix() const { return matrix; }
-    const Matrix &inner_origin_matrix() const { return origin_matrix; }
+    const Matrix &inner_origin_matrix() const { return *origin_matrix; }
 private:
     Matrix matrix;
     //方向通过value 追踪pos位置
     std::vector<Pos> value_index;
 
     //完成时的矩阵
-    Matrix origin_matrix;
+    std::shared_ptr<const Matrix> origin_matrix;
     //完成时应该的位置
-    std::vector<Pos> origin_value_index;
+    std::shared_ptr<const PosVector> origin_value_index;
 };
 
 #include "movelist.h"

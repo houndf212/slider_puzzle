@@ -11,7 +11,9 @@ void Board::clone(const Board &b)
 
 Board::Board(const Matrix &m)
 {
-    std::tie(origin_matrix, origin_value_index) = Board_API::build_origin(m.row_size(), m.col_size());
+    auto p = Board_API::build_origin(m.row_size(), m.col_size());
+    origin_matrix.reset(new Matrix(p.first));
+    origin_value_index.reset(new PosVector(p.second));
     matrix = m;
     value_index = Board_API::build_index(matrix);
 }
@@ -23,9 +25,11 @@ void Board::gen()
 
 void Board::resize(int row, int col)
 {
-    std::tie(origin_matrix, origin_value_index) = Board_API::build_origin(row, col);
-    matrix = origin_matrix;
-    value_index = origin_value_index;
+    auto p = Board_API::build_origin(row, col);
+    origin_matrix.reset(new Matrix(p.first));
+    origin_value_index.reset(new PosVector(p.second));
+    matrix = p.first;
+    value_index = p.second;
 }
 
 bool Board::null_move(Direction d)
@@ -64,12 +68,14 @@ Pos Board::value_pos(Matrix::value_type value) const
 
 Pos Board::origin_pos(Matrix::value_type val) const
 {
-    return origin_value_index.at(val);
+    assert(origin_value_index);
+    return origin_value_index->at(val);
 }
 
 Matrix::value_type Board::origin_value(Pos p) const
 {
-    return origin_matrix.get(p);
+    assert(origin_matrix);
+    return origin_matrix->get(p);
 }
 
 bool Board::isDone() const
