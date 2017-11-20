@@ -35,7 +35,6 @@ int main(int argc, char *argv[])
 //    return 0;
     QApplication a(argc, argv);
 
-    int cc = 100;
     GameWindow w;
     w.show();
 
