@@ -6,6 +6,9 @@
 class MoverParam
 {
 public:
+    MoverParam(const MoverParam &) = delete;
+    MoverParam &operator =(const MoverParam &) = delete;
+
     MoverParam(const Board &b);
     Board board;
     BoolMatrix fixed_matrix;
