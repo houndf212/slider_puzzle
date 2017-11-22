@@ -12,7 +12,7 @@ class NumberItem : public QObject, public QGraphicsRectItem
 public:
     Q_SIGNAL void clicked();
 //    Q_SIGNAL void wheel(BoardRotator::ClockDirection clock);
-    NumberItem(QGraphicsItem *parent = 0);
+    explicit NumberItem(QGraphicsItem *parent = 0);
 
     void animate_move(QPointF p, int msec);
 

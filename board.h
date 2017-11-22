@@ -14,7 +14,7 @@ public:
     Board &operator=(const Board &) = delete;
     void clone(const Board &b);
 
-    Board(const Matrix &m);
+    explicit Board(const Matrix &m);
 
     void gen();
     void resize(int row, int col);

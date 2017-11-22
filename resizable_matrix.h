@@ -12,7 +12,9 @@ class Resizable_Matrix
 {
 public:
     typedef T value_type;
+
     Resizable_Matrix() : n_row(0), n_col(0) {}
+
     void resize(int row, int col)
     {
         std::vector<T> vec(col, T());

@@ -9,7 +9,7 @@ public:
     MoverParam(const MoverParam &) = delete;
     MoverParam &operator =(const MoverParam &) = delete;
 
-    MoverParam(const Board &b);
+    explicit MoverParam(const Board &b);
     Board board;
     BoolMatrix fixed_matrix;
     MoveList move_list;
