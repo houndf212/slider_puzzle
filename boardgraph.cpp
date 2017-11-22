@@ -101,7 +101,7 @@ BoardGraph::distance_t BoardGraph::heuristic(const BoardGraph::vertex_t &v1, con
     distance_t dist = 0;
     // skip null value = 0;
     for (size_t i=1; i<index1.size(); ++i) {
-        dist+=Manhattan_Distance(index1.at(i), index2.at(i));
+        dist+=Manhattan_Distance(index1[i], index2[i]);
     }
     return dist;
 }

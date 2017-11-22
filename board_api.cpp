@@ -2,34 +2,6 @@
 #include <random>
 #include <chrono>
 
-std::pair<Matrix, PosVector> Board_API::build_origin(int row, int col)
-{
-    assert(row*col < std::numeric_limits<Matrix::value_type>::max());
-    Matrix origin_matrix;
-    origin_matrix.resize(row, col);
-
-    PosVector origin_value_index;
-    origin_value_index.resize(row*col+1);
-
-    Matrix::value_type n = start_value;
-    for (int r=0; r<row; ++r) {
-        for (int c=0; c<col; ++c) {
-            Pos p(r, c);
-            origin_matrix.set(p, n);
-            origin_value_index[n] = p;
-            ++n;
-        }
-    }
-
-    Pos null_pos(origin_matrix.row_size() - 1,
-                 origin_matrix.col_size() - 1);
-
-    origin_matrix.set(null_pos, null_value);
-    origin_value_index[null_value] = null_pos;
-    origin_value_index.pop_back();
-    return std::make_pair(origin_matrix, origin_value_index);
-}
-
 PosVector Board_API::build_index(const Matrix &m)
 {
     PosVector value_index;

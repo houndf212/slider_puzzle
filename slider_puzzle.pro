@@ -10,6 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = slider_puzzle
 TEMPLATE = app
+CONFIG += precompile_header
 #CONFIG += console
 QMAKE_CXXFLAGS_RELEASE += -DNDEBUG
 
@@ -51,7 +52,8 @@ HEADERS += \
     pos.h \
     puzzle_mover.h \
     resizable_matrix.h \
-    sizepickerdialog.h
+    sizepickerdialog.h \
+    origin_matrix.h
 
 SOURCES += \
     board.cpp \
@@ -70,7 +72,8 @@ SOURCES += \
     numberitem.cpp \
     numbermover.cpp \
     puzzle_mover.cpp \
-    sizepickerdialog.cpp
+    sizepickerdialog.cpp \
+    origin_matrix.cpp
 
 Debug {
 SOURCES += \

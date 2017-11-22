@@ -6,11 +6,10 @@
 
 class Board_API
 {
-    static constexpr Matrix::value_type start_value = 1;
 public:
+    static constexpr Matrix::value_type start_value = 1;
     static constexpr Matrix::value_type null_value = 0;
 
-    static std::pair<Matrix, PosVector> build_origin(int row, int col);
     static PosVector build_index(const Matrix &m);
 public:
     static void move(Pos *p, Direction d);

@@ -7,6 +7,7 @@
 #include "boardgraph.h"
 #include <iostream>
 #include "board_api.h"
+#include "origin_matrix.h"
 
 using namespace std;
 
@@ -51,7 +52,7 @@ void test_search_board()
 
     BG g;
 
-    Matrix finish = Board_API::build_origin(2, 3).first;
+    Matrix finish = Origin_Matrix(2, 3).matrix();
 
     G::VertexSet open_set;
     G::VertexSet close_set;

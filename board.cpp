@@ -6,14 +6,11 @@ void Board::clone(const Board &b)
     matrix = b.matrix;
     value_index = b.value_index;
     origin_matrix = b.origin_matrix;
-    origin_value_index = b.origin_value_index;
 }
 
 Board::Board(const Matrix &m)
 {
-    auto p = Board_API::build_origin(m.row_size(), m.col_size());
-    origin_matrix.reset(new Matrix(p.first));
-    origin_value_index.reset(new PosVector(p.second));
+    origin_matrix.reset(new Origin_Matrix(m.row_size(), m.col_size()));
     matrix = m;
     value_index = Board_API::build_index(matrix);
 }
@@ -25,11 +22,9 @@ void Board::gen()
 
 void Board::resize(int row, int col)
 {
-    auto p = Board_API::build_origin(row, col);
-    origin_matrix.reset(new Matrix(p.first));
-    origin_value_index.reset(new PosVector(p.second));
-    matrix = p.first;
-    value_index = p.second;
+    origin_matrix.reset(new Origin_Matrix(row, col));
+    matrix = origin_matrix->matrix();
+    value_index = origin_matrix->index();
 }
 
 bool Board::null_move(Direction d)
@@ -53,7 +48,8 @@ Direction Board::test_null_move_to(Pos p) const
 
 Pos Board::get_null_pos() const
 {
-    return value_index.at(Board_API::null_value);
+    assert(value_index.size() > Board_API::null_value+1);
+    return value_index[Board_API::null_value];
 }
 
 Matrix::value_type Board::pos_value(Pos p) const
@@ -63,19 +59,20 @@ Matrix::value_type Board::pos_value(Pos p) const
 
 Pos Board::value_pos(Matrix::value_type value) const
 {
-    return value_index.at(value);
+    assert(value_index.size()>size_t(value));
+    return value_index[value];
 }
 
 Pos Board::origin_pos(Matrix::value_type val) const
 {
-    assert(origin_value_index);
-    return origin_value_index->at(val);
+    assert(origin_matrix);
+    return origin_matrix->pos(val);
 }
 
 Matrix::value_type Board::origin_value(Pos p) const
 {
     assert(origin_matrix);
-    return origin_matrix->get(p);
+    return origin_matrix->value(p);
 }
 
 bool Board::isDone() const
