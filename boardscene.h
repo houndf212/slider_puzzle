@@ -18,8 +18,8 @@ public:
     bool move(Direction d);
     const Board &inner_board() const { return m_board; }
 private:
-    Q_SLOT void onNumberClicked();
-//    Q_SLOT void onNumberWheel(BoardRotator::ClockDirection clock);
+    void onNumberClicked();
+//    void onNumberWheel(BoardRotator::ClockDirection clock);
 private:
     void gen_graphics(int row, int col);
     void move_number(Matrix::value_type val, Pos p);

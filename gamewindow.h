@@ -12,10 +12,10 @@ public:
     GameWindow();
 
 private:
-    Q_SLOT void onResize();
-    Q_SLOT void onGen();
-    Q_SLOT void onAutoSolve();
-    Q_SLOT void onTimeout();
+    void onResize();
+    void onGen();
+    void onAutoSolve();
+    void onTimeout();
 
     void enterAutoSolve();
     void leaveAutoSolve();
