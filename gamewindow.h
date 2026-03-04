@@ -4,6 +4,7 @@
 #include "graphicsview.h"
 #include "boardscene.h"
 #include "puzzle_mover.h"
+#include "NineSolver.h"
 
 class GameWindow : public QWidget
 {
@@ -27,6 +28,8 @@ private:
     QPushButton* m_btn_auto_solve;
     QTimer *m_timer;
     MoveList m_movelist;
+
+    NineSolver m_nineSolver;
 
 //    // QWidget interface
 //protected:

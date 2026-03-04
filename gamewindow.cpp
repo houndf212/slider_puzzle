@@ -36,6 +36,8 @@ GameWindow::GameWindow()
 
     m_board->resize_board(3, 3);
     m_view->setMinimumSize(300, 300);
+
+    m_nineSolver.buildAllStatus();
 }
 
 void GameWindow::onResize()
@@ -53,6 +55,26 @@ void GameWindow::onResize()
 void GameWindow::onGen()
 {
     m_board->gen();
+
+    const Board &bb = m_board->inner_board();
+
+    if (3 == bb.row_size() && 3 == bb.col_size())
+    {
+        uint8_t arr[9];
+
+        int index = 0;
+        for (int r=0; r<3; ++r)
+        {
+            for (int c=0; c<3; ++c)
+            {
+                auto v = bb.pos_value({r, c});
+                arr[index++] = v;
+            }
+        }
+
+
+        m_nineSolver.solve(arr);
+    }
 }
 
 void GameWindow::onAutoSolve()
@@ -93,6 +115,7 @@ void GameWindow::enterAutoSolve()
     else
         m_movelist = PuzzleMover::search_solve(m_board->inner_board());
 
+    printf("auto solve steps: %d\n", m_movelist.size());
     assert(m_board->inner_board().can_solve(m_movelist));
     m_timer->start(1*300);
 }

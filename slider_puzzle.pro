@@ -28,6 +28,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 PRECOMPILED_HEADER = pch.h
 
 HEADERS += \
+    NineSolver.h \
     pch.h \
     basic_pos.h \
     board.h \
@@ -56,6 +57,7 @@ HEADERS += \
     origin_matrix.h
 
 SOURCES += \
+    NineSolver.cpp \
     board.cpp \
     board_api.cpp \
     boardgraph.cpp \
