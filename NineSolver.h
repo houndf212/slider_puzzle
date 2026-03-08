@@ -2,6 +2,7 @@
 #define NINESOLVER_H
 
 #include <vector>
+#include <stdint.h>
 
 /*  zero is 9
  *  then  from left to right

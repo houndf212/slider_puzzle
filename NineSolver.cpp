@@ -304,7 +304,7 @@ bool NineSolver::solve(
         pNode = pNode->m_preNode;
         ++n;
     }
-    printf("step: %d\n", n);
+    printf("step: %lu\n", n);
 
     return true;
 }
