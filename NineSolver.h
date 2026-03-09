@@ -1,7 +1,7 @@
 #ifndef NINESOLVER_H
 #define NINESOLVER_H
 
-#include <vector>
+//#include <vector>
 #include <stdint.h>
 
 /*  zero is 9

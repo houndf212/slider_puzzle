@@ -63,9 +63,9 @@ void GameWindow::onGen()
         uint8_t arr[9];
 
         int index = 0;
-        for (int r=0; r<3; ++r)
+        for (char r=0; r<3; ++r)
         {
-            for (int c=0; c<3; ++c)
+            for (char c=0; c<3; ++c)
             {
                 auto v = bb.pos_value({r, c});
                 arr[index++] = v;
@@ -115,7 +115,7 @@ void GameWindow::enterAutoSolve()
     else
         m_movelist = PuzzleMover::search_solve(m_board->inner_board());
 
-    printf("auto solve steps: %d\n", m_movelist.size());
+    printf("auto solve steps: %zu\n", m_movelist.size());
     assert(m_board->inner_board().can_solve(m_movelist));
     m_timer->start(1*300);
 }
