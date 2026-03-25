@@ -50,7 +50,7 @@ constexpr const char g_finish[g_indexSize + 1] =
     {1, 2, 3, 4, 5, 6, 7, 8, 0, 8};
 
 const uint64_t g_p1 = *reinterpret_cast<const size_t *>(g_finish);
-const uint16_t g_p2 = *reinterpret_cast<const size_t *>(g_finish + 8);
+const uint16_t g_p2 = *reinterpret_cast<const uint16_t *>(g_finish + 8);
 
 #ifndef NDEBUG
 
@@ -280,6 +280,8 @@ void NineSolver::buildAllStatus()
 bool NineSolver::solve(
     const uint8_t *curStatus) const
 {
+    printf("Nine Solver:\n");
+
     auto hash = _cast_to(m_statusData);
 
     nine_puzzle::nineStatus st;

@@ -38,6 +38,7 @@ GameWindow::GameWindow()
     m_view->setMinimumSize(300, 300);
 
     m_nineSolver.buildAllStatus();
+    m_numSolver.buildAllStatus();
 }
 
 void GameWindow::onResize()
@@ -74,6 +75,8 @@ void GameWindow::onGen()
 
 
         m_nineSolver.solve(arr);
+
+        m_numSolver.solve(arr, 9);
     }
 }
 

@@ -5,6 +5,7 @@
 #include "boardscene.h"
 #include "puzzle_mover.h"
 #include "NineSolver.h"
+#include "NumSolver.h"
 
 class GameWindow : public QWidget
 {
@@ -30,6 +31,7 @@ private:
     MoveList m_movelist;
 
     NineSolver m_nineSolver;
+    num_puzzle::NumSolver<3, 3> m_numSolver;
 
 //    // QWidget interface
 //protected:

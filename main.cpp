@@ -1,6 +1,6 @@
 ﻿#include <QApplication>
 #include "gamewindow.h"
-
+#include "NumSolver.h"
 
 void run_test()
 {
@@ -31,6 +31,13 @@ void run_test()
 
 int main(int argc, char *argv[])
 {
+#if 0
+    num_puzzle::NumSolver<3, 3> solver;
+    solver.buildAllStatus();
+
+    return 0;
+#endif
+
 //    run_test();
 //    return 0;
     QApplication a(argc, argv);
