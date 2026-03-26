@@ -105,17 +105,10 @@ public:
         stNextMove m;
         m.m_len = 0;
 
-        int8_t up    = curIndex - gCol;
-        int8_t down  = curIndex + gCol;
-
+        int8_t up = curIndex - gCol;
         if (up >= 0)
         {
             m.m_toIndex[m.m_len++] = up;
-        }
-
-        if (down < g_indexSize)
-        {
-            m.m_toIndex[m.m_len++] = down;
         }
 
         if (0 != curIndex % gCol)
@@ -125,14 +118,25 @@ public:
         }
 
         int8_t right = curIndex + 1;
-
         if (right < g_indexSize && 0 != right % gCol)
         {
             m.m_toIndex[m.m_len++] = right;
         }
-        uint8_t *beg = m.m_toIndex;
-        uint8_t *end = beg + m.m_len;
-        std::sort(beg, end);
+
+        int8_t down = curIndex + gCol;
+        if (down < g_indexSize)
+        {
+            m.m_toIndex[m.m_len++] = down;
+        }
+
+#ifndef NDEBUG
+        {
+            assert(m.m_len >= 1);
+            const uint8_t *beg = m.m_toIndex;
+            const uint8_t *end = beg + m.m_len;
+            assert(std::is_sorted(beg, end));
+        }
+#endif
         return m;
     }
 

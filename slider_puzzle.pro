@@ -10,8 +10,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = slider_puzzle
 TEMPLATE = app
-//CONFIG += precompile_header
-//PRECOMPILED_HEADER = pch.h
+#CONFIG += precompile_header
+#PRECOMPILED_HEADER = pch.h
 #CONFIG += console
 QMAKE_CXXFLAGS_RELEASE += -DNDEBUG
 QMAKE_CXXFLAGS += -std=c++20
