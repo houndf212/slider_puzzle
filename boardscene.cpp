@@ -57,7 +57,8 @@ void BoardScene::onNumberClicked()
         bool b = m_board.null_move(d);
         assert(b!=false);
         Q_UNUSED(b);
-        move_number(val, np);
+        item->moveToBoardPos(np, SCALE);
+        //move_number(val, np);
     }
 }
 
@@ -116,6 +117,5 @@ void BoardScene::gen_graphics(int row, int col)
 void BoardScene::move_number(Matrix::value_type val, Pos p)
 {
     NumberItem *item = m_itemMap.at(val);
-    item->setCurrentPos(p);
-    item->animate_move(QPointF(p.col()*SCALE, p.row()*SCALE), 300);
+    item->moveToBoardPos(p, SCALE);
 }

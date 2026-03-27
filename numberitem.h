@@ -14,19 +14,24 @@ public:
 //    Q_SIGNAL void wheel(BoardRotator::ClockDirection clock);
     explicit NumberItem(QGraphicsItem *parent = 0);
 
-    void animate_move(QPointF p, int msec);
-
     Matrix::value_type getValue() const { return m_value; }
     void setValue(Matrix::value_type val) { m_value = val; }
 
     Pos getCurrentPos() const { return m_pos; }
     void setCurrentPos(Pos p) { m_pos = p; }
+
+    void moveToBoardPos(Pos p, int SCALE)
+    {
+        setCurrentPos(p);
+        animate_move(QPointF(p.col()*SCALE, p.row()*SCALE), 300);
+    }
 protected:
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) override;
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *) override;
 //    virtual void wheelEvent(QGraphicsSceneWheelEvent *event) override;
 private:
     void init_animation();
+    void animate_move(QPointF p, int msec);
 private:
     Matrix::value_type m_value;
     Pos m_pos;
