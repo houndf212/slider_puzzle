@@ -25,7 +25,7 @@ private:
     void move_number(Matrix::value_type val, Pos p);
 private:
     QGraphicsScene* m_scene;
-    std::unordered_map<Matrix::value_type, NumberItem*> m_itemMap;
+    std::vector<NumberItem*> m_val2ItemVec;
     Board m_board;
 private:
     static constexpr int SCALE = 50;

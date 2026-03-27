@@ -89,8 +89,11 @@ void BoardScene::gen_graphics(int row, int col)
     for (QGraphicsItem *it : m_scene->items()) {
         delete it;
     }
-    //clear hash
-    m_itemMap.clear();
+
+    //clear all
+    size_t allSize = row * col;
+    m_val2ItemVec.resize(allSize);
+    std::fill_n(m_val2ItemVec.begin(), allSize, nullptr);
 
     for (int r=0; r<row; ++r) {
         for (int c=0; c<col; ++c) {
@@ -103,12 +106,16 @@ void BoardScene::gen_graphics(int row, int col)
 //            connect(item, &NumberItem::wheel, this, &BoardScene::onNumberWheel);
             m_scene->addItem(item);
             auto val = m_board.pos_value(p);
-            m_itemMap.emplace(val, item);
+
             item->setRect(0, 0, SCALE, SCALE);
             item->setValue(val);
             item->setCurrentPos(p);
 //            move_number(val, p);
             item->setPos(c*SCALE, r*SCALE);
+
+            assert(val < m_val2ItemVec.size());
+            assert(nullptr == m_val2ItemVec[val]);
+            m_val2ItemVec[val] = item;
         }
     }
     gen();
@@ -116,6 +123,8 @@ void BoardScene::gen_graphics(int row, int col)
 
 void BoardScene::move_number(Matrix::value_type val, Pos p)
 {
-    NumberItem *item = m_itemMap.at(val);
+    assert(val < m_val2ItemVec.size());
+    NumberItem *item = m_val2ItemVec[val];
+    assert(nullptr != item);
     item->moveToBoardPos(p, SCALE);
 }
