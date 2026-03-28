@@ -1,25 +1,16 @@
 ﻿#include "numberitem.h"
 #include <QPainter>
 #include <QGraphicsSceneWheelEvent>
+#include "boardscene.h"
 
-NumberItem::NumberItem(QGraphicsItem *parent)
-    :QGraphicsRectItem(parent),
-      m_value(0)
+NumberItem::NumberItem(int val, BoardScene *ctrl, QGraphicsItem *parent)
+    :QGraphicsRectItem(parent)
+    ,m_value(val)
+    ,m_strVal(QString::number(val))
+    ,m_ctrl(ctrl)
 {
     setAcceptedMouseButtons(Qt::LeftButton);
-    init_animation();
 }
-
-void NumberItem::animate_move(QPointF p, int msec)
-{
-    pos_animate->stop();
-    pos_animate->setDuration(msec);
-    pos_animate->setStartValue(this->pos());
-    pos_animate->setEndValue(p);
-    pos_animate->start();
-}
-
-
 
 void NumberItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
@@ -27,12 +18,12 @@ void NumberItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     painter->setPen(Qt::blue);
     painter->setBrush(QBrush(Qt::gray));
     painter->drawRect(rect());
-    painter->drawText(rect(), Qt::AlignCenter, QString::number(m_value));
+    painter->drawText(rect(), Qt::AlignCenter, m_strVal);
 }
 
 void NumberItem::mousePressEvent(QGraphicsSceneMouseEvent *)
 {
-    Q_EMIT clicked();
+    m_ctrl->onNumberClicked(m_value);
 }
 
 //void NumberItem::wheelEvent(QGraphicsSceneWheelEvent *event)
@@ -43,8 +34,3 @@ void NumberItem::mousePressEvent(QGraphicsSceneMouseEvent *)
 //        Q_EMIT wheel(BoardRotator::AntiClock);
 //}
 
-void NumberItem::init_animation()
-{
-    pos_animate = new QPropertyAnimation(this, "pos", this);
-    pos_animate->setEasingCurve(QEasingCurve::InQuad);
-}

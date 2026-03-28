@@ -32,6 +32,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS += \
     NineSolver.h \
     NumSolver.h \
+    numberitemobject.h \
     pch.h \
     basic_pos.h \
     board.h \
@@ -75,6 +76,7 @@ SOURCES += \
     movelist.cpp \
     moverparam.cpp \
     numberitem.cpp \
+    numberitemobject.cpp \
     numbermover.cpp \
     puzzle_mover.cpp \
     sizepickerdialog.cpp \

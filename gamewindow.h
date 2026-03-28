@@ -12,6 +12,7 @@ class GameWindow : public QWidget
     Q_OBJECT
 public:
     GameWindow();
+    ~GameWindow();
 
 private:
     void onResize();

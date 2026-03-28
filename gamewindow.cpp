@@ -3,7 +3,7 @@
 
 GameWindow::GameWindow()
 {
-    m_board = new BoardScene(this);
+    m_board = new BoardScene;
     m_view = new GraphicsView(m_board->get_scene());
     m_view->setFocusPolicy(Qt::NoFocus);
     m_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -41,11 +41,16 @@ GameWindow::GameWindow()
     m_numSolver.buildAllStatus();
 }
 
+GameWindow::~GameWindow()
+{
+    delete m_board;
+}
+
 void GameWindow::onResize()
 {
     SizePickerDialog d(this);
-    d.setSize(QSize(m_board->inner_board().col_size(),
-                    m_board->inner_board().row_size()));
+    d.setSize(QSize(m_board->inner_board()->col_size(),
+                    m_board->inner_board()->row_size()));
     d.exec();
     QSize s = d.getSize();
     m_board->resize_board(s.height(), s.width());
@@ -57,9 +62,9 @@ void GameWindow::onGen()
 {
     m_board->gen();
 
-    const Board &bb = m_board->inner_board();
+    const Board *bb = m_board->inner_board();
 
-    if (3 == bb.row_size() && 3 == bb.col_size())
+    if (3 == bb->row_size() && 3 == bb->col_size())
     {
         uint8_t arr[9];
 
@@ -68,7 +73,7 @@ void GameWindow::onGen()
         {
             for (char c=0; c<3; ++c)
             {
-                auto v = bb.pos_value({r, c});
+                auto v = bb->pos_value({r, c});
                 arr[index++] = v;
             }
         }
@@ -92,7 +97,7 @@ void GameWindow::onTimeout()
 {
     if (m_movelist.empty()) {
         m_timer->stop();
-        assert(m_board->inner_board().isDone());
+        assert(m_board->inner_board()->isDone());
         leaveAutoSolve();
         return;
     }
@@ -105,7 +110,7 @@ void GameWindow::onTimeout()
 
 void GameWindow::enterAutoSolve()
 {
-    if (m_board->inner_board().isDone())
+    if (m_board->inner_board()->isDone())
         return;
 
     m_btn_auto_solve->setText("Stop");
@@ -113,13 +118,13 @@ void GameWindow::enterAutoSolve()
     btn_gen->setEnabled(false);
     m_view->setEnabled(false);
 
-    if (m_board->inner_board().row_size()*m_board->inner_board().col_size()>3*3)
-        m_movelist = PuzzleMover::solve(m_board->inner_board());
+    if (m_board->inner_board()->row_size()*m_board->inner_board()->col_size()>3*3)
+        m_movelist = PuzzleMover::solve(*m_board->inner_board());
     else
-        m_movelist = PuzzleMover::search_solve(m_board->inner_board());
+        m_movelist = PuzzleMover::search_solve(*m_board->inner_board());
 
     printf("auto solve steps: %zu\n", m_movelist.size());
-    assert(m_board->inner_board().can_solve(m_movelist));
+    assert(m_board->inner_board()->can_solve(m_movelist));
     m_timer->start(1*300);
 }
 
