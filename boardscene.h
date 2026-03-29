@@ -24,6 +24,8 @@ public:
 
     bool move(Direction d);
 
+    bool canMoveNum(int val) const;
+
     void onNumberClicked(int val);
 private:
     void _clean_objItemVec();

@@ -115,6 +115,13 @@ bool BoardScene::move(Direction d)
     return true;
 }
 
+bool BoardScene::canMoveNum(int val) const
+{
+    auto p = m_board.value_pos(val);
+    auto d = m_board.test_null_move_to(p);
+    return Direction::NotValid != d;
+}
+
 void BoardScene::onNumberClicked(int val)
 {
     Pos p = m_board.value_pos(val);
