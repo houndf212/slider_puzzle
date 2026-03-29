@@ -43,6 +43,9 @@ public:
     static constexpr uint8_t g_indexSize = gRow * gCol;
     static constexpr uint8_t g_null = 0;
 
+    static constexpr uint8_t g_N_64bit     = (g_indexSize + 1) / sizeof(size_t);
+    static constexpr uint8_t g_CHAR_offset = g_N_64bit * sizeof(size_t);
+
 #ifndef NDEBUG
     static void
     _print_puzzle()
@@ -95,10 +98,10 @@ public:
     static stNextMove
     _calc_to_index_move(int8_t curIndex)
     {
-        /*      N-col
-     * N-1  N  n + 1
-     *      n + col
-     */
+        /*      N - col
+         * N-1   N       N + 1
+         *      N + col
+        */
 
         assert(0 <= curIndex && curIndex < g_indexSize);
 
@@ -118,7 +121,7 @@ public:
         }
 
         int8_t right = curIndex + 1;
-        if (right < g_indexSize && 0 != right % gCol)
+        if (0 != right % gCol && right < g_indexSize)
         {
             m.m_toIndex[m.m_len++] = right;
         }
@@ -216,7 +219,43 @@ public:
 
     bool equal(const NumStatus &other) const
     {
+#if 0
         return 0 == ::memcmp(m_status, other.m_status, sizeof(m_status));
+#else
+        /*
+        constexpr uint8_t N = sizeof(m_status);
+        for (uint8_t i=0; i<N; ++i)
+        {
+            if (m_status[i] != other.m_status[i])
+            {
+                return false;
+            }
+        }
+        return true;
+        */
+
+        const size_t *p1 = reinterpret_cast<const size_t *>(m_status);
+        const size_t *p2 = reinterpret_cast<const size_t *>(other.m_status);
+
+        for (uint8_t i=0; i<g_N_64bit; ++i)
+        {
+            if (p1[i] != p2[i])
+            {
+                return false;
+            }
+        }
+
+        constexpr uint8_t g_NCHAR = sizeof(m_status);
+        for (uint8_t i=g_CHAR_offset; i<g_NCHAR; ++i)
+        {
+            if (m_status[i] != other.m_status[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
+#endif
     }
 
     void print() const
