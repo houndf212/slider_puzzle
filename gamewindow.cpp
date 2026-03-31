@@ -1,5 +1,33 @@
 ﻿#include "gamewindow.h"
 #include "sizepickerdialog.h"
+#include "puzzle_mover.h"
+
+static bool
+_to_mvList(
+    MoveList &mv,
+    const Board *_board,
+    const std::vector<uint8_t> &numMV)
+{
+    Board board;
+    board.clone(*_board);
+
+    mv.clear();
+    for (auto val : numMV)
+    {
+        auto pos = board.value_pos(val);
+        auto dir = board.test_null_move_to(pos);
+        if (Direction::NotValid == dir)
+        {
+            return false;
+        }
+
+        mv.check_loop_push_back(dir);
+        bool b = board.null_move(dir);
+        assert(b);
+    }
+
+    return board.isDone();
+}
 
 GameWindow::GameWindow()
 {
@@ -82,6 +110,33 @@ void GameWindow::onGen()
         m_nineSolver.solve(arr);
 
         m_numSolver.solve(arr, 9);
+
+        std::vector<uint8_t> mvList;
+        m_meetSolver33.solve(mvList, arr, 9);
+    }
+
+    if (3 == bb->row_size() && 4 == bb->col_size())
+    {
+        uint8_t arr[12];
+
+        int index = 0;
+        for (char r=0; r<3; ++r)
+        {
+            for (char c=0; c<4; ++c)
+            {
+                auto v = bb->pos_value({r, c});
+                arr[index++] = v;
+            }
+        }
+
+        std::vector<uint8_t> mvList;
+        m_meetSolver34.solve(mvList, arr, 12);
+
+        bool b = _to_mvList(m_movelist, m_board->inner_board(), mvList);
+        if (b)
+        {
+            printf("Meet Solver Done!\n");
+        }
     }
 }
 
@@ -118,10 +173,28 @@ void GameWindow::enterAutoSolve()
     btn_gen->setEnabled(false);
     m_view->setEnabled(false);
 
-    if (m_board->inner_board()->row_size()*m_board->inner_board()->col_size()>3*3)
+    auto row = m_board->inner_board()->row_size();
+    auto col = m_board->inner_board()->col_size();
+    if (row * col > 3*3)
+    {
         m_movelist = PuzzleMover::solve(*m_board->inner_board());
+
+        MoveList mv;
+        if ((3 == row && 4 == col) || (4 == row && 3 == col))
+        {
+            mv = solve_43or34();
+        }
+
+        if (false == mv.empty())
+        {
+            printf("Solve By Meet In Middle Solver: old %zu new %zu\n", m_movelist.size(), mv.size());
+            m_movelist = mv;
+        }
+    }
     else
+    {
         m_movelist = PuzzleMover::search_solve(*m_board->inner_board());
+    }
 
     printf("auto solve steps: %zu\n", m_movelist.size());
     assert(m_board->inner_board()->can_solve(m_movelist));
@@ -137,6 +210,50 @@ void GameWindow::leaveAutoSolve()
 
     m_movelist.clear();
     m_timer->stop();
+}
+
+MoveList GameWindow::solve_43or34()
+{
+    MoveList ret;
+
+    const Board *bb = m_board->inner_board();
+
+    auto row = m_board->inner_board()->row_size();
+    auto col = m_board->inner_board()->col_size();
+
+    uint8_t arr[12];
+
+    int index = 0;
+    for (char r=0; r<row; ++r)
+    {
+        for (char c=0; c<col; ++c)
+        {
+            auto v = bb->pos_value({r, c});
+            arr[index++] = v;
+        }
+    }
+
+    bool bSolved = false;
+    std::vector<uint8_t> mvList;
+    if (3 == row && 4 == col)
+    {
+        bSolved = m_meetSolver34.solve(mvList, arr, 12);
+    }
+    else if (4 == row && 3 == col)
+    {
+        bSolved = m_meetSolver43.solve(mvList, arr, 12);
+    }
+
+    if (bSolved)
+    {
+        bool b = _to_mvList(ret, m_board->inner_board(), mvList);
+        if (false == b)
+        {
+            ret.clear();
+        }
+    }
+
+    return ret;
 }
 
 //void GameWindow::keyPressEvent(QKeyEvent *event)

@@ -3,7 +3,6 @@
 #include <QtWidgets>
 #include "graphicsview.h"
 #include "boardscene.h"
-#include "puzzle_mover.h"
 #include "NineSolver.h"
 #include "NumSolver.h"
 
@@ -22,6 +21,8 @@ private:
 
     void enterAutoSolve();
     void leaveAutoSolve();
+
+    MoveList solve_43or34();
 private:
     BoardScene* m_board;
     GraphicsView *m_view;
@@ -33,6 +34,9 @@ private:
 
     NineSolver m_nineSolver;
     num_puzzle::NumSolver<3, 3> m_numSolver;
+    num_puzzle::MeetInMiddleSolver<3, 3> m_meetSolver33;
+    num_puzzle::MeetInMiddleSolver<3, 4> m_meetSolver34;
+    num_puzzle::MeetInMiddleSolver<4, 3> m_meetSolver43;
 
 //    // QWidget interface
 //protected:

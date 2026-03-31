@@ -296,6 +296,25 @@ struct stMoveNode
     const stMoveNode *m_preNode;
     uint8_t m_moveIndex;
     uint8_t m_moveNum;
+
+    void init_null()
+    {
+        m_preNode = nullptr;
+        m_moveIndex = 0;
+        m_moveNum = 0;
+    }
+
+    static void
+    make_mv(
+        std::vector<uint8_t> *mv,
+        const stMoveNode *pNode)
+    {
+        while (nullptr != pNode->m_preNode)
+        {
+            mv->push_back(pNode->m_moveNum);
+            pNode = pNode->m_preNode;
+        }
+    }
 };
 
 
@@ -337,9 +356,7 @@ public:
 #endif
 
             stMoveNode initMV;
-            initMV.m_preNode   = nullptr;
-            initMV.m_moveIndex = 0;
-            initMV.m_moveNum   = 0;
+            initMV.init_null();
             auto ret = m_allStatus.emplace(initSt, initMV);
             assert(ret.second);
             pInitNode = ret.first.operator->();
@@ -415,20 +432,249 @@ public:
         }
 
         const stMoveNode *pNode = &it->second;
+        std::vector<uint8_t> mvList;
+        stMoveNode::make_mv(&mvList, pNode);
         printf("move num list: ");
-        size_t n = 0;
-        while (pNode->m_preNode)
+        for (auto num : mvList)
         {
-            printf("%d ",pNode->m_moveNum);
-            pNode = pNode->m_preNode;
-            ++n;
+            printf("%d ", num);
         }
-        printf("step: %lu\n", n);
+        printf("step: %zu\n", mvList.size());
 
         return true;
     }
 private:
     StatusHash m_allStatus;
+};
+
+template<uint8_t gRow, uint8_t gCol>
+class MeetInMiddleSolver
+{
+    using ST = NumStatus<gRow, gCol>;
+    using Hash = NumStatusHash<ST>;
+    using StatusHash = std::unordered_map<ST, stMoveNode, Hash, Hash>;
+    using node_t = typename StatusHash::value_type;
+    using LevelVec = std::vector<const node_t *>;
+public:
+    MeetInMiddleSolver()
+    {
+        _build_mv();
+        _build_init_level();
+    }
+
+    bool solve(std::vector<uint8_t> &mvList, const uint8_t *curStatus, uint8_t nSize)
+    {
+        assert(ST::g_indexSize == nSize);
+        printf("Meet In Middle Solver:\n");
+
+        ST st;
+        st.from_array(curStatus);
+
+        st.print();
+
+        bool b = _find_solve(mvList, st);
+        assert(b);
+
+        if (b)
+        {
+            printf("move num list: ");
+            for (auto num : mvList)
+            {
+                printf("%d ", num);
+            }
+            printf("step: %zu\n", mvList.size());
+        }
+
+        return b;
+    }
+
+private:
+    bool _find_solve(
+        std::vector<uint8_t> &mvList,
+        const ST &st)
+    {
+        // first test
+        {
+            auto it = m_initAllStatus.find(st);
+            if (it != m_initAllStatus.end())
+            {
+                stMoveNode::make_mv(&mvList, &it->second);
+                return true;
+            }
+        }
+
+        StatusHash forwardTree;
+        LevelVec fCurLevel;
+        LevelVec bufferLevel;
+        {
+            stMoveNode null;
+            null.init_null();
+            auto ret = forwardTree.emplace(st, null);
+            fCurLevel.push_back(ret.first.operator->());
+            assert(ret.second);
+        }
+
+        size_t otherLevel = 0;
+        while (true)
+        {
+            if (otherLevel < m_initLevel)
+            {
+                ++otherLevel;
+                _build_next_level(&fCurLevel, &bufferLevel, &forwardTree, g_nextMoveList, otherLevel);
+            }
+            else
+            {
+                ++m_initLevel;
+                _build_next_level(&m_initNextLevel, &bufferLevel, &m_initAllStatus, g_nextMoveList, m_initLevel);
+            }
+
+            const node_t *fromNode = nullptr;
+            auto initNode = _find_level_in_tree(fromNode, &m_initAllStatus, &fCurLevel);
+            if (initNode)
+            {
+                assert(fromNode);
+                printf("Meet in (%zu) (%zu)\n", otherLevel, m_initLevel);
+
+                stMoveNode::make_mv(&mvList, &fromNode->second);
+                std::reverse(mvList.begin(), mvList.end());
+                stMoveNode::make_mv(&mvList, &initNode->second);
+                return true;
+            }
+        }
+
+        return false;
+    }
+    void _build_init_level()
+    {
+        {
+            ST initSt;
+            initSt.init();
+
+#if 0
+            printf("init status:\n");
+            initSt.print();
+#endif
+
+            stMoveNode initMV;
+            initMV.m_preNode   = nullptr;
+            initMV.m_moveIndex = 0;
+            initMV.m_moveNum   = 0;
+            auto ret = m_initAllStatus.emplace(initSt, initMV);
+            assert(ret.second);
+            auto pInitNode = ret.first.operator->();
+            m_initNextLevel.push_back(pInitNode);
+        }
+
+        LevelVec levelBuffer;
+
+        constexpr size_t g_startLevel = 25;
+        m_initLevel = 0;
+        while (m_initLevel++ < g_startLevel)
+        {
+            _build_next_level(&m_initNextLevel,
+                              &levelBuffer,
+                              &m_initAllStatus,
+                              g_nextMoveList,
+                              m_initLevel);
+
+            if (m_initNextLevel.empty())
+            {
+                break;
+            }
+        }
+    }
+private:
+
+    static const node_t *
+    _find_level_in_tree(
+        const node_t * &fromNode,
+        const StatusHash *allStatus,
+        const LevelVec *level)
+    {
+        assert(allStatus->size() > 0);
+        assert(level->size() > 0);
+
+        for (auto pNode : *level)
+        {
+            auto it = allStatus->find(pNode->first);
+            if (it != allStatus->end())
+            {
+                fromNode = pNode;
+                return it.operator->();
+            }
+        }
+
+        return nullptr;
+    }
+
+    static void
+    _build_next_level(LevelVec *nextLevel,
+                      LevelVec *levelBuffer,
+                      StatusHash *allStatus,
+                      const std::array<stNextMove, ST::g_indexSize> &g_nextMoveList,
+                      size_t nLevel)
+    {
+        if (nextLevel->empty())
+        {
+            return;
+        }
+
+        levelBuffer->clear();
+        nextLevel->swap(*levelBuffer);
+
+        ST stBuffer;
+
+        for (const node_t *pCurNode : *levelBuffer)
+        {
+            const ST &curSt = pCurNode->first;
+            const stMoveNode &curInfo = pCurNode->second;
+            auto curNullIndex = curSt.getNullIndex();
+            const stNextMove *nextMV = &g_nextMoveList[curNullIndex];
+            for (uint8_t i=0; i<nextMV->m_len; ++i)
+            {
+                uint8_t toIndex = nextMV->m_toIndex[i];
+
+                stBuffer = curSt;
+                stBuffer.move_null(toIndex);
+
+                auto ret = allStatus->try_emplace(stBuffer);
+                if (false == ret.second)
+                {
+                    continue;
+                }
+
+                node_t *nextNode = ret.first.operator->();
+
+                stMoveNode &nextInfo = nextNode->second;
+                nextInfo.m_preNode   = &curInfo;
+                nextInfo.m_moveIndex = toIndex;
+                nextInfo.m_moveNum   = curSt.getIndexNum(toIndex);
+
+                nextLevel->push_back(nextNode);
+            }
+        }
+
+        printf("level: %zu, all: %zu, cur: %zu, next: %zu\n",
+               nLevel, allStatus->size(), levelBuffer->size(), nextLevel->size());
+    }
+
+    void _build_mv()
+    {
+        for (uint8_t i=0; i<ST::g_indexSize; ++i)
+        {
+            g_nextMoveList[i] = ST::_calc_to_index_move(i);
+#if 0
+            printf("%d to ", i);
+            _print_mv(g_nextMoveList[i]);
+            printf("\n");
+#endif
+        }
+    }
+private:
+    size_t     m_initLevel;
+    LevelVec   m_initNextLevel;
+    StatusHash m_initAllStatus;
+    std::array<stNextMove, ST::g_indexSize> g_nextMoveList;
 };
 
 }
