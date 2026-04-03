@@ -637,7 +637,7 @@ private:
                 stBuffer = curSt;
                 stBuffer.move_null(toIndex);
 
-                auto ret = allStatus->try_emplace(stBuffer);
+                auto ret = allStatus->try_emplace(stBuffer, stMoveNode{});
                 if (false == ret.second)
                 {
                     continue;
